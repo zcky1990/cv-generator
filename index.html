@@ -518,46 +518,7 @@
                             <p class="text-sm text-muted-foreground">Add your educational background</p>
                         </div>
                         <div id="educationContainer" class="space-y-4">
-                            <div class="rounded-lg border border-border bg-muted/50 p-4 space-y-4">
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">University Name
-                                        <span class="text-destructive">*</span>
-                                    </label>
-                                    <input type="text" class="edu-university flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" required placeholder="University Name">
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">City, Country (or ISO code)</label>
-                                    <input type="text" class="edu-city flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="e.g., Jakarta, ID or Jakarta, Indonesia">
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Degree/Program
-                                        <span class="text-destructive">*</span>
-                                    </label>
-                                    <input type="text" class="edu-degree flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" required placeholder="Ph.D. in Area Name, Advisor: Sample Person">
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">GPA (optional)</label>
-                                    <input type="text" class="edu-gpa flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="3.50 / 4.00">
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Date Range</label>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div class="space-y-2">
-                                            <label class="text-xs text-muted-foreground">Start Date</label>
-                                            <input type="month" class="edu-date-start flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                                        </div>
-                                        <div class="space-y-2">
-                                            <label class="text-xs text-muted-foreground">End Date (leave empty for "Present")</label>
-                                            <input type="month" class="edu-date-end flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Thesis (optional)</label>
-                                    <input type="text" class="edu-thesis flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="Title of The Thesis">
-                                </div>
-                                <button type="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-destructive text-destructive-foreground hover:bg-destructive/90 h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5" onclick="removeEducation(this)">Remove</button>
-                            </div>
+                            <!-- Education entries will be added here when user clicks "Add Education" -->
                         </div>
                         <button type="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground hover:bg-primary/90 h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5" onclick="addEducation()">+ Add Education</button>
                     </section>
@@ -569,44 +530,7 @@
                             <p class="text-sm text-muted-foreground">Add your work experience</p>
                         </div>
                         <div id="experienceContainer" class="space-y-4">
-                            <div class="rounded-lg border border-border bg-muted/50 p-4 space-y-4">
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Company/University Name
-                                        <span class="text-destructive">*</span>
-                                    </label>
-                                    <input type="text" class="exp-company flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" required placeholder="Company Name">
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">City, Country (or ISO code)</label>
-                                    <input type="text" class="exp-city flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="e.g., Jakarta, ID or Jakarta, Indonesia">
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Position
-                                        <span class="text-destructive">*</span>
-                                    </label>
-                                    <input type="text" class="exp-position flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" required placeholder="Position at Group/Laboratory Name">
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Date Range</label>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div class="space-y-2">
-                                            <label class="text-xs text-muted-foreground">Start Date</label>
-                                            <input type="month" class="exp-date-start flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                                        </div>
-                                        <div class="space-y-2">
-                                            <label class="text-xs text-muted-foreground">End Date (leave empty for "Present")</label>
-                                            <input type="month" class="exp-date-end flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Description (one per line)
-                                        <span class="text-destructive">*</span>
-                                    </label>
-                                    <textarea class="exp-description flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" rows="3" required placeholder="Title of the project&#10;A more detailed explanation"></textarea>
-                                </div>
-                                <button type="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-destructive text-destructive-foreground hover:bg-destructive/90 h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5" onclick="removeExperience(this)">Remove</button>
-                            </div>
+                            <!-- Experience entries will be added here when user clicks "Add Experience" -->
                         </div>
                         <button type="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground hover:bg-primary/90 h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5" onclick="addExperience()">+ Add Experience</button>
                     </section>
@@ -618,40 +542,7 @@
                             <p class="text-sm text-muted-foreground">Add your volunteer work and community involvement</p>
                         </div>
                         <div id="volunteerContainer" class="space-y-4">
-                            <div class="rounded-lg border border-border bg-muted/50 p-4 space-y-4">
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Organization Name
-                                        <span class="text-destructive">*</span>
-                                    </label>
-                                    <input type="text" class="vol-organization flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" required placeholder="Organization Name">
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Position/Role
-                                        <span class="text-destructive">*</span>
-                                    </label>
-                                    <input type="text" class="vol-position flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" required placeholder="Volunteer Role">
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Date Range</label>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div class="space-y-2">
-                                            <label class="text-xs text-muted-foreground">Start Date</label>
-                                            <input type="month" class="vol-date-start flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                                        </div>
-                                        <div class="space-y-2">
-                                            <label class="text-xs text-muted-foreground">End Date (leave empty for "Present")</label>
-                                            <input type="month" class="vol-date-end flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Description (one per line)
-                                        <span class="text-destructive">*</span>
-                                    </label>
-                                    <textarea class="vol-description flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" rows="3" required placeholder="Description of your volunteer work"></textarea>
-                                </div>
-                                <button type="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-destructive text-destructive-foreground hover:bg-destructive/90 h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5" onclick="removeVolunteer(this)">Remove</button>
-                            </div>
+                            <!-- Volunteer entries will be added here when user clicks "Add Volunteer Experience" -->
                         </div>
                         <button type="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground hover:bg-primary/90 h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5" onclick="addVolunteer()">+ Add Volunteer Experience</button>
                     </section>
@@ -687,19 +578,7 @@
                             <p class="text-sm text-muted-foreground">Add languages you speak</p>
                         </div>
                         <div id="languagesContainer" class="space-y-4">
-                            <div class="rounded-lg border border-border bg-muted/50 p-4 space-y-4">
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Language
-                                        <span class="text-destructive">*</span>
-                                    </label>
-                                    <input type="text" class="lang-name flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" required placeholder="English">
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Proficiency/Details</label>
-                                    <input type="text" class="lang-level flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="Native / TOEFL: 120">
-                                </div>
-                                <button type="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-destructive text-destructive-foreground hover:bg-destructive/90 h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5" onclick="removeLanguage(this)">Remove</button>
-                            </div>
+                            <!-- Language entries will be added here when user clicks "Add Language" -->
                         </div>
                         <button type="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground hover:bg-primary/90 h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5" onclick="addLanguage()">+ Add Language</button>
                     </section>
@@ -711,25 +590,7 @@
                             <p class="text-sm text-muted-foreground">Add your projects</p>
                         </div>
                         <div id="projectsContainer" class="space-y-4">
-                            <div class="rounded-lg border border-border bg-muted/50 p-4 space-y-4">
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Project Title
-                                        <span class="text-destructive">*</span>
-                                    </label>
-                                    <input type="text" class="proj-title flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" required placeholder="Project Title">
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Technology/Year</label>
-                                    <input type="text" class="proj-tech flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="Technology Used, 2019">
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium leading-none">Description
-                                        <span class="text-destructive">*</span>
-                                    </label>
-                                    <textarea class="proj-description flex min-h-[64px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" rows="2" required placeholder="Short explanation of the project"></textarea>
-                                </div>
-                                <button type="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-destructive text-destructive-foreground hover:bg-destructive/90 h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5" onclick="removeProject(this)">Remove</button>
-                            </div>
+                            <!-- Project entries will be added here when user clicks "Add Project" -->
                         </div>
                         <button type="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground hover:bg-primary/90 h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5" onclick="addProject()">+ Add Project</button>
                     </section>

@@ -877,10 +877,10 @@ function generateClassicNUCV(data) {
 // Based on Figma design: https://www.figma.com/design/j8FqjbcKBIswmXcWeY2SM1/Minimal-Resume-and-Cover-letter-template
 function generateMinimalCV(data) {
     const baseStyle = 'font-size: 12px;';
-    const nameStyle = 'font-size: 32px; font-weight: bold; color: #000; margin-bottom: 4px;';
-    const titleStyle = 'font-size: 12px; font-weight: bold; color: #000; margin-bottom: 24px; text-transform: uppercase;';
-    const sectionHeaderStyle = 'font-size: 12px; font-weight: bold; color: #000; margin-bottom: 12px; text-transform: uppercase;';
-    const separatorStyle = 'border-top: 1px solid #000; margin: 16px 0;';
+    const nameStyle = 'font-size: 32px; font-weight: bold; margin-bottom: 4px;';
+    const titleStyle = 'font-size: 12px; font-weight: bold; margin-bottom: 24px; text-transform: uppercase;';
+    const sectionHeaderStyle = 'font-size: 12px; font-weight: bold; margin-bottom: 12px; text-transform: uppercase;';
+    const separatorStyle = 'border-top: 1px solid currentColor; margin: 16px 0; opacity: 0.3;';
     
     // Start two-column layout
     let html = '<div style="display: table; width: 100%; border-collapse: collapse; font-family: \'Montserrat\', Arial, sans-serif;">';
@@ -890,16 +890,16 @@ function generateMinimalCV(data) {
     let leftColumn = '<div style="display: table-cell; width: 33%; vertical-align: top; padding-right: 15px; padding-top: 0;">';
     
     // Name
-    leftColumn += `<div style="margin-bottom: 4px;"><h1 style="${nameStyle}">${escapeHtml(data.name)}</h1></div>`;
+    leftColumn += `<div style="margin-bottom: 4px;"><h1 class="minimal-name" style="${nameStyle}">${escapeHtml(data.name)}</h1></div>`;
     
     // Job Title
     if (data.title && data.title.trim()) {
-        leftColumn += `<div style="${titleStyle}">${escapeHtml(data.title)}</div>`;
+        leftColumn += `<div class="minimal-title" style="${titleStyle}">${escapeHtml(data.title)}</div>`;
     }
     
     // Contact Section
     leftColumn += '<div style="margin-top: 30px; margin-bottom: 30px;">';
-    leftColumn += `<div style="${sectionHeaderStyle}">CONTACT</div>`;
+    leftColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">CONTACT</div>`;
     leftColumn += '<div style="font-family: \'Montserrat\', Arial, sans-serif; font-size: 11px; line-height: 1.8;">';
     
     if (data.phone) {
@@ -920,21 +920,21 @@ function generateMinimalCV(data) {
     }
     
     leftColumn += '</div></div>';
-    leftColumn += `<div style="${separatorStyle}"></div>`;
+    leftColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
     
     // About Section
     if (data.about && data.about.trim()) {
         leftColumn += '<div style="margin-bottom: 24px;">';
-        leftColumn += `<div style="${sectionHeaderStyle}">ABOUT ME</div>`;
+        leftColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">ABOUT ME</div>`;
         leftColumn += `<div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 11px; line-height: 1.6;">${escapeHtml(data.about).replace(/\n/g, '<br>')}</div>`;
         leftColumn += '</div>';
-        leftColumn += `<div style="${separatorStyle}"></div>`;
+        leftColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
     }
     
     // Education Section
     if (data.education && data.education.length > 0) {
         leftColumn += '<div style="margin-bottom: 24px;">';
-        leftColumn += `<div style="${sectionHeaderStyle}">EDUCATION</div>`;
+        leftColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">EDUCATION</div>`;
         leftColumn += '<div style="font-family: \'Montserrat\', Arial, sans-serif; font-size: 11px; line-height: 1.6;">';
         
         data.education.forEach(entry => {
@@ -962,13 +962,13 @@ function generateMinimalCV(data) {
         });
         
         leftColumn += '</div></div>';
-        leftColumn += `<div style="${separatorStyle}"></div>`;
+        leftColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
     }
     
     // Skills Section
     if (data.skills && data.skills.trim()) {
         leftColumn += '<div style="margin-bottom: 24px;">';
-        leftColumn += `<div style="${sectionHeaderStyle}">SKILLS</div>`;
+        leftColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">SKILLS</div>`;
         leftColumn += '<div style="font-family: \'Montserrat\', Arial, sans-serif; font-size: 11px; line-height: 1.8;">';
         
         const skills = data.skills.split('\n').filter(line => line.trim());
@@ -986,8 +986,8 @@ function generateMinimalCV(data) {
     
     // Experience Section
     if (data.experience && data.experience.length > 0) {
-        rightColumn += `<div style="${sectionHeaderStyle} margin-top: 0;">EXPERIENCE</div>`;
-        rightColumn += `<div style="${separatorStyle}"></div>`;
+        rightColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle} margin-top: 0;">EXPERIENCE</div>`;
+        rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
         
         data.experience.forEach((entry, index) => {
             // Format date range
@@ -1021,7 +1021,7 @@ function generateMinimalCV(data) {
             
             // Add separator between entries (except last)
             if (index < data.experience.length - 1) {
-                rightColumn += `<div style="${separatorStyle}"></div>`;
+                rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
             }
         });
     }
@@ -1029,11 +1029,11 @@ function generateMinimalCV(data) {
     // Projects Section (if no experience or as additional section)
     if (data.projects && data.projects.length > 0) {
         if (data.experience && data.experience.length > 0) {
-            rightColumn += `<div style="${separatorStyle}"></div>`;
+            rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
         }
-        rightColumn += `<div style="${sectionHeaderStyle}">PROJECTS</div>`;
+        rightColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">PROJECTS</div>`;
         if (data.experience && data.experience.length > 0) {
-            rightColumn += `<div style="${separatorStyle}"></div>`;
+            rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
         }
         
         data.projects.forEach((entry, index) => {
@@ -1052,7 +1052,7 @@ function generateMinimalCV(data) {
             rightColumn += '</div>';
             
             if (index < data.projects.length - 1) {
-                rightColumn += `<div style="${separatorStyle}"></div>`;
+                rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
             }
         });
     }
@@ -1111,6 +1111,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     // Note: cvForm may not exist on template pages, which is expected
+});
+
+// Automatically load data from localStorage on page load (only on form page)
+document.addEventListener('DOMContentLoaded', function() {
+    // Only load if we're on the form page (check if cvForm exists)
+    const cvForm = document.getElementById('cvForm');
+    if (!cvForm) {
+        return; // Not on the form page, skip auto-load
+    }
+    
+    try {
+        const cvDataJson = localStorage.getItem('cvData');
+        if (cvDataJson) {
+            const data = JSON.parse(cvDataJson);
+            console.log('Found CV data in localStorage, automatically loading into form...');
+            loadFormData(data);
+        }
+    } catch (error) {
+        console.warn('Error loading data from localStorage:', error);
+        // Silently fail - don't show error to user if localStorage is unavailable
+    }
 });
 
 // Template selection change handler for immediate visual feedback
@@ -2260,9 +2281,8 @@ function loadFormData(data) {
                 }
                 entry.querySelector('.vol-description').value = vol.description || '';
             });
-        } else {
-            addVolunteer();
         }
+        // Don't add empty entry if no data - form starts empty
     }
     
     // Load project entries
@@ -2276,9 +2296,8 @@ function loadFormData(data) {
             entry.querySelector('.proj-tech').value = proj.tech || '';
             entry.querySelector('.proj-description').value = proj.description || '';
         });
-    } else {
-        addProject();
     }
+    // Don't add empty entry if no data - form starts empty
     
 }
 

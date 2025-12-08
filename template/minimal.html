@@ -131,6 +131,24 @@
             #cvContainer {
                 font-family: 'Montserrat', Arial, sans-serif !important;
             }
+            
+            /* Ensure title and other text elements use theme colors */
+            #cvContainer h1,
+            #cvContainer .minimal-name {
+                color: hsl(var(--foreground)) !important;
+            }
+            
+            #cvContainer .minimal-title {
+                color: hsl(var(--foreground)) !important;
+            }
+            
+            #cvContainer .minimal-section-header {
+                color: hsl(var(--foreground)) !important;
+            }
+            
+            #cvContainer .minimal-separator {
+                border-color: hsl(var(--foreground)) !important;
+            }
         </style>
 </head>
 <body class="bg-background text-foreground min-h-screen print:bg-white print:p-0 print:m-0">
