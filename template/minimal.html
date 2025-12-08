@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>CV - Classic Template</title>
+        <title>CV - Minimal Template</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
             tailwind.config = {
@@ -21,11 +21,14 @@
         </script>
         <!-- html2pdf library -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+        <!-- Google Fonts - Montserrat -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
         <style>
             /* Base font for entire document */
             body, #cvContainer, #cvContainer * {
-                font-family: Calibri, Arial, sans-serif !important;
-                font-size: 12px !important;
+                font-family: 'Montserrat', Arial, sans-serif !important;
             }
             
             :root {
@@ -124,35 +127,9 @@
             .hover\:bg-primary\/90:hover { background-color: hsl(var(--primary) / 0.9); }
             .hover\:bg-secondary\/80:hover { background-color: hsl(var(--secondary) / 0.8); }
             
-            /* Calibri font and size overrides for classic template */
+            /* Minimal template specific styles */
             #cvContainer {
-                font-family: Calibri, Arial, sans-serif !important;
-                font-size: 12px !important;
-            }
-            #cvContainer h1 {
-                font-size: 20px !important; /* Name - was text-3xl (24px) */
-                font-weight: bold !important;
-            }
-            #cvContainer h2 {
-                font-size: 14px !important; /* Section headers - was text-xl (18px) */
-                font-weight: bold !important;
-            }
-            #cvContainer .text-lg,
-            #cvContainer .print\:text-base {
-                font-size: 14px !important; /* University/Company names - was text-lg (16px) */
-            }
-            #cvContainer .text-sm,
-            #cvContainer .print\:text-xs {
-                font-size: 11px !important; /* Small text - was text-sm (14px) */
-            }
-            #cvContainer .text-xs {
-                font-size: 10px !important; /* Extra small text */
-            }
-            #cvContainer .text-2xl {
-                font-size: 18px !important; /* Large headings */
-            }
-            #cvContainer .text-3xl {
-                font-size: 20px !important; /* Extra large headings */
+                font-family: 'Montserrat', Arial, sans-serif !important;
             }
         </style>
 </head>
@@ -210,22 +187,23 @@
     <script>
         // Load CV data from localStorage and generate CV
         async function loadAndGenerateCV() {
-            try { // Get data from localStorage
+            try {
+                // Get data from localStorage
                 const cvDataJson = localStorage.getItem('cvData');
 
-                if (! cvDataJson) {
+                if (!cvDataJson) {
                     document.getElementById('cvContainer').innerHTML = '<div class="text-center py-8"><p class="text-destructive">No CV data found. Please go back and fill out the form.</p><button onclick="goBack()" class="mt-4 inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 rounded-md gap-1.5 px-4">Go Back</button></div>';
                     return;
                 }
 
                 const data = JSON.parse(cvDataJson);
-                const template = data.template || 'classic';
+                const template = data.template || 'minimal';
                 const cvContainer = document.getElementById('cvContainer');
 
                 // Hide loading message
                 document.getElementById('loadingMessage').style.display = 'none';
 
-                // Generate CV directly using inline generation (no template files needed)
+                // Generate CV directly using inline generation
                 const html = generateCVFromData(data);
                 cvContainer.innerHTML = html;
 
@@ -238,7 +216,7 @@
         // Download CV as PDF using html2pdf
         async function downloadPDF(event) {
             const cvContainer = document.getElementById('cvContainer');
-            if (! cvContainer) {
+            if (!cvContainer) {
                 alert('CV container not found');
                 return;
             }
@@ -249,7 +227,7 @@
                 const cvDataJson = localStorage.getItem('cvData');
                 if (cvDataJson) {
                     const data = JSON.parse(cvDataJson);
-                    if (data.name) { // Sanitize filename
+                    if (data.name) {
                         filename = data.name.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '_cv.pdf';
                     }
                 }
@@ -259,9 +237,7 @@
 
             // Configure html2pdf options
             const options = {
-                margin: [
-                    15, 15, 15, 15
-                ], // 15mm margins (top, right, bottom, left)
+                margin: [12, 5, 12, 5],
                 filename: filename,
                 image: {
                     type: 'jpeg',
@@ -301,7 +277,7 @@
                 // Wait a moment for scroll to complete
                 await new Promise(resolve => setTimeout(resolve, 100));
 
-                // Force HSL colors for html2pdf compatibility (prevent oklch conversion)
+                // Force HSL colors for html2pdf compatibility
                 const colorFixStyle = document.createElement('style');
                 colorFixStyle.id = 'pdf-color-fix';
                 colorFixStyle.textContent = `
@@ -327,22 +303,14 @@
                     #cvContainer {
                         background: white !important;
                         color: black !important;
-                        font-family: Calibri, Arial, sans-serif !important;
-                        font-size: 12px !important;
+                        font-family: 'Montserrat', Arial, sans-serif !important;
                     }
                     #cvContainer * {
                         color: black !important;
-                        font-family: Calibri, Arial, sans-serif !important;
-                    }
-                    #cvContainer h1 {
-                        font-size: 20px !important;
-                    }
-                    #cvContainer h2 {
-                        font-size: 14px !important;
+                        font-family: 'Montserrat', Arial, sans-serif !important;
                     }
                     #cvContainer a {
                         color: black !important;
-                        font-family: Calibri, Arial, sans-serif !important;
                         text-decoration: none !important;
                     }
                 `;

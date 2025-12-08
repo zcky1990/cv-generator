@@ -490,6 +490,11 @@ function generateCVFromData(data) {
         return generateClassicNUCV(data);
     }
     
+    // Special handling for minimal template (two-column minimalist layout)
+    if (template === 'minimal') {
+        return generateMinimalCV(data);
+    }
+    
     let html = generateHeader(template, data);
     
     html += generateEducation(data.education, template);
@@ -627,7 +632,7 @@ function generateLuxSleekCV(data) {
     
     // Projects (as Additional Education/Projects)
     if (data.projects && data.projects.length > 0) {
-        rightColumn += '<div style="margin-bottom: 24px;">';
+        rightColumn += '<div style="margin-top:24px; margin-bottom: 24px;">';
         rightColumn += '<h2 style="font-size: 16px; font-weight: bold; color: #304263; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #304263; font-family: Calibri, Arial, sans-serif;">Projects</h2>';
         data.projects.forEach(entry => {
             rightColumn += '<div style="margin-bottom: 16px;">';
@@ -864,6 +869,199 @@ function generateClassicNUCV(data) {
         });
         html += '</div></div>';
     }
+    
+    return html;
+}
+
+// Generate Minimal CV - Two-column minimalist layout
+// Based on Figma design: https://www.figma.com/design/j8FqjbcKBIswmXcWeY2SM1/Minimal-Resume-and-Cover-letter-template
+function generateMinimalCV(data) {
+    const baseStyle = 'font-size: 12px;';
+    const nameStyle = 'font-size: 32px; font-weight: bold; color: #000; margin-bottom: 4px;';
+    const titleStyle = 'font-size: 12px; font-weight: bold; color: #000; margin-bottom: 24px; text-transform: uppercase;';
+    const sectionHeaderStyle = 'font-size: 12px; font-weight: bold; color: #000; margin-bottom: 12px; text-transform: uppercase;';
+    const separatorStyle = 'border-top: 1px solid #000; margin: 16px 0;';
+    
+    // Start two-column layout
+    let html = '<div style="display: table; width: 100%; border-collapse: collapse; font-family: \'Montserrat\', Arial, sans-serif;">';
+    html += '<div style="display: table-row;">';
+    
+    // LEFT COLUMN (~33%)
+    let leftColumn = '<div style="display: table-cell; width: 33%; vertical-align: top; padding-right: 15px; padding-top: 0;">';
+    
+    // Name
+    leftColumn += `<div style="margin-bottom: 4px;"><h1 style="${nameStyle}">${escapeHtml(data.name)}</h1></div>`;
+    
+    // Job Title
+    if (data.title && data.title.trim()) {
+        leftColumn += `<div style="${titleStyle}">${escapeHtml(data.title)}</div>`;
+    }
+    
+    // Contact Section
+    leftColumn += '<div style="margin-top: 30px; margin-bottom: 30px;">';
+    leftColumn += `<div style="${sectionHeaderStyle}">CONTACT</div>`;
+    leftColumn += '<div style="font-family: \'Montserrat\', Arial, sans-serif; font-size: 11px; line-height: 1.8;">';
+    
+    if (data.phone) {
+        leftColumn += `<div style="margin-bottom: 4px;">${escapeHtml(data.phone)}</div>`;
+    }
+    if (data.email) {
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="mailto:${escapeHtml(data.email)}" style="color: #000; text-decoration: none;">${escapeHtml(data.email)}</a></div>`;
+    }
+    if (data.location) {
+        leftColumn += `<div style="margin-bottom: 4px;">${escapeHtml(data.location)}</div>`;
+    }
+    if (data.linkedin) {
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="https://linkedin.com/in/${escapeHtml(data.linkedin)}" style="color: #000; text-decoration: none;">in ${escapeHtml(data.linkedin)}</a></div>`;
+    }
+    if (data.website) {
+        const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="${url}" style="color: #000; text-decoration: none;">${escapeHtml(data.website)}</a></div>`;
+    }
+    
+    leftColumn += '</div></div>';
+    leftColumn += `<div style="${separatorStyle}"></div>`;
+    
+    // About Section
+    if (data.about && data.about.trim()) {
+        leftColumn += '<div style="margin-bottom: 24px;">';
+        leftColumn += `<div style="${sectionHeaderStyle}">ABOUT ME</div>`;
+        leftColumn += `<div style="font-family: 'Montserrat', Arial, sans-serif; font-size: 11px; line-height: 1.6;">${escapeHtml(data.about).replace(/\n/g, '<br>')}</div>`;
+        leftColumn += '</div>';
+        leftColumn += `<div style="${separatorStyle}"></div>`;
+    }
+    
+    // Education Section
+    if (data.education && data.education.length > 0) {
+        leftColumn += '<div style="margin-bottom: 24px;">';
+        leftColumn += `<div style="${sectionHeaderStyle}">EDUCATION</div>`;
+        leftColumn += '<div style="font-family: \'Montserrat\', Arial, sans-serif; font-size: 11px; line-height: 1.6;">';
+        
+        data.education.forEach(entry => {
+            // Format date range
+            let dateStr = '';
+            if (entry.dateStart && entry.dateEnd) {
+                const startYear = entry.dateStart.split('-')[0];
+                const endYear = entry.dateEnd.split('-')[0];
+                dateStr = `${startYear}-${endYear}`;
+            } else if (entry.dateStart) {
+                const startYear = entry.dateStart.split('-')[0];
+                dateStr = startYear;
+            } else if (entry.dateEnd) {
+                const endYear = entry.dateEnd.split('-')[0];
+                dateStr = endYear;
+            }
+            
+            if (dateStr) {
+                leftColumn += `<div style="margin-bottom: 8px; font-weight: bold; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px;">${escapeHtml(dateStr)}</div>`;
+            }
+            leftColumn += `<div style="margin-bottom: 4px; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px;">${escapeHtml(entry.university)}</div>`;
+            if (entry.degree) {
+                leftColumn += `<div style="margin-bottom: 8px; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px;">${escapeHtml(entry.degree)}</div>`;
+            }
+        });
+        
+        leftColumn += '</div></div>';
+        leftColumn += `<div style="${separatorStyle}"></div>`;
+    }
+    
+    // Skills Section
+    if (data.skills && data.skills.trim()) {
+        leftColumn += '<div style="margin-bottom: 24px;">';
+        leftColumn += `<div style="${sectionHeaderStyle}">SKILLS</div>`;
+        leftColumn += '<div style="font-family: \'Montserrat\', Arial, sans-serif; font-size: 11px; line-height: 1.8;">';
+        
+        const skills = data.skills.split('\n').filter(line => line.trim());
+        skills.forEach(skill => {
+            leftColumn += `<div style="margin-bottom: 2px;">• ${escapeHtml(skill.trim())}</div>`;
+        });
+        
+        leftColumn += '</div></div>';
+    }
+    
+    leftColumn += '</div>';
+    
+    // RIGHT COLUMN (~67%)
+    let rightColumn = '<div style="display: table-cell; width: 67%; vertical-align: top; padding-left: 24px; padding-top: 0;">';
+    
+    // Experience Section
+    if (data.experience && data.experience.length > 0) {
+        rightColumn += `<div style="${sectionHeaderStyle} margin-top: 0;">EXPERIENCE</div>`;
+        rightColumn += `<div style="${separatorStyle}"></div>`;
+        
+        data.experience.forEach((entry, index) => {
+            // Format date range
+            let dateStr = '';
+            if (entry.dateStart && entry.dateEnd) {
+                const startYear = entry.dateStart.split('-')[0];
+                const endYear = entry.dateEnd.split('-')[0];
+                dateStr = `${startYear}-${endYear}`;
+            } else if (entry.dateStart) {
+                const startYear = entry.dateStart.split('-')[0];
+                dateStr = `${startYear}-Present`;
+            } else if (entry.dateEnd) {
+                const endYear = entry.dateEnd.split('-')[0];
+                dateStr = `-${endYear}`;
+            }
+            
+            rightColumn += '<div style="margin-bottom: 24px;">';
+            rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 4px;">${escapeHtml(entry.company)}</div>`;
+            rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 8px;">${escapeHtml(entry.position)}${dateStr ? ` | ${dateStr}` : ''}</div>`;
+            
+            if (entry.description) {
+                const items = entry.description.split('\n').filter(line => line.trim());
+                rightColumn += '<div style="font-size: 11px; line-height: 1.6;">';
+                items.forEach(item => {
+                    rightColumn += `<div style="margin-bottom: 4px;">${escapeHtml(item.trim())}</div>`;
+                });
+                rightColumn += '</div>';
+            }
+            
+            rightColumn += '</div>';
+            
+            // Add separator between entries (except last)
+            if (index < data.experience.length - 1) {
+                rightColumn += `<div style="${separatorStyle}"></div>`;
+            }
+        });
+    }
+    
+    // Projects Section (if no experience or as additional section)
+    if (data.projects && data.projects.length > 0) {
+        if (data.experience && data.experience.length > 0) {
+            rightColumn += `<div style="${separatorStyle}"></div>`;
+        }
+        rightColumn += `<div style="${sectionHeaderStyle}">PROJECTS</div>`;
+        if (data.experience && data.experience.length > 0) {
+            rightColumn += `<div style="${separatorStyle}"></div>`;
+        }
+        
+        data.projects.forEach((entry, index) => {
+            rightColumn += '<div style="margin-bottom: 16px;">';
+            rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 4px;">${escapeHtml(entry.title)}${entry.tech ? ` (${escapeHtml(entry.tech)})` : ''}</div>`;
+            
+            if (entry.description) {
+                const items = entry.description.split('\n').filter(line => line.trim());
+                rightColumn += '<div style="font-size: 11px; line-height: 1.6;">';
+                items.forEach(item => {
+                    rightColumn += `<div style="margin-bottom: 4px;">${escapeHtml(item.trim())}</div>`;
+                });
+                rightColumn += '</div>';
+            }
+            
+            rightColumn += '</div>';
+            
+            if (index < data.projects.length - 1) {
+                rightColumn += `<div style="${separatorStyle}"></div>`;
+            }
+        });
+    }
+    
+    rightColumn += '</div>';
+    
+    // Close table structure
+    html += leftColumn + rightColumn;
+    html += '</div></div>';
     
     return html;
 }
