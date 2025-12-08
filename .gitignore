@@ -1,0 +1,26 @@
+# LaTeX auxiliary files
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# PDF output (optional - you may want to keep these)
+# *.pdf
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Generated CV files (optional)
+cv.tex
+cv.pdf
+

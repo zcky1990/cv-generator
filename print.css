@@ -1,0 +1,306 @@
+/* Print-specific styles - Tailwind handles most styling, this is for additional print optimizations */
+/* Print Element classes - for selective element printing */
+@media print {
+    .pe-no-print {
+        display: none !important;
+    }
+    
+    .pe-preserve-ancestor {
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    
+    /* Set page margins - 15mm top and bottom */
+    @page {
+        margin-top: 15mm;
+        margin-bottom: 15mm;
+        margin-left: 15mm;
+        margin-right: 15mm;
+        size: letter;
+        marks: none; /* No crop marks */
+    }
+    
+    /* Force exact color printing - critical for printing HTML as-is */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+    
+    /* Remove all margins and padding from root elements */
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100%;
+        height: 100%;
+        background: white !important;
+    }
+    
+    /* Remove extra spacing from main containers */
+    body > div {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
+    }
+    
+    body > div > div {
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+        background: white !important;
+    }
+    
+    /* CV Preview section - match preview exactly */
+    #cvPreviewSection {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
+        border: none !important;
+    }
+    
+    /* CV Preview content - match preview padding exactly (p-6 = 24px) */
+    /* US Letter size: 612px × 792px at 72 DPI */
+    #cvPreview {
+        margin: 0 !important;
+        padding: 24px !important; /* p-6 = 1.5rem = 24px */
+        background: white !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        width: 612px !important;
+        max-width: 612px !important;
+        min-height: 792px !important;
+    }
+    
+    /* Match preview colors in print - ensure proper contrast */
+    #cvPreview {
+        color: #000 !important;
+    }
+    
+    /* Gray color variants to match preview */
+    #cvPreview .text-gray-600,
+    #cvPreview .print\\:text-gray-800 {
+        color: #1f2937 !important; /* gray-800 for better print contrast */
+    }
+    
+    #cvPreview .text-gray-700,
+    #cvPreview .print\\:text-gray-900 {
+        color: #111827 !important; /* gray-900 for better print contrast */
+    }
+    
+    /* Remove link decorations in print - make links look like regular text */
+    a, a:link, a:visited, a:hover, a:active {
+        color: #000 !important;
+        text-decoration: none !important;
+        border: none !important;
+    }
+    
+    /* Also apply to tempPrintContainer for printing */
+    #tempPrintContainer a, 
+    #tempPrintContainer a:link, 
+    #tempPrintContainer a:visited, 
+    #tempPrintContainer a:hover, 
+    #tempPrintContainer a:active {
+        color: #000 !important;
+        text-decoration: none !important;
+        border: none !important;
+    }
+    
+    /* Match preview font sizes exactly */
+    #cvPreview h1 {
+        font-size: 1.875rem !important; /* text-3xl */
+        line-height: 1.2 !important;
+    }
+    
+    #cvPreview h2 {
+        font-size: 1.25rem !important; /* text-xl */
+        line-height: 1.2 !important;
+    }
+    
+    /* Force Tailwind classes to work in print - match preview exactly */
+    #cvPreview .mb-6 {
+        margin-bottom: 1.5rem !important; /* 24px */
+    }
+    
+    #cvPreview .mb-4 {
+        margin-bottom: 1rem !important; /* 16px */
+    }
+    
+    #cvPreview .mb-3 {
+        margin-bottom: 0.75rem !important; /* 12px */
+    }
+    
+    #cvPreview .mb-2 {
+        margin-bottom: 0.5rem !important; /* 8px */
+    }
+    
+    #cvPreview .mb-1 {
+        margin-bottom: 0.25rem !important; /* 4px */
+    }
+    
+    #cvPreview .mt-2 {
+        margin-top: 0.5rem !important; /* 8px */
+    }
+    
+    #cvPreview .mt-1 {
+        margin-top: 0.25rem !important; /* 4px */
+    }
+    
+    /* Match preview text sizes exactly */
+    #cvPreview .text-lg {
+        font-size: 1.125rem !important; /* 18px */
+        line-height: 1.75rem !important;
+    }
+    
+    #cvPreview .text-base {
+        font-size: 1rem !important; /* 16px */
+        line-height: 1.5rem !important;
+    }
+    
+    #cvPreview .text-sm {
+        font-size: 0.875rem !important; /* 14px */
+        line-height: 1.25rem !important;
+    }
+    
+    #cvPreview .text-xs {
+        font-size: 0.75rem !important; /* 12px */
+        line-height: 1rem !important;
+    }
+    
+    /* Match preview list spacing */
+    #cvPreview .ml-4 {
+        margin-left: 1rem !important; /* 16px */
+    }
+    
+    #cvPreview .ml-3 {
+        margin-left: 0.75rem !important; /* 12px */
+    }
+    
+    #cvPreview ul {
+        list-style-type: disc !important;
+        padding-left: 0 !important;
+    }
+    
+    #cvPreview .list-inside {
+        list-style-position: inside !important;
+    }
+    
+    #cvPreview li {
+        margin-bottom: 0.25rem !important;
+    }
+    
+    /* Match preview font weights */
+    #cvPreview .font-bold {
+        font-weight: 700 !important;
+    }
+    
+    #cvPreview .italic {
+        font-style: italic !important;
+    }
+    
+    /* Optimize page breaks - prevent forced breaks before sections */
+    /* Remove any forced page breaks from all elements */
+    * {
+        page-break-after: auto !important;
+        page-break-before: auto !important;
+    }
+    
+    /* Only avoid breaking inside major sections, not every small element */
+    /* This prevents excessive page breaks while still keeping sections together */
+    section {
+        page-break-inside: avoid !important;
+        page-break-after: auto !important;
+        page-break-before: auto !important;
+    }
+    
+    /* Allow breaking inside paragraphs, list items, and divs for better flow */
+    p, li, div {
+        page-break-inside: auto !important;
+        orphans: 2 !important; /* Minimum 2 lines at bottom of page */
+        widows: 2 !important; /* Minimum 2 lines at top of page */
+    }
+    
+    /* Headings should try to stay with following content */
+    h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid !important;
+        page-break-before: auto !important;
+        page-break-inside: avoid !important;
+    }
+    
+    /* Ensure first section doesn't break before */
+    section:first-of-type,
+    h1:first-of-type,
+    h2:first-of-type {
+        page-break-before: auto !important;
+    }
+    
+    /* Only break inside sections if absolutely necessary (for specific marked elements) */
+    .print\\:break-inside-avoid {
+        page-break-inside: avoid !important;
+    }
+    
+    /* Fix padding and margins for tempPrintContainer */
+    #tempPrintContainer {
+        padding: 24px !important;
+        margin: 0 !important;
+    }
+    
+    /* Reduce excessive margins that might cause breaks */
+    #tempPrintContainer * {
+        margin-top: 0 !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    #tempPrintContainer section {
+        margin-bottom: 1rem !important;
+    }
+    
+    /* Remove default margins from common elements */
+    #tempPrintContainer p,
+    #tempPrintContainer ul,
+    #tempPrintContainer ol {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    #tempPrintContainer li {
+        margin-bottom: 0.25rem !important;
+    }
+    
+    /* Fix spacing for headings */
+    #tempPrintContainer h1,
+    #tempPrintContainer h2,
+    #tempPrintContainer h3,
+    #tempPrintContainer h4,
+    #tempPrintContainer h5,
+    #tempPrintContainer h6 {
+        margin-top: 0 !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    /* Hide any elements that shouldn't print */
+    .print\\:hidden {
+        display: none !important;
+    }
+    
+    /* Ensure print-specific classes work */
+    .print\\:block {
+        display: block !important;
+    }
+    
+    .print\\:text-gray-900 {
+        color: #111827 !important;
+    }
+    
+    .print\\:text-gray-800 {
+        color: #1f2937 !important;
+    }
+    
+    .print\\:text-black {
+        color: #000 !important;
+    }
+}
+
