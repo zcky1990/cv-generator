@@ -1,6 +1,6 @@
 // Collect form data
 function collectFormData() {
-    const selectedTemplate = document.querySelector('input[name="template"]:checked')?.value || 'jakes-resume';
+    const selectedTemplate = document.querySelector('input[name="template"]:checked')?.value || 'classic';
     const data = {
         template: selectedTemplate,
         name: document.getElementById('name').value,
@@ -206,7 +206,7 @@ function generateSectionHeader(template, title) {
 }
 
 // Generate education section HTML with template support
-function generateEducation(entries, template = 'jakes-resume') {
+function generateEducation(entries, template = 'classic') {
     if (!entries || entries.length === 0) return '';
     
     let html = `<div class="mb-6 print:mb-4 print:break-inside-avoid">${generateSectionHeader(template, 'EDUCATION')}`;
@@ -236,7 +236,7 @@ function generateEducation(entries, template = 'jakes-resume') {
 }
 
 // Generate experience section HTML with template support
-function generateExperience(entries, template = 'jakes-resume') {
+function generateExperience(entries, template = 'classic') {
     if (!entries || entries.length === 0) return '';
     
     let html = `<div class="mb-6 print:mb-4 print:break-inside-avoid">${generateSectionHeader(template, 'EXPERIENCE')}`;
@@ -269,7 +269,7 @@ function generateExperience(entries, template = 'jakes-resume') {
 }
 
 // Generate publications section HTML with template support
-function generatePublications(text, template = 'jakes-resume') {
+function generatePublications(text, template = 'classic') {
     if (!text || !text.trim()) return '';
     
     const publications = text.split('\n').filter(line => line.trim());
@@ -285,7 +285,7 @@ function generatePublications(text, template = 'jakes-resume') {
 }
 
 // Generate skills section HTML with template support
-function generateSkills(text, template = 'jakes-resume') {
+function generateSkills(text, template = 'classic') {
     if (!text || !text.trim()) return '';
     
     const skills = text.split('\n').filter(line => line.trim());
@@ -301,7 +301,7 @@ function generateSkills(text, template = 'jakes-resume') {
 }
 
 // Generate languages section HTML with template support
-function generateLanguages(entries, template = 'jakes-resume') {
+function generateLanguages(entries, template = 'classic') {
     if (!entries || entries.length === 0) return '';
     
     let html = `<div class="mb-6 print:mb-4 print:break-inside-avoid">${generateSectionHeader(template, 'LANGUAGES')}`;
@@ -319,7 +319,7 @@ function generateLanguages(entries, template = 'jakes-resume') {
 }
 
 // Generate projects section HTML with template support
-function generateProjects(entries, template = 'jakes-resume') {
+function generateProjects(entries, template = 'classic') {
     if (!entries || entries.length === 0) return '';
     
     let html = `<div class="mb-6 print:mb-4 print:break-inside-avoid">${generateSectionHeader(template, 'PROJECTS')}`;
@@ -348,7 +348,7 @@ function generateProjects(entries, template = 'jakes-resume') {
 }
 
 // Generate awards section HTML with template support
-function generateAwards(text, template = 'jakes-resume') {
+function generateAwards(text, template = 'classic') {
     if (!text || !text.trim()) return '';
     
     const awards = text.split('\n').filter(line => line.trim());
@@ -374,7 +374,12 @@ function generateAwards(text, template = 'jakes-resume') {
 // Generate complete CV HTML
 function generateCV() {
     const data = collectFormData();
-    const template = data.template || 'jakes-resume';
+    return generateCVFromData(data);
+}
+
+// Generate CV from data object (for use with localStorage)
+function generateCVFromData(data) {
+    const template = data.template || 'classic';
     
     let html = generateHeader(template, data);
     
@@ -390,9 +395,50 @@ function generateCV() {
 }
 
 // Form submission handler
-document.getElementById('cvForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    showCVPreview();
+document.addEventListener('DOMContentLoaded', function() {
+    const cvForm = document.getElementById('cvForm');
+    if (cvForm) {
+        cvForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('Form submitted');
+            
+            // Check HTML5 validation first
+            if (!cvForm.checkValidity()) {
+                console.log('Form validation failed');
+                cvForm.reportValidity();
+                return;
+            }
+            
+            const data = collectFormData();
+            const template = data.template || 'classic';
+            
+            console.log('Collected form data:', data);
+            console.log('Template:', template);
+            
+            // Validate required fields
+            if (!data.name || !data.email) {
+                alert('Please fill in all required fields (Name and Email).');
+                return;
+            }
+            
+            // Save to localStorage
+            try {
+                localStorage.setItem('cvData', JSON.stringify(data));
+                console.log('Data saved to localStorage, redirecting to template page...');
+                const redirectUrl = `template/${template}.html`;
+                console.log('Redirect URL:', redirectUrl);
+                
+                // Redirect to template page (use replace to avoid back button issues)
+                window.location.replace(redirectUrl);
+            } catch (error) {
+                console.error('Error saving to localStorage:', error);
+                alert('Error saving data. Please try again.');
+            }
+        });
+    }
+    // Note: cvForm may not exist on template pages, which is expected
 });
 
 // Template selection change handler for immediate visual feedback
@@ -440,11 +486,6 @@ window.addEventListener('resize', function() {
 });
 
 // Helper function to show preview section
-function showPreviewSection() {
-    document.getElementById('cvPreviewSection').classList.remove('hidden');
-    document.getElementById('cvForm').classList.add('hidden');
-    document.getElementById('cvPreviewSection').scrollIntoView({ behavior: 'smooth' });
-}
 
 // Helper function to reset preview element styles for standard templates
 function resetPreviewStyles(cvPreviewElement) {
@@ -467,10 +508,7 @@ function resetPreviewStyles(cvPreviewElement) {
     
     // Use exact same dimensions and padding as print container (24px = 612px width) to ensure consistency
     cvPreviewElement.style.cssText = `
-        width: 612px !important;
-        max-width: 612px !important;
         margin: 0 auto;
-        padding: 24px !important;
         background: white;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         box-sizing: border-box !important;
@@ -554,58 +592,7 @@ function generateFigmaPreviewHTML(populatedHTML) {
 }
 
 // Fallback function for when template loading fails
-function showFallbackPreview() {
-    const html = generateCV();
-    const cvPreviewElement = document.getElementById('cvPreview');
-    resetPreviewStyles(cvPreviewElement);
-    cvPreviewElement.innerHTML = html;
-    showPreviewSection();
-}
 
-// Show CV preview using templates
-async function showCVPreview() {
-    const data = collectFormData();
-    const template = data.template || 'jakes-resume';
-    const cvPreviewElement = document.getElementById('cvPreview');
-    
-    try {
-        // Load the template
-        const templateHTML = await loadTemplate(template);
-        
-        if (!templateHTML) {
-            console.warn('Template loading failed, using inline generation');
-            showFallbackPreview();
-            return;
-        }
-        
-        // Populate template with data
-        const populatedHTML = populateTemplate(templateHTML, data);
-        
-        // Extract body content and styles
-        const bodyContent = extractBodyContent(populatedHTML);
-        const templateStyles = extractStyles(populatedHTML);
-        
-        // Generate preview HTML (LaTeX templates are rendered to HTML)
-        resetPreviewStyles(cvPreviewElement);
-        // Add serif font styling for LaTeX templates - use shared function for consistency
-        const latexFontStyles = template === 'jakes-resume' ? getJakesResumeStyles() : '';
-        // Use the EXACT same styles function as print to ensure 100% match
-        const previewStyles = getSharedCVStyles(template, templateStyles, latexFontStyles, '#cvPreview');
-        const previewHTML = `${previewStyles}${bodyContent}`;
-        
-        // Display preview
-        cvPreviewElement.innerHTML = previewHTML;
-        showPreviewSection();
-    } catch (error) {
-        console.error('Error in showCVPreview:', error);
-        showFallbackPreview();
-    }
-}
-
-// Preview function
-function previewCV() {
-    showCVPreview();
-}
 
 // Hide preview and show form
 function hidePreview() {
@@ -625,339 +612,9 @@ function printCV() {
 }
 
 // Template registry - stores loaded template functions and their types
-const templateRegistry = {
-    'jakes-resume': { func: null, type: 'latex' }
-};
+const templateRegistry = {};
 
-// LaTeX template registry
-const latexTemplateRegistry = {};
-
-// Check if LaTeX.js is available
-function isLatexJSAvailable() {
-    return typeof latex !== 'undefined' && typeof latex.parse !== 'undefined';
-}
-
-// Load LaTeX template file
-async function loadLatexTemplate(templateName) {
-    return new Promise((resolve, reject) => {
-        // Check if template is already loaded
-        if (latexTemplateRegistry[templateName]) {
-            resolve(latexTemplateRegistry[templateName]);
-            return;
-        }
-
-        // Fetch LaTeX template file
-        fetch(`templates/${templateName}.tex`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Failed to load LaTeX template: ${templateName}`);
-                }
-                return response.text();
-            })
-            .then(latexContent => {
-                latexTemplateRegistry[templateName] = latexContent;
-                resolve(latexContent);
-            })
-            .catch(error => {
-                reject(error);
-            });
-    });
-}
-
-// Render LaTeX template to HTML
-function renderLatexTemplate(latexContent, data) {
-    if (!isLatexJSAvailable()) {
-        console.error('LaTeX.js is not available');
-        return null;
-    }
-
-    try {
-        // Replace placeholders in LaTeX content with actual data
-        let populatedLatex = populateLatexTemplate(latexContent, data);
-        
-        // Parse and render LaTeX to HTML
-        const generator = new latex.HtmlGenerator({ hyphenate: false });
-        const doc = latex.parse(populatedLatex);
-        const html = generator.generateDocument(doc).htmlDocument;
-        
-        return html;
-    } catch (error) {
-        console.error('Error rendering LaTeX template:', error);
-        return null;
-    }
-}
-
-// Populate LaTeX template with data (similar to HTML template population)
-function populateLatexTemplate(latexContent, data) {
-    let content = latexContent;
-    
-    // Check if this is Jake's Resume template
-    const isJakesResume = isJakesResumeTemplate(content);
-    
-    // Replace basic placeholders
-    content = content.replace(/\{\{name\}\}/g, escapeLatex(data.name || ''));
-    content = content.replace(/\{\{title\}\}/g, escapeLatex(data.title || ''));
-    content = content.replace(/\{\{phone\}\}/g, escapeLatex(data.phone || ''));
-    content = content.replace(/\{\{email\}\}/g, escapeLatex(data.email || ''));
-    content = content.replace(/\{\{birthdate\}\}/g, escapeLatex(data.birthdate || ''));
-    content = content.replace(/\{\{location\}\}/g, escapeLatex(data.location || ''));
-    content = content.replace(/\{\{website\}\}/g, escapeLatex(data.website || ''));
-    content = content.replace(/\{\{linkedin\}\}/g, escapeLatex(data.linkedin || ''));
-    content = content.replace(/\{\{github\}\}/g, escapeLatex(data.github || ''));
-    content = content.replace(/\{\{about\}\}/g, escapeLatex(data.about || ''));
-    content = content.replace(/\{\{hobbies\}\}/g, escapeLatex(data.hobbies || ''));
-    
-    // Handle skills - format for Jake's Resume or generic
-    if (data.skills && data.skills.trim()) {
-        if (isJakesResume) {
-            // Format skills as LaTeX text for Jake's Resume
-            const skillsText = escapeLatex(data.skills).replace(/\n/g, ' \\\\ ');
-            content = content.replace(/\{\{skills\}\}/g, skillsText);
-        } else {
-            content = content.replace(/\{\{skills\}\}/g, escapeLatex(data.skills || ''));
-        }
-    } else {
-        content = content.replace(/\{\{skills\}\}/g, '');
-    }
-    
-    // Handle publications
-    if (data.publications && data.publications.trim()) {
-        const publications = data.publications.split('\n').filter(line => line.trim());
-        let pubLatex = '';
-        publications.forEach(pub => {
-            if (isJakesResume) {
-                pubLatex += `    \\resumeItem{${escapeLatex(pub.trim())}}\n`;
-            } else {
-                pubLatex += `\\item ${escapeLatex(pub.trim())}\n`;
-            }
-        });
-        content = content.replace(/\{\{publications\}\}/g, pubLatex);
-    } else {
-        content = content.replace(/\{\{publications\}\}/g, '');
-    }
-    
-    // Handle awards
-    if (data.awards && data.awards.trim()) {
-        const awards = data.awards.split('\n').filter(line => line.trim());
-        let awardsLatex = '';
-        awards.forEach(award => {
-            if (isJakesResume) {
-                awardsLatex += `    \\resumeItem{${escapeLatex(award.trim())}}\n`;
-            } else {
-                awardsLatex += `\\item ${escapeLatex(award.trim())}\n`;
-            }
-        });
-        content = content.replace(/\{\{awards\}\}/g, awardsLatex);
-    } else {
-        content = content.replace(/\{\{awards\}\}/g, '');
-    }
-    
-    // Replace section placeholders with LaTeX-formatted content
-    if (isJakesResume) {
-        // Use Jake's Resume specific format
-        content = content.replace(/\{\{education\}\}/g, generateJakesResumeEducation(data.education || []));
-        content = content.replace(/\{\{experience\}\}/g, generateJakesResumeExperience(data.experience || []));
-        content = content.replace(/\{\{projects\}\}/g, generateJakesResumeProjects(data.projects || []));
-    } else {
-        // Use generic format
-        content = content.replace(/\{\{education\}\}/g, generateLatexEducation(data.education || []));
-        content = content.replace(/\{\{experience\}\}/g, generateLatexExperience(data.experience || []));
-        content = content.replace(/\{\{projects\}\}/g, generateLatexProjects(data.projects || []));
-    }
-    
-    content = content.replace(/\{\{languages\}\}/g, generateLatexLanguages(data.languages || []));
-    content = content.replace(/\{\{volunteer\}\}/g, generateLatexVolunteer(data.volunteer || []));
-    
-    // Handle conditional sections - support both {{#if}} and \if{} syntax
-    content = content.replace(/\{\{#if (\w+)\}\}([\s\S]*?)\{\{\/if\}\}/g, (match, field, content) => {
-        const value = data[field];
-        return (value && value.trim()) ? content : '';
-    });
-    
-    // Handle LaTeX \if{} syntax
-    content = content.replace(/\\if\{(\w+)\}([\s\S]*?)\\fi/g, (match, field, content) => {
-        const value = data[field];
-        return (value && value.trim()) ? content : '';
-    });
-    
-    return content;
-}
-
-// Escape special LaTeX characters
-function escapeLatex(text) {
-    if (!text) return '';
-    return String(text)
-        .replace(/\\/g, '\\textbackslash{}')
-        .replace(/\{/g, '\\{')
-        .replace(/\}/g, '\\}')
-        .replace(/\$/g, '\\$')
-        .replace(/\&/g, '\\&')
-        .replace(/\#/g, '\\#')
-        .replace(/\^/g, '\\textasciicircum{}')
-        .replace(/\_/g, '\\_')
-        .replace(/\~/g, '\\textasciitilde{}')
-        .replace(/\%/g, '\\%');
-}
-
-// Generate LaTeX-formatted sections
-// Check if template uses Jake's Resume format (has \resumeSubheading command)
-function isJakesResumeTemplate(latexContent) {
-    return latexContent && latexContent.includes('\\resumeSubheading');
-}
-
-// Generate LaTeX-formatted sections for Jake's Resume template
-function generateJakesResumeEducation(entries) {
-    if (!entries || entries.length === 0) return '';
-    let latex = '';
-    entries.forEach(entry => {
-        if (entry.university && entry.degree) {
-            const location = entry.city ? escapeLatex(entry.city) : '';
-            const degree = escapeLatex(entry.degree);
-            const date = entry.date ? escapeLatex(entry.date) : '';
-            latex += `    \\resumeSubheading\n`;
-            latex += `      {${escapeLatex(entry.university)}}{${location}}\n`;
-            latex += `      {${degree}${entry.gpa ? ', GPA: ' + escapeLatex(entry.gpa) : ''}}{${date}}\n`;
-        }
-    });
-    return latex;
-}
-
-function generateJakesResumeExperience(entries) {
-    if (!entries || entries.length === 0) return '';
-    let latex = '';
-    entries.forEach(entry => {
-        if (entry.company && entry.position) {
-            const position = escapeLatex(entry.position);
-            const date = entry.date ? escapeLatex(entry.date) : '';
-            const company = escapeLatex(entry.company);
-            // Try to get location from entry.location or entry.city
-            const location = (entry.location || entry.city) ? escapeLatex(entry.location || entry.city) : '';
-            
-            latex += `    \\resumeSubheading\n`;
-            latex += `      {${position}}{${date}}\n`;
-            latex += `      {${company}}{${location}}\n`;
-            
-            if (entry.description && entry.description.trim()) {
-                latex += `      \\resumeItemListStart\n`;
-                entry.description.split('\n').forEach(line => {
-                    if (line.trim()) {
-                        latex += `        \\resumeItem{${escapeLatex(line.trim())}}\n`;
-                    }
-                });
-                latex += `      \\resumeItemListEnd\n`;
-            }
-        }
-    });
-    return latex;
-}
-
-function generateJakesResumeProjects(entries) {
-    if (!entries || entries.length === 0) return '';
-    let latex = '';
-    entries.forEach(entry => {
-        if (entry.name) {
-            const name = escapeLatex(entry.name);
-            const tech = entry.tech ? ` $|$ \\emph{${escapeLatex(entry.tech)}}` : '';
-            const date = entry.date ? escapeLatex(entry.date) : '';
-            
-            latex += `      \\resumeProjectHeading\n`;
-            latex += `          {\\textbf{${name}}${tech}}{${date}}\n`;
-            
-            if (entry.description && entry.description.trim()) {
-                latex += `          \\resumeItemListStart\n`;
-                entry.description.split('\n').forEach(line => {
-                    if (line.trim()) {
-                        latex += `            \\resumeItem{${escapeLatex(line.trim())}}\n`;
-                    }
-                });
-                latex += `          \\resumeItemListEnd\n`;
-            }
-        }
-    });
-    return latex;
-}
-
-// Generate LaTeX-formatted sections (generic format)
-function generateLatexEducation(entries) {
-    if (!entries || entries.length === 0) return '';
-    let latex = '';
-    entries.forEach(entry => {
-        if (entry.university && entry.degree) {
-            latex += `\\item \\textbf{${escapeLatex(entry.degree)}} at ${escapeLatex(entry.university)}`;
-            if (entry.city) latex += `, ${escapeLatex(entry.city)}`;
-            if (entry.date) latex += ` (${escapeLatex(entry.date)})`;
-            if (entry.gpa) latex += `, GPA: ${escapeLatex(entry.gpa)}`;
-            latex += '\n';
-        }
-    });
-    return latex;
-}
-
-function generateLatexExperience(entries) {
-    if (!entries || entries.length === 0) return '';
-    let latex = '';
-    entries.forEach(entry => {
-        if (entry.company && entry.position) {
-            latex += `\\item \\textbf{${escapeLatex(entry.position)}} at ${escapeLatex(entry.company)}`;
-            if (entry.date) latex += ` (${escapeLatex(entry.date)})`;
-            latex += '\n';
-            if (entry.description) {
-                latex += `  \\begin{itemize}\n`;
-                entry.description.split('\n').forEach(line => {
-                    if (line.trim()) latex += `    \\item ${escapeLatex(line.trim())}\n`;
-                });
-                latex += `  \\end{itemize}\n`;
-            }
-        }
-    });
-    return latex;
-}
-
-function generateLatexLanguages(entries) {
-    if (!entries || entries.length === 0) return '';
-    let latex = '\\begin{itemize}\n';
-    entries.forEach(entry => {
-        if (entry.language) {
-            latex += `\\item ${escapeLatex(entry.language)}`;
-            if (entry.proficiency) latex += ` - ${escapeLatex(entry.proficiency)}`;
-            latex += '\n';
-        }
-    });
-    latex += '\\end{itemize}\n';
-    return latex;
-}
-
-function generateLatexProjects(entries) {
-    if (!entries || entries.length === 0) return '';
-    let latex = '';
-    entries.forEach(entry => {
-        if (entry.name) {
-            latex += `\\item \\textbf{${escapeLatex(entry.name)}}`;
-            if (entry.description) latex += `: ${escapeLatex(entry.description)}`;
-            latex += '\n';
-        }
-    });
-    return latex;
-}
-
-function generateLatexVolunteer(entries) {
-    if (!entries || entries.length === 0) return '';
-    let latex = '\\begin{itemize}\n';
-    entries.forEach(entry => {
-        if (entry.organization && entry.position) {
-            latex += `\\item \\textbf{${escapeLatex(entry.position)}} at ${escapeLatex(entry.organization)}`;
-            if (entry.date) latex += ` (${escapeLatex(entry.date)})`;
-            latex += '\n';
-            if (entry.description) {
-                latex += `  ${escapeLatex(entry.description)}\n`;
-            }
-        }
-    });
-    latex += '\\end{itemize}\n';
-    return latex;
-}
-
-// Load template JavaScript file dynamically (HTML templates) - kept for future use
+// Load template JavaScript file dynamically (HTML templates)
 function loadTemplateJS(templateName) {
     return new Promise((resolve, reject) => {
         // Check if template is already loaded
@@ -966,9 +623,14 @@ function loadTemplateJS(templateName) {
             return;
         }
 
+        // Determine the correct path based on current location
+        // If we're in template/ directory, go up one level
+        const isInTemplateDir = window.location.pathname.includes('/template/');
+        const templatePath = isInTemplateDir ? `../templates/${templateName}.js` : `templates/${templateName}.js`;
+
         // Create script element to load template
         const script = document.createElement('script');
-        script.src = `templates/${templateName}.js`;
+        script.src = templatePath;
         script.onload = () => {
             // Get the template function based on template name
             let templateFunction = null;
@@ -988,20 +650,13 @@ function loadTemplateJS(templateName) {
     });
 }
 
-// Load template (supports both HTML and LaTeX)
+// Load template (HTML templates only)
 async function loadTemplate(templateName) {
     try {
-        // First try to load as LaTeX template
-        try {
-            const latexContent = await loadLatexTemplate(templateName);
-            templateRegistry[templateName] = { func: null, type: 'latex', content: latexContent };
-            return { type: 'latex', content: latexContent };
-        } catch (latexError) {
-            // If LaTeX template doesn't exist, try HTML template
-            const templateFunction = await loadTemplateJS(templateName);
-            const htmlContent = templateFunction();
-            return { type: 'html', content: htmlContent };
-        }
+        // Try to load HTML template
+        const templateFunction = await loadTemplateJS(templateName);
+        const htmlContent = templateFunction();
+        return { type: 'html', content: htmlContent };
     } catch (error) {
         console.error('Error loading template:', error);
         return null;
@@ -1339,21 +994,14 @@ function generateFigmaVolunteerHTML(entries) {
     return html;
 }
 
-// Populate template with data (handles both HTML and LaTeX templates)
+// Populate template with data (HTML templates only)
 function populateTemplate(templateData, data) {
-    // Check if it's a LaTeX template
-    if (templateData && templateData.type === 'latex') {
-        const renderedHTML = renderLatexTemplate(templateData.content, data);
-        // LaTeX.js returns a full HTML document, return it as-is
-        return renderedHTML || '';
-    }
-    
-    // Otherwise, treat as HTML template (could be object with content or direct string)
+    // Treat as HTML template (could be object with content or direct string)
     let html = templateData;
     if (templateData && typeof templateData === 'object' && templateData.content) {
         html = templateData.content;
     }
-    const template = data.template || 'jakes-resume';
+    const template = data.template || 'classic';
     
     // Handle conditional sections FIRST (before replacing placeholders inside them)
     // This ensures we only process placeholders in sections that will be kept
@@ -1526,7 +1174,7 @@ function printElements(elements) {
 // Print CV using template HTML files with the print elements method
 async function printCVWithTemplate() {
     const data = collectFormData();
-    const template = data.template || 'jakes-resume';
+    const template = data.template || 'classic';
     
     // Debug: Log the selected template
     console.log('Printing with template:', template);
@@ -1556,20 +1204,18 @@ async function printCVWithTemplate() {
         tempContainer.id = 'tempPrintContainer';
         tempContainer.style.position = 'absolute';
         tempContainer.style.left = '-9999px';
-        tempContainer.style.width = '612px'; // US Letter width - match preview
-        tempContainer.style.maxWidth = '612px';
         tempContainer.style.margin = '0 auto';
         tempContainer.style.padding = '24px'; // Match preview padding
         tempContainer.style.background = 'white';
         tempContainer.style.color = '#000';
-        tempContainer.style.fontFamily = template === 'jakes-resume' 
+        tempContainer.style.fontFamily = template === 'classic' 
             ? "'Latin Modern Roman', 'Computer Modern', 'Times New Roman', 'Times', serif" 
             : 'inherit';
         
         // Create full HTML structure with style tag and content
         // Use the EXACT same styles function as preview to ensure 100% match
-        const latexFontStyles = template === 'jakes-resume' ? getJakesResumeStyles() : '';
-        const printBreakStyles = getSharedCVStyles(template, templateStyles, latexFontStyles, '#tempPrintContainer');
+        const templateFontStyles = template === 'classic' ? getJakesResumeStyles() : '';
+        const printBreakStyles = getSharedCVStyles(template, templateStyles, templateFontStyles, '#tempPrintContainer');
         tempContainer.innerHTML = `${printBreakStyles}${bodyContent}`;
         
         // Append to body (off-screen)
@@ -1601,56 +1247,6 @@ async function printCVWithTemplate() {
     }
 }
 
-// Print CV using Print.js library (original method - kept as fallback)
-function printCVWithPrintJS() {
-    // Check if Print.js is loaded
-    if (typeof printJS === 'undefined') {
-        // Fallback to browser print if Print.js is not loaded
-        console.warn('Print.js not loaded, using browser print');
-        window.print();
-        return;
-    }
-    
-    // Use Print.js to print the CV preview element
-    printJS({
-        printable: 'cvPreview',
-        type: 'html',
-        targetStyles: ['*'], // Process all styles including Tailwind classes
-        scanStyles: true, // Scan and process styles from the element
-        // Print styles are now in Tailwind CSS block in index.html
-        style: `
-            @page {
-                margin-top: 15mm;
-                margin-bottom: 15mm;
-                margin-left: 15mm;
-                margin-right: 15mm;
-                size: letter;
-                marks: none;
-            }
-            * {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-                color-adjust: exact !important;
-            }
-            body {
-                margin: 0;
-                padding: 0;
-                background: white;
-            }
-        `,
-        documentTitle: 'CV',
-        maxWidth: 1200, // Maximum width for the printed content
-        onPrintDialogClose: function() {
-            console.log('Print dialog closed');
-        },
-        onError: function(error) {
-            console.error('Print error:', error);
-            // Fallback to browser print on error
-            alert('Print.js error occurred. Using browser print instead.');
-            window.print();
-        }
-    });
-}
 
 // Add/Remove functions for dynamic entries
 function addEducation() {
@@ -2015,4 +1611,43 @@ function loadFormData(data) {
         addProject();
     }
     
+}
+
+// Get Jake's Resume specific styles
+function getJakesResumeStyles() {
+    return `font-family: 'Latin Modern Roman', 'Computer Modern', 'Times New Roman', 'Times', serif;`;
+}
+
+// Get shared CV styles for preview and print
+function getSharedCVStyles(template, templateStyles, templateFontStyles, containerSelector) {
+    let styles = '';
+    
+    // Add font import for classic template
+    if (template === 'classic') {
+        styles += `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Latin+Modern+Roman:wght@400;700&display=swap">`;
+    }
+    
+    if (template === 'classic' && templateFontStyles) {
+        styles += `<style>${containerSelector} { ${templateFontStyles} }</style>`;
+    }
+    
+    if (templateStyles) {
+        styles += `<style>${templateStyles}</style>`;
+    }
+    
+    // Add print-specific styles
+    styles += `
+    <style>
+        @media print {
+            ${containerSelector} {
+                padding: 24px !important;
+                margin: 0 auto !important;
+                background: white !important;
+                color: #000 !important;
+            }
+        }
+    </style>
+    `;
+    
+    return styles;
 }
