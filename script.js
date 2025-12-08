@@ -550,9 +550,14 @@ function generateCVFromData(data) {
         return generateMinimalCV(data);
     }
     
-    // Special handling for product-designer template (two-column product designer layout)
-    if (template === 'product-designer') {
+    // Special handling for nabhel template (two-column product designer layout)
+    if (template === 'nabhel') {
         return generateProductDesignerCV(data);
+    }
+    
+    // Special handling for yodi template (UX/UI Designer layout)
+    if (template === 'yodi') {
+        return generateUXUIDesignerCV(data);
     }
     
     let html = generateHeader(template, data);
@@ -1095,7 +1100,7 @@ function generateProductDesignerCV(data) {
     html += '<div style="display: table-row;">';
     
     // LEFT COLUMN (~25% width) - Sidebar
-    let leftColumn = '<div id="product-designer-left-column" style="display: table-cell; width: 25%; vertical-align: top; padding: 24px; box-sizing: border-box;">';
+    let leftColumn = '<div id="nabhel-left-column" style="display: table-cell; width: 25%; vertical-align: top; padding: 24px; box-sizing: border-box;">';
     
     // Profile Picture (show if available, hide completely if not)
     if (data.photo && data.photo.trim()) {
@@ -1117,7 +1122,7 @@ function generateProductDesignerCV(data) {
     }
     
     // Divider
-    leftColumn += `<div class="product-designer-divider" style="border-top: 0.5px solid ${colors.lightest}; width: 119px; margin: 10px 0;"></div>`;
+    leftColumn += `<div class="nabhel-divider" style="border-top: 0.5px solid ${colors.lightest}; width: 119px; margin: 10px 0;"></div>`;
     
     // Contact Section
     leftColumn += '<div style="margin-bottom: 12px;">';
@@ -1162,7 +1167,7 @@ function generateProductDesignerCV(data) {
     leftColumn += '</div>';
     
     // Divider
-    leftColumn += `<div class="product-designer-divider" style="border-top: 0.5px solid ${colors.lightest}; width: 119px; margin: 10px 0;"></div>`;
+    leftColumn += `<div class="nabhel-divider" style="border-top: 0.5px solid ${colors.lightest}; width: 119px; margin: 10px 0;"></div>`;
     
     // Socials Section
     leftColumn += '<div style="margin-bottom: 12px;">';
@@ -1209,7 +1214,7 @@ function generateProductDesignerCV(data) {
     leftColumn += '</div>';
     
     // Divider
-    leftColumn += `<div class="product-designer-divider" style="border-top: 0.5px solid ${colors.lightest}; width: 119px; margin: 10px 0;"></div>`;
+    leftColumn += `<div class="nabhel-divider" style="border-top: 0.5px solid ${colors.lightest}; width: 119px; margin: 10px 0;"></div>`;
     
     // Skills Section
     if (data.skills && data.skills.trim()) {
@@ -1227,19 +1232,19 @@ function generateProductDesignerCV(data) {
     
     // About Me Section
     if (data.about && data.about.trim()) {
-        rightColumn += '<div class="product-designer-section" style="margin-bottom: 16px;">';
-        rightColumn += `<div class="product-designer-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 12px;">About Me</div>`;
+        rightColumn += '<div class="nabhel-section" style="margin-bottom: 16px;">';
+        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 12px;">About Me</div>`;
         rightColumn += `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0;">${escapeHtml(data.about).replace(/\n/g, '<br>')}</p>`;
         rightColumn += '</div>';
     }
     
     // Experience Section
     if (data.experience && data.experience.length > 0) {
-        rightColumn += '<div class="product-designer-section" style="margin-bottom: 16px;">';
-        rightColumn += `<div class="product-designer-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Experience</div>`;
+        rightColumn += '<div class="nabhel-section" style="margin-bottom: 16px;">';
+        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Experience</div>`;
         
         data.experience.forEach(entry => {
-            rightColumn += '<div class="product-designer-entry" style="margin-bottom: 16px;">';
+            rightColumn += '<div class="nabhel-entry" style="margin-bottom: 16px;">';
             
             // Position & Company
             rightColumn += '<div style="margin-bottom: 6px;">';
@@ -1261,11 +1266,11 @@ function generateProductDesignerCV(data) {
     
     // Education Section
     if (data.education && data.education.length > 0) {
-        rightColumn += '<div class="product-designer-section" style="margin-bottom: 16px;">';
-        rightColumn += `<div class="product-designer-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Education</div>`;
+        rightColumn += '<div class="nabhel-section" style="margin-bottom: 16px;">';
+        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Education</div>`;
         
         data.education.forEach(entry => {
-            rightColumn += '<div class="product-designer-entry" style="margin-bottom: 16px;">';
+            rightColumn += '<div class="nabhel-entry" style="margin-bottom: 16px;">';
             
             // Degree
             rightColumn += '<div style="margin-bottom: 6px;">';
@@ -1287,11 +1292,11 @@ function generateProductDesignerCV(data) {
     
     // Projects Section
     if (data.projects && data.projects.length > 0) {
-        rightColumn += '<div class="product-designer-section" style="margin-bottom: 16px;">';
-        rightColumn += `<div class="product-designer-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Projects</div>`;
+        rightColumn += '<div class="nabhel-section" style="margin-bottom: 16px;">';
+        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Projects</div>`;
         
         data.projects.forEach(project => {
-            rightColumn += '<div class="product-designer-entry" style="margin-bottom: 16px;">';
+            rightColumn += '<div class="nabhel-entry" style="margin-bottom: 16px;">';
             
             // Project Title & Tech
             rightColumn += '<div style="margin-bottom: 6px;">';
@@ -1315,12 +1320,12 @@ function generateProductDesignerCV(data) {
     
     // Certifications Section (using Awards data only)
     if (data.awards && data.awards.trim()) {
-        rightColumn += '<div class="product-designer-section" style="margin-bottom: 16px;">';
-        rightColumn += `<div class="product-designer-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Certifications</div>`;
+        rightColumn += '<div class="nabhel-section" style="margin-bottom: 16px;">';
+        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Certifications</div>`;
         
         const awards = data.awards.split('\n').filter(line => line.trim());
         awards.forEach(award => {
-            rightColumn += `<p class="product-designer-entry" style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 8px 0;">${escapeHtml(award.trim())}</p>`;
+            rightColumn += `<p class="nabhel-entry" style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 8px 0;">${escapeHtml(award.trim())}</p>`;
         });
         
         rightColumn += '</div>';
@@ -1331,6 +1336,202 @@ function generateProductDesignerCV(data) {
     // Close table structure
     html += leftColumn + rightColumn;
     html += '</div></div>';
+    
+    return html;
+}
+
+// Generate UX/UI Designer CV template
+function generateUXUIDesignerCV(data) {
+    const fontFamily = 'Arial, sans-serif';
+    
+    // Color scheme from Figma design
+    const colors = {
+        sectionHeader: '#b0b7bd',  // Light grey for section headers
+        bodyText: '#55595d',       // Dark grey for body text
+        dateLocation: '#abb3ba',   // Medium grey for dates/locations
+        black: '#000000'           // Black for names/titles
+    };
+    
+    // Font sizes from Figma
+    const nameSize = '24px';
+    const titleSize = '24px';
+    const sectionHeaderSize = '12px';
+    const bodySize = '10px';
+    const smallSize = '9.5px';
+    
+    let html = '<div style="font-family: ' + fontFamily + '; width: 100%; padding: 24px; box-sizing: border-box;">';
+    
+    // HEADER SECTION - Single column layout
+    html += '<div class="yodi-header-section" style="margin-bottom: 10px;">';
+    
+    // Name and Title on one line
+    html += `<div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 7px;">`;
+    html += `<h1 style="font-size: ${nameSize}; font-weight: normal; color: ${colors.black}; margin: 0; line-height: 28px;">${escapeHtml(data.name)}</h1>`;
+    html += `<div style="width: 1px; height: 17px; background-color: ${colors.sectionHeader}; margin: 0 5px;"></div>`;
+    html += `<div style="font-size: ${titleSize}; color: ${colors.sectionHeader}; line-height: 14px;">${escapeHtml(data.title || 'Product Designer')}</div>`;
+    html += `</div>`;
+    
+    // About section
+    if (data.about && data.about.trim()) {
+        html += `<p style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px; margin: 0; margin-bottom: 12px;">${escapeHtml(data.about).replace(/\n/g, '<br>')}</p>`;
+    }
+    
+    // Contact info below About
+    if (data.website || data.email || data.phone || data.location) {
+        html += '<div style="margin-top: 12px;">';
+        if (data.website) {
+            const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
+            html += `<div style="font-size: ${smallSize}; color: ${colors.bodyText}; line-height: 14px; margin-bottom: 2px;"><a href="${url}" style="color: ${colors.bodyText}; text-decoration: none;">${escapeHtml(data.website.replace(/^https?:\/\//, ''))}</a></div>`;
+        }
+        if (data.email) {
+            html += `<div style="font-size: ${smallSize}; color: ${colors.bodyText}; line-height: 14px; margin-bottom: 2px;">${escapeHtml(data.email)}</div>`;
+        }
+        if (data.phone) {
+            html += `<div style="font-size: ${smallSize}; color: ${colors.bodyText}; line-height: 14px; margin-bottom: 2px;">${escapeHtml(data.phone)}</div>`;
+        }
+        if (data.location) {
+            html += `<div style="font-size: ${smallSize}; color: ${colors.bodyText}; line-height: 14px;">${escapeHtml(data.location)}</div>`;
+        }
+        html += '</div>';
+    }
+    
+    html += '</div>';
+    
+    // MAIN CONTENT - Two columns
+    html += '<div class="yodi-main-content" style="display: flex; gap: 31px; align-items: flex-start;">';
+    
+    // LEFT COLUMN (wider) - Professional Experience
+    let leftColumn = '<div style="flex: 1; min-width: 0;">';
+    
+    // Professional Experience Section
+    if (data.experience && data.experience.length > 0) {
+        leftColumn += `<div style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.sectionHeader}; margin-bottom: 12px;">Professional Experience</div>`;
+        leftColumn += '<div style="margin-bottom: 8px;"></div>';
+        
+        data.experience.forEach((entry, index) => {
+            if (index > 0) {
+                leftColumn += '<div style="margin-bottom: 8px;"></div>';
+            }
+            
+            // Company / Position
+            leftColumn += '<div style="margin-bottom: 4px;">';
+            leftColumn += `<span style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.black};">${escapeHtml(entry.company)}</span>`;
+            leftColumn += `<span style="font-size: ${sectionHeaderSize}; color: ${colors.black};"> / ${escapeHtml(entry.position)}</span>`;
+            leftColumn += '</div>';
+            
+            // Date and Location
+            const dateStr = formatDateForATS(entry.dateStart, entry.dateEnd);
+            leftColumn += `<div style="font-size: ${bodySize}; font-style: italic; color: ${colors.dateLocation}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(dateStr)}${entry.city ? ` / ${escapeHtml(entry.city)}` : ''}</div>`;
+            
+            // Company description
+            if (entry.description) {
+                const descLines = entry.description.split('\n').filter(line => line.trim());
+                if (descLines.length > 0) {
+                    leftColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(descLines[0])}</div>`;
+                    
+                    // Bullet points (remaining lines)
+                    if (descLines.length > 1) {
+                        leftColumn += '<ul style="margin: 4px 0; padding-left: 0; list-style: disc; list-style-position: inside;">';
+                        for (let i = 1; i < descLines.length; i++) {
+                            leftColumn += `<li style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px; margin-bottom: 4px;">${escapeHtml(descLines[i])}</li>`;
+                        }
+                        leftColumn += '</ul>';
+                    }
+                }
+            }
+        });
+    }
+    
+    leftColumn += '</div>';
+    
+    // RIGHT COLUMN (narrower) - Education, Certificate, Skills, Languages
+    let rightColumn = '<div style="width: 177px; flex-shrink: 0;">';
+    
+    // Education Section
+    if (data.education && data.education.length > 0) {
+        rightColumn += `<div style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.sectionHeader}; margin-bottom: 12px;">Education</div>`;
+        rightColumn += '<div style="margin-bottom: 12px;"></div>';
+        
+        data.education.forEach(entry => {
+            rightColumn += '<div style="margin-bottom: 12px;">';
+            rightColumn += `<div style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.black}; line-height: 14px; margin-bottom: 4px;">${escapeHtml(entry.university)}</div>`;
+            rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.black}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(entry.degree)}</div>`;
+            const dateStr = formatDateForATSEducation(entry.dateStart, entry.dateEnd);
+            rightColumn += `<div style="font-size: ${bodySize}; font-style: italic; color: ${colors.dateLocation}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(dateStr)}</div>`;
+            if (entry.thesis) {
+                rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 18px;">${escapeHtml(entry.thesis)}</div>`;
+            } else if (entry.gpa) {
+                rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 18px;">GPA : ${escapeHtml(entry.gpa)}</div>`;
+            }
+            rightColumn += '</div>';
+        });
+    }
+    
+    // Certificate Section (from Projects/Awards)
+    const hasCertificates = (data.projects && data.projects.length > 0) || (data.awards && data.awards.trim());
+    if (hasCertificates) {
+        rightColumn += `<div style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.sectionHeader}; margin-bottom: 12px; margin-top: 20px;">Certificate</div>`;
+        rightColumn += '<div style="margin-bottom: 12px;"></div>';
+        
+        if (data.projects && data.projects.length > 0) {
+            data.projects.forEach(project => {
+                rightColumn += '<div style="margin-bottom: 12px;">';
+                rightColumn += `<div style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">${escapeHtml(project.title)}</div>`;
+                if (project.tech) {
+                    const techParts = project.tech.split(',');
+                    if (techParts.length > 0 && techParts[0].trim()) {
+                        rightColumn += `<div style="font-size: ${bodySize}; font-style: italic; color: ${colors.dateLocation}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(techParts[0].trim())}</div>`;
+                    }
+                }
+                if (project.description) {
+                    rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px;">${escapeHtml(project.description).replace(/\n/g, ' ')}</div>`;
+                }
+                rightColumn += '</div>';
+            });
+        }
+        
+        if (data.awards && data.awards.trim()) {
+            const awards = data.awards.split('\n').filter(line => line.trim());
+            awards.forEach(award => {
+                rightColumn += '<div style="margin-bottom: 12px;">';
+                rightColumn += `<div style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">${escapeHtml(award.trim())}</div>`;
+                rightColumn += '</div>';
+            });
+        }
+    }
+    
+    // Skills & Software Section
+    if (data.skills && data.skills.trim()) {
+        rightColumn += `<div style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.sectionHeader}; margin-bottom: 12px; margin-top: 20px;">Skills & Software</div>`;
+        rightColumn += '<div style="margin-bottom: 12px;"></div>';
+        
+        rightColumn += `<div style="font-size: ${bodySize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">Skills</div>`;
+        const skills = data.skills.split('\n').filter(line => line.trim()).join(', ');
+        rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px; margin-bottom: 12px;">${escapeHtml(skills)}</div>`;
+        
+        rightColumn += `<div style="font-size: ${bodySize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">Software</div>`;
+        rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px;">${escapeHtml(skills)}</div>`;
+    }
+    
+    // Languages Section
+    if (data.languages && data.languages.length > 0) {
+        rightColumn += `<div style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.sectionHeader}; margin-bottom: 12px; margin-top: 20px;">Languages</div>`;
+        rightColumn += '<div style="margin-bottom: 12px;"></div>';
+        
+        data.languages.forEach(lang => {
+            const langName = lang.name || '';
+            const langLevel = lang.level || '';
+            rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px; margin-bottom: 4px;">${escapeHtml(langName)}${langLevel ? ` (${escapeHtml(langLevel)})` : ''}</div>`;
+        });
+    }
+    
+    rightColumn += '</div>';
+    
+    // Close columns
+    html += leftColumn + rightColumn;
+    html += '</div>';
+    
+    html += '</div>';
     
     return html;
 }

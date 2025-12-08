@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>CV - Product Designer Template</title>
+        <title>CV - Nabhel Template</title>
         <!-- Google Fonts: Inter and DM Sans -->
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
         <script src="https://cdn.tailwindcss.com"></script>
@@ -157,10 +157,9 @@
                 color: hsl(var(--secondary-foreground)) !important;
             }
 
-            /* Product Designer Template Specific Styles */
+            /* Nabhel Template Specific Styles */
             
-            
-            .product-designer-section-header {
+            .nabhel-section-header {
                 font-family: 'Inter', 'Arial', sans-serif;
                 font-weight: 700;
                 font-size: 14px;
@@ -168,7 +167,7 @@
                 margin-bottom: 16px;
             }
             
-            .product-designer-divider {
+            .nabhel-divider {
                 border-top: 0.5px solid #E2E6EE;
                 width: 119px;
                 margin: 10px 0;
@@ -181,26 +180,26 @@
                     color: black !important;
                 }
                 
-                .product-designer-section {
+                .nabhel-section {
                     page-break-inside: avoid;
                     break-inside: avoid;
                     margin-bottom: 12px;
                 }
                 
-                .product-designer-section-header {
+                .nabhel-section-header {
                     page-break-after: avoid;
                     break-after: avoid;
                     margin-bottom: 8px;
                 }
                 
-                .product-designer-entry {
+                .nabhel-entry {
                     page-break-inside: avoid;
                     break-inside: avoid;
                     margin-bottom: 12px;
                 }
                 
                 /* Prevent orphaned headers */
-                .product-designer-section-header + * {
+                .nabhel-section-header + * {
                     page-break-before: avoid;
                     break-before: avoid;
                 }
@@ -334,7 +333,7 @@
                     },
                     pagebreak: {
                         mode: ['css', 'legacy'],
-                        avoid: ['.product-designer-section', '.product-designer-entry', '.product-designer-section-header'],
+                        avoid: ['.nabhel-section', '.nabhel-entry', '.nabhel-section-header'],
                     }
                 };
 
