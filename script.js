@@ -456,24 +456,24 @@ function resetPreviewStyles(cvPreviewElement) {
     // Remove Tailwind padding classes (p-6, md:p-8) to use explicit padding that matches print exactly
     cvPreviewElement.className = 'cv-preview bg-card rounded-lg border border-border shadow-lg print:shadow-none print:rounded-none print:border-0 print:m-0 print:bg-white';
     const screenWidth = window.innerWidth;
-    let previewWidth = 612;
-    let previewHeight = 792;
+    // let previewWidth = 612;
+    // let previewHeight = 792;
     
     // Scale down on smaller screens (with some padding)
-    if (screenWidth < 700) {
-        previewWidth = Math.min(612, screenWidth - 32); // 32px for padding
-        previewHeight = (previewWidth / 612) * 792; // Maintain aspect ratio
-    }
+    // if (screenWidth < 700) {
+    //     previewWidth = Math.min(612, screenWidth - 32); // 32px for padding
+    //     previewHeight = (previewWidth / 612) * 792; // Maintain aspect ratio
+    // }
     
-    // Use exact same padding as print container (24px) to ensure consistency
+    // Use exact same dimensions and padding as print container (24px = 612px width) to ensure consistency
     cvPreviewElement.style.cssText = `
-        width: ${previewWidth}px;
-        max-width: ${previewWidth}px;
-        min-height: ${previewHeight}px;
+        width: 612px !important;
+        max-width: 612px !important;
         margin: 0 auto;
         padding: 24px !important;
         background: white;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        box-sizing: border-box !important;
     `;
 }
 
@@ -589,64 +589,8 @@ async function showCVPreview() {
         resetPreviewStyles(cvPreviewElement);
         // Add serif font styling for LaTeX templates - use shared function for consistency
         const latexFontStyles = template === 'jakes-resume' ? getJakesResumeStyles() : '';
-        // Apply the EXACT same styles as print (including all print styles) to ensure preview matches print exactly
-        const previewStyles = `
-            <style>
-                ${latexFontStyles}
-                ${templateStyles}
-                /* Apply same styles as print container to match exactly */
-                #cvPreview {
-                    width: 612px !important;
-                    max-width: 612px !important;
-                    padding: 24px !important;
-                    margin: 0 auto !important;
-                    background: white !important;
-                    color: #000 !important;
-                    box-sizing: border-box !important;
-                }
-                /* Remove link decorations - same as print */
-                #cvPreview a, 
-                #cvPreview a:link, 
-                #cvPreview a:visited, 
-                #cvPreview a:hover, 
-                #cvPreview a:active {
-                    color: #000 !important;
-                    text-decoration: none !important;
-                    border: none !important;
-                }
-                /* Ensure all content inside matches print styling */
-                #cvPreview * {
-                    box-sizing: border-box !important;
-                }
-                #cvPreview body,
-                #cvPreview > * {
-                    margin: 0 !important;
-                    padding: 0 !important;
-                }
-                /* Apply print margin/padding rules to preview as well - match print exactly */
-                #cvPreview p, 
-                #cvPreview ul, 
-                #cvPreview ol {
-                    margin: 0 !important;
-                    padding: 0 !important;
-                }
-                #cvPreview li {
-                    margin-bottom: 0.25rem !important;
-                }
-                #cvPreview h1,
-                #cvPreview h2,
-                #cvPreview h3,
-                #cvPreview h4,
-                #cvPreview h5,
-                #cvPreview h6 {
-                    margin-top: 0 !important;
-                    margin-bottom: 0.5rem !important;
-                }
-                #cvPreview section {
-                    margin-bottom: 1rem !important;
-                }
-            </style>
-        `;
+        // Use the EXACT same styles function as print to ensure 100% match
+        const previewStyles = getSharedCVStyles(template, templateStyles, latexFontStyles, '#cvPreview');
         const previewHTML = `${previewStyles}${bodyContent}`;
         
         // Display preview
@@ -1623,93 +1567,9 @@ async function printCVWithTemplate() {
             : 'inherit';
         
         // Create full HTML structure with style tag and content
-        // Add print-specific styles to prevent unwanted page breaks
-        // Add serif font styling for LaTeX templates to match original Computer Modern font
-        // Use the same styles function for both preview and print
+        // Use the EXACT same styles function as preview to ensure 100% match
         const latexFontStyles = template === 'jakes-resume' ? getJakesResumeStyles() : '';
-        const printBreakStyles = `
-            <style>
-                ${latexFontStyles}
-                ${templateStyles}
-                /* Apply same styles for both screen and print to match preview exactly */
-                /* Remove link decorations */
-                a, a:link, a:visited, a:hover, a:active {
-                    color: #000 !important;
-                    text-decoration: none !important;
-                    border: none !important;
-                }
-                /* Ensure container matches preview exactly - same dimensions, padding, and box-sizing */
-                #tempPrintContainer {
-                    width: 612px !important;
-                    max-width: 612px !important;
-                    padding: 24px !important;
-                    margin: 0 auto !important;
-                    background: white !important;
-                    color: #000 !important;
-                    box-sizing: border-box !important;
-                }
-                /* Ensure all content inside matches preview styling */
-                #tempPrintContainer * {
-                    box-sizing: border-box !important;
-                }
-                #tempPrintContainer body,
-                body {
-                    box-sizing: border-box !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                }
-                
-                /* Override any page break styles from LaTeX.js or templates */
-                @media print {
-                    /* Remove all forced page breaks */
-                    * {
-                        page-break-after: auto !important;
-                        page-break-before: auto !important;
-                    }
-                    /* Remove link decorations */
-                    a, a:link, a:visited, a:hover, a:active {
-                        color: #000 !important;
-                        text-decoration: none !important;
-                        border: none !important;
-                    }
-                    /* Only avoid breaking inside major sections */
-                    section {
-                        page-break-inside: avoid !important;
-                        page-break-after: auto !important;
-                        page-break-before: auto !important;
-                    }
-                    /* Allow breaking inside smaller elements for better flow */
-                    p, li, div {
-                        page-break-inside: auto !important;
-                        orphans: 2 !important;
-                        widows: 2 !important;
-                    }
-                    /* Headings should try to stay with following content */
-                    h1, h2, h3, h4, h5, h6 {
-                        page-break-after: avoid !important;
-                        page-break-before: auto !important;
-                    }
-                    /* Fix padding and margins */
-                    body {
-                        padding: 0 !important;
-                        margin: 0 !important;
-                    }
-                    p, ul, ol {
-                        margin: 0 !important;
-                        padding: 0 !important;
-                    }
-                    li {
-                        margin-bottom: 0.25rem !important;
-                    }
-                    /* Jake's Resume specific styles */
-                    section > h2,
-                    section > h1,
-                    h2[class*="section"] {
-                        text-transform: uppercase !important;
-                    }
-                }
-            </style>
-        `;
+        const printBreakStyles = getSharedCVStyles(template, templateStyles, latexFontStyles, '#tempPrintContainer');
         tempContainer.innerHTML = `${printBreakStyles}${bodyContent}`;
         
         // Append to body (off-screen)
@@ -1757,7 +1617,7 @@ function printCVWithPrintJS() {
         type: 'html',
         targetStyles: ['*'], // Process all styles including Tailwind classes
         scanStyles: true, // Scan and process styles from the element
-        css: ['print.css'], // Include our print.css file
+        // Print styles are now in Tailwind CSS block in index.html
         style: `
             @page {
                 margin-top: 15mm;

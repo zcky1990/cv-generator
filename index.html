@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CV Builder - Printable CV</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="print.css">
     <!-- LaTeX.js library -->
     <script src="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/latex.min.js"></script>
     <style type="text/tailwindcss">
@@ -231,6 +230,185 @@
             opacity: 0.9;
             z-index: -1;
             border-radius: inherit;
+        }
+        
+        /* Print-specific styles using Tailwind @media print */
+        @media print {
+            /* Print Element classes - for selective element printing */
+            .pe-no-print {
+                display: none !important;
+            }
+            
+            .pe-preserve-print {
+                display: block !important;
+            }
+            
+            .pe-preserve-ancestor {
+                display: block !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+            
+            /* Set page margins - 15mm all around, US Letter size */
+            @page {
+                margin-top: 15mm;
+                margin-bottom: 15mm;
+                margin-left: 15mm;
+                margin-right: 15mm;
+                size: letter;
+                marks: none;
+            }
+            
+            /* Force exact color printing */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+            
+            /* Remove all margins and padding from root elements */
+            html, body {
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100%;
+                height: 100%;
+                background: white !important;
+            }
+            
+            /* Remove extra spacing from main containers */
+            body > div {
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white !important;
+            }
+            
+            body > div > div {
+                margin: 0 !important;
+                padding: 0 !important;
+                max-width: 100% !important;
+                background: white !important;
+            }
+            
+            /* CV Preview section */
+            #cvPreviewSection {
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white !important;
+                border: none !important;
+            }
+            
+            /* CV Preview content - US Letter size: 612px × 792px at 72 DPI */
+            #cvPreview {
+                margin: 0 !important;
+                padding: 24px !important;
+                background: white !important;
+                border: none !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                width: 612px !important;
+                max-width: 612px !important;
+                min-height: 792px !important;
+                color: #000 !important;
+            }
+            
+            /* Remove link decorations in print */
+            a, a:link, a:visited, a:hover, a:active {
+                color: #000 !important;
+                text-decoration: none !important;
+                border: none !important;
+            }
+            
+            /* Also apply to tempPrintContainer for printing */
+            #tempPrintContainer a, 
+            #tempPrintContainer a:link, 
+            #tempPrintContainer a:visited, 
+            #tempPrintContainer a:hover, 
+            #tempPrintContainer a:active {
+                color: #000 !important;
+                text-decoration: none !important;
+                border: none !important;
+            }
+            
+            /* Fix padding and margins for tempPrintContainer */
+            #tempPrintContainer {
+                padding: 24px !important;
+                margin: 0 !important;
+                display: block !important;
+                position: relative !important;
+                left: auto !important;
+                top: auto !important;
+                width: 612px !important;
+                max-width: 612px !important;
+            }
+            
+            /* Reduce excessive margins that might cause breaks */
+            #tempPrintContainer * {
+                margin-top: 0 !important;
+                margin-bottom: 0.5rem !important;
+            }
+            
+            #tempPrintContainer section {
+                margin-bottom: 1rem !important;
+            }
+            
+            /* Remove default margins from common elements */
+            #tempPrintContainer p,
+            #tempPrintContainer ul,
+            #tempPrintContainer ol {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            #tempPrintContainer li {
+                margin-bottom: 0.25rem !important;
+            }
+            
+            /* Fix spacing for headings */
+            #tempPrintContainer h1,
+            #tempPrintContainer h2,
+            #tempPrintContainer h3,
+            #tempPrintContainer h4,
+            #tempPrintContainer h5,
+            #tempPrintContainer h6 {
+                margin-top: 0 !important;
+                margin-bottom: 0.5rem !important;
+            }
+            
+            /* Optimize page breaks */
+            * {
+                page-break-after: auto !important;
+                page-break-before: auto !important;
+            }
+            
+            /* Only avoid breaking inside major sections */
+            section {
+                page-break-inside: avoid !important;
+                page-break-after: auto !important;
+                page-break-before: auto !important;
+            }
+            
+            /* Allow breaking inside smaller elements for better flow */
+            p, li, div {
+                page-break-inside: auto !important;
+                orphans: 2 !important;
+                widows: 2 !important;
+            }
+            
+            /* Headings should try to stay with following content */
+            h1, h2, h3, h4, h5, h6 {
+                page-break-after: avoid !important;
+                page-break-before: auto !important;
+                page-break-inside: avoid !important;
+            }
+            
+            /* Ensure first section doesn't break before */
+            section:first-of-type,
+            h1:first-of-type,
+            h2:first-of-type {
+                page-break-before: auto !important;
+            }
         }
     </style>
 </head>
