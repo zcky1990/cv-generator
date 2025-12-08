@@ -181,9 +181,17 @@ function generateHeader(template, data) {
     }
     
     let html = `<div class="${headerClasses}">`;
-    html += `<h1 class="${nameClasses}">${escapeHtml(data.name)}</h1>`;
-    if (contactInfo) {
-        html += `<div class="${contactClasses}">${contactInfo}</div>`;
+    // Add inline styles for classic template
+    if (template === 'classic') {
+        html += `<h1 class="${nameClasses}" style="font-family: Calibri, Arial, sans-serif; font-size: 20px;">${escapeHtml(data.name)}</h1>`;
+        if (contactInfo) {
+            html += `<div class="${contactClasses}" style="font-family: Calibri, Arial, sans-serif; font-size: 11px;">${contactInfo}</div>`;
+        }
+    } else {
+        html += `<h1 class="${nameClasses}">${escapeHtml(data.name)}</h1>`;
+        if (contactInfo) {
+            html += `<div class="${contactClasses}">${contactInfo}</div>`;
+        }
     }
     html += '</div>';
     return html;
@@ -202,6 +210,10 @@ function generateSectionHeader(template, title) {
         default: // classic
             classes = 'text-xl font-bold mb-3 print:mb-2 print:text-lg border-b-2 border-gray-300 pb-1 uppercase';
     }
+    // Add inline styles for classic template
+    if (template === 'classic') {
+        return `<h2 class="${classes}" style="font-family: Calibri, Arial, sans-serif; font-size: 14px;">${title}</h2>`;
+    }
     return `<h2 class="${classes}">${title}</h2>`;
 }
 
@@ -213,20 +225,39 @@ function generateEducation(entries, template = 'classic') {
     
     entries.forEach(entry => {
         html += '<div class="mb-4 print:mb-3 print:break-inside-avoid">';
-        html += `<div class="font-bold text-lg print:text-base">${escapeHtml(entry.university)}</div>`;
-        if (entry.city) {
-            html += `<div class="text-gray-600 print:text-gray-800 text-sm">${escapeHtml(entry.city)}</div>`;
-        }
-        let degree = escapeHtml(entry.degree);
-        if (entry.gpa) {
-            degree += `, GPA: ${escapeHtml(entry.gpa)}`;
-        }
-        html += `<div class="italic text-gray-700 print:text-gray-900">${degree}</div>`;
-        const displayDate = formatDate(entry.date);
-        html += `<div class="text-gray-600 print:text-gray-800 text-sm">${escapeHtml(displayDate)}</div>`;
-        
-        if (entry.thesis) {
-            html += '<ul class="list-disc list-inside mt-2 print:mt-1 ml-4"><li>Thesis: "' + escapeHtml(entry.thesis) + '"</li></ul>';
+        // Add inline styles for classic template
+        if (template === 'classic') {
+            html += `<div class="font-bold text-lg print:text-base" style="font-family: Calibri, Arial, sans-serif; font-size: 14px;">${escapeHtml(entry.university)}</div>`;
+            if (entry.city) {
+                html += `<div class="text-gray-600 print:text-gray-800 text-sm" style="font-family: Calibri, Arial, sans-serif; font-size: 11px;">${escapeHtml(entry.city)}</div>`;
+            }
+            let degree = escapeHtml(entry.degree);
+            if (entry.gpa) {
+                degree += `, GPA: ${escapeHtml(entry.gpa)}`;
+            }
+            html += `<div class="italic text-gray-700 print:text-gray-900" style="font-family: Calibri, Arial, sans-serif; font-size: 12px;">${degree}</div>`;
+            const displayDate = formatDate(entry.date);
+            html += `<div class="text-gray-600 print:text-gray-800 text-sm" style="font-family: Calibri, Arial, sans-serif; font-size: 11px;">${escapeHtml(displayDate)}</div>`;
+            
+            if (entry.thesis) {
+                html += '<ul class="list-disc list-inside mt-2 print:mt-1 ml-4" style="font-family: Calibri, Arial, sans-serif; font-size: 12px;"><li>Thesis: "' + escapeHtml(entry.thesis) + '"</li></ul>';
+            }
+        } else {
+            html += `<div class="font-bold text-lg print:text-base">${escapeHtml(entry.university)}</div>`;
+            if (entry.city) {
+                html += `<div class="text-gray-600 print:text-gray-800 text-sm">${escapeHtml(entry.city)}</div>`;
+            }
+            let degree = escapeHtml(entry.degree);
+            if (entry.gpa) {
+                degree += `, GPA: ${escapeHtml(entry.gpa)}`;
+            }
+            html += `<div class="italic text-gray-700 print:text-gray-900">${degree}</div>`;
+            const displayDate = formatDate(entry.date);
+            html += `<div class="text-gray-600 print:text-gray-800 text-sm">${escapeHtml(displayDate)}</div>`;
+            
+            if (entry.thesis) {
+                html += '<ul class="list-disc list-inside mt-2 print:mt-1 ml-4"><li>Thesis: "' + escapeHtml(entry.thesis) + '"</li></ul>';
+            }
         }
         html += '</div>';
     });
@@ -243,22 +274,44 @@ function generateExperience(entries, template = 'classic') {
     
     entries.forEach(entry => {
         html += '<div class="mb-4 print:mb-3 print:break-inside-avoid">';
-        html += `<div class="font-bold text-lg print:text-base">${escapeHtml(entry.company)}</div>`;
-        if (entry.city) {
-            html += `<div class="text-gray-600 print:text-gray-800 text-sm">${escapeHtml(entry.city)}</div>`;
-        }
-        html += `<div class="italic text-gray-700 print:text-gray-900">${escapeHtml(entry.position)}</div>`;
-        const displayDate = formatDate(entry.date);
-        html += `<div class="text-gray-600 print:text-gray-800 text-sm">${escapeHtml(displayDate)}</div>`;
-        
-        if (entry.description) {
-            const items = entry.description.split('\n').filter(line => line.trim());
-            if (items.length > 0) {
-                html += '<ul class="list-disc list-inside mt-2 print:mt-1 ml-4">';
-                items.forEach(item => {
-                    html += `<li>${escapeHtml(item.trim())}</li>`;
-                });
-                html += '</ul>';
+        // Add inline styles for classic template
+        if (template === 'classic') {
+            html += `<div class="font-bold text-lg print:text-base" style="font-family: Calibri, Arial, sans-serif; font-size: 14px;">${escapeHtml(entry.company)}</div>`;
+            if (entry.city) {
+                html += `<div class="text-gray-600 print:text-gray-800 text-sm" style="font-family: Calibri, Arial, sans-serif; font-size: 11px;">${escapeHtml(entry.city)}</div>`;
+            }
+            html += `<div class="italic text-gray-700 print:text-gray-900" style="font-family: Calibri, Arial, sans-serif; font-size: 12px;">${escapeHtml(entry.position)}</div>`;
+            const displayDate = formatDate(entry.date);
+            html += `<div class="text-gray-600 print:text-gray-800 text-sm" style="font-family: Calibri, Arial, sans-serif; font-size: 11px;">${escapeHtml(displayDate)}</div>`;
+            
+            if (entry.description) {
+                const items = entry.description.split('\n').filter(line => line.trim());
+                if (items.length > 0) {
+                    html += '<ul class="list-disc list-inside mt-2 print:mt-1" style="font-family: Calibri, Arial, sans-serif; font-size: 12px;">';
+                    items.forEach(item => {
+                        html += `<li>${escapeHtml(item.trim())}</li>`;
+                    });
+                    html += '</ul>';
+                }
+            }
+        } else {
+            html += `<div class="font-bold text-lg print:text-base">${escapeHtml(entry.company)}</div>`;
+            if (entry.city) {
+                html += `<div class="text-gray-600 print:text-gray-800 text-sm">${escapeHtml(entry.city)}</div>`;
+            }
+            html += `<div class="italic text-gray-700 print:text-gray-900">${escapeHtml(entry.position)}</div>`;
+            const displayDate = formatDate(entry.date);
+            html += `<div class="text-gray-600 print:text-gray-800 text-sm">${escapeHtml(displayDate)}</div>`;
+            
+            if (entry.description) {
+                const items = entry.description.split('\n').filter(line => line.trim());
+                if (items.length > 0) {
+                    html += '<ul class="list-disc list-inside mt-2 print:mt-1">';
+                    items.forEach(item => {
+                        html += `<li>${escapeHtml(item.trim())}</li>`;
+                    });
+                    html += '</ul>';
+                }
             }
         }
         html += '</div>';
@@ -278,7 +331,11 @@ function generatePublications(text, template = 'classic') {
     let html = `<div class="mb-6 print:mb-4 print:break-inside-avoid">${generateSectionHeader(template, 'PUBLICATIONS')}`;
     html += '<div class="print:break-inside-avoid">';
     publications.forEach(pub => {
-        html += `<div class="mb-2 print:mb-1 text-sm print:text-xs">${escapeHtml(pub.trim())}.</div>`;
+        if (template === 'classic') {
+            html += `<div class="mb-2 print:mb-1 text-sm print:text-xs" style="font-family: Calibri, Arial, sans-serif; font-size: 12px;">${escapeHtml(pub.trim())}.</div>`;
+        } else {
+            html += `<div class="mb-2 print:mb-1 text-sm print:text-xs">${escapeHtml(pub.trim())}.</div>`;
+        }
     });
     html += '</div></div>';
     return html;
@@ -294,7 +351,11 @@ function generateSkills(text, template = 'classic') {
     let html = `<div class="mb-6 print:mb-4 print:break-inside-avoid">${generateSectionHeader(template, 'SKILLS')}`;
     html += '<ul class="list-disc list-inside ml-4 print:ml-3">';
     skills.forEach(skill => {
-        html += `<li class="mb-1 print:mb-0.5"><strong>${escapeHtml(skill.trim())}</strong></li>`;
+        if (template === 'classic') {
+            html += `<li class="mb-1 print:mb-0.5" style="font-family: Calibri, Arial, sans-serif; font-size: 12px;"><strong>${escapeHtml(skill.trim())}</strong></li>`;
+        } else {
+            html += `<li class="mb-1 print:mb-0.5"><strong>${escapeHtml(skill.trim())}</strong></li>`;
+        }
     });
     html += '</ul></div>';
     return html;
@@ -307,12 +368,21 @@ function generateLanguages(entries, template = 'classic') {
     let html = `<div class="mb-6 print:mb-4 print:break-inside-avoid">${generateSectionHeader(template, 'LANGUAGES')}`;
     html += '<ul class="list-disc list-inside ml-4 print:ml-3">';
     entries.forEach(entry => {
-        let line = `<li class="mb-1 print:mb-0.5"><strong>${escapeHtml(entry.name)}:</strong>`;
-        if (entry.level) {
-            line += ` ${escapeHtml(entry.level)}`;
+        if (template === 'classic') {
+            let line = `<li class="mb-1 print:mb-0.5" style="font-family: Calibri, Arial, sans-serif; font-size: 12px;"><strong>${escapeHtml(entry.name)}:</strong>`;
+            if (entry.level) {
+                line += ` ${escapeHtml(entry.level)}`;
+            }
+            line += '</li>';
+            html += line;
+        } else {
+            let line = `<li class="mb-1 print:mb-0.5"><strong>${escapeHtml(entry.name)}:</strong>`;
+            if (entry.level) {
+                line += ` ${escapeHtml(entry.level)}`;
+            }
+            line += '</li>';
+            html += line;
         }
-        line += '</li>';
-        html += line;
     });
     html += '</ul></div>';
     return html;
@@ -325,20 +395,39 @@ function generateProjects(entries, template = 'classic') {
     let html = `<div class="mb-6 print:mb-4 print:break-inside-avoid">${generateSectionHeader(template, 'PROJECTS')}`;
     entries.forEach(entry => {
         html += '<div class="mb-4 print:mb-3 print:break-inside-avoid">';
-        let title = `<div class="font-bold text-lg print:text-base">${escapeHtml(entry.title)}</div>`;
-        if (entry.tech) {
-            title = `<div class="font-bold text-lg print:text-base">${escapeHtml(entry.title)} (${escapeHtml(entry.tech)})</div>`;
-        }
-        html += title;
-        
-        if (entry.description) {
-            const items = entry.description.split('\n').filter(line => line.trim());
-            if (items.length > 0) {
-                html += '<ul class="list-disc list-inside mt-2 print:mt-1 ml-4">';
-                items.forEach(item => {
-                    html += `<li>${escapeHtml(item.trim())}</li>`;
-                });
-                html += '</ul>';
+        if (template === 'classic') {
+            let title = `<div class="font-bold text-lg print:text-base" style="font-family: Calibri, Arial, sans-serif; font-size: 14px;">${escapeHtml(entry.title)}</div>`;
+            if (entry.tech) {
+                title = `<div class="font-bold text-lg print:text-base" style="font-family: Calibri, Arial, sans-serif; font-size: 14px;">${escapeHtml(entry.title)} (${escapeHtml(entry.tech)})</div>`;
+            }
+            html += title;
+            
+            if (entry.description) {
+                const items = entry.description.split('\n').filter(line => line.trim());
+                if (items.length > 0) {
+                    html += '<ul class="list-disc list-inside mt-2 print:mt-1 ml-4" style="font-family: Calibri, Arial, sans-serif; font-size: 12px;">';
+                    items.forEach(item => {
+                        html += `<li>${escapeHtml(item.trim())}</li>`;
+                    });
+                    html += '</ul>';
+                }
+            }
+        } else {
+            let title = `<div class="font-bold text-lg print:text-base">${escapeHtml(entry.title)}</div>`;
+            if (entry.tech) {
+                title = `<div class="font-bold text-lg print:text-base">${escapeHtml(entry.title)} (${escapeHtml(entry.tech)})</div>`;
+            }
+            html += title;
+            
+            if (entry.description) {
+                const items = entry.description.split('\n').filter(line => line.trim());
+                if (items.length > 0) {
+                    html += '<ul class="list-disc list-inside mt-2 print:mt-1 ml-4">';
+                    items.forEach(item => {
+                        html += `<li>${escapeHtml(item.trim())}</li>`;
+                    });
+                    html += '</ul>';
+                }
             }
         }
         html += '</div>';
@@ -359,12 +448,22 @@ function generateAwards(text, template = 'classic') {
     awards.forEach(award => {
         // Split by dots pattern, escape each part, then join with dots
         const parts = award.trim().split(/\.\.\.\.\./);
-        if (parts.length === 2) {
-            // Award name and date - use flex layout
-            html += `<li class="mb-1 print:mb-0.5 flex justify-between"><span>${escapeHtml(parts[0].trim())}</span><span>${escapeHtml(parts[1].trim())}</span></li>`;
+        if (template === 'classic') {
+            if (parts.length === 2) {
+                // Award name and date - use flex layout
+                html += `<li class="mb-1 print:mb-0.5 flex justify-between" style="font-family: Calibri, Arial, sans-serif; font-size: 12px;"><span>${escapeHtml(parts[0].trim())}</span><span>${escapeHtml(parts[1].trim())}</span></li>`;
+            } else {
+                // No dots pattern, just display as is
+                html += `<li class="mb-1 print:mb-0.5" style="font-family: Calibri, Arial, sans-serif; font-size: 12px;">${escapeHtml(award.trim())}</li>`;
+            }
         } else {
-            // No dots pattern, just display as is
-            html += `<li class="mb-1 print:mb-0.5">${escapeHtml(award.trim())}</li>`;
+            if (parts.length === 2) {
+                // Award name and date - use flex layout
+                html += `<li class="mb-1 print:mb-0.5 flex justify-between"><span>${escapeHtml(parts[0].trim())}</span><span>${escapeHtml(parts[1].trim())}</span></li>`;
+            } else {
+                // No dots pattern, just display as is
+                html += `<li class="mb-1 print:mb-0.5">${escapeHtml(award.trim())}</li>`;
+            }
         }
     });
     html += '</ul></div>';
@@ -381,6 +480,16 @@ function generateCV() {
 function generateCVFromData(data) {
     const template = data.template || 'classic';
     
+    // Special handling for luxsleek template (two-column layout)
+    if (template === 'luxsleek') {
+        return generateLuxSleekCV(data);
+    }
+    
+    // Special handling for classic template (Northeastern University COS format)
+    if (template === 'classic') {
+        return generateClassicNUCV(data);
+    }
+    
     let html = generateHeader(template, data);
     
     html += generateEducation(data.education, template);
@@ -390,6 +499,370 @@ function generateCVFromData(data) {
     html += generateLanguages(data.languages, template);
     html += generateProjects(data.projects, template);
     html += generateAwards(data.awards, template);
+    
+    return html;
+}
+
+// Generate LuxSleek CV with two-column layout
+function generateLuxSleekCV(data) {
+    const luxsleekBlue = '#304263';
+    
+    // Left column content (blue sidebar) - using table layout for better PDF compatibility
+    let leftColumn = '<div id="luxsleek-left-column" style="width: 33%; min-height: 100vh; display: table-cell; vertical-align: top; box-sizing: border-box; background-color: #304263; background: #304263; color: white; padding: 24px; font-family: Calibri, Arial, sans-serif; font-size: 12px; position: relative; visibility: visible; opacity: 1;">';
+    
+    // Name
+    const nameParts = data.name.split(' ');
+    const lastName = nameParts.pop() || '';
+    const firstName = nameParts.join(' ');
+    leftColumn += `<div style="margin-bottom: 16px;"><h1 style="font-size: 18px; font-weight: bold; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;">${escapeHtml(firstName)} <span style="text-transform: uppercase;">${escapeHtml(lastName)}</span></h1></div>`;
+    
+    // Profile/About section
+    if (data.about && data.about.trim()) {
+        leftColumn += '<div style="margin-bottom: 24px;">';
+        leftColumn += '<h2 style="font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.3); font-family: Calibri, Arial, sans-serif;">Profile</h2>';
+        leftColumn += `<p style="font-size: 12px; line-height: 1.6; font-family: Calibri, Arial, sans-serif;">${escapeHtml(data.about).replace(/\n/g, '<br>')}</p>`;
+        leftColumn += '</div>';
+    }
+    
+    // Contact details
+    leftColumn += '<div style="margin-bottom: 24px;">';
+    leftColumn += '<h2 style="font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.3); font-family: Calibri, Arial, sans-serif;">Contact Details</h2>';
+    leftColumn += '<div style="font-size: 12px; font-family: Calibri, Arial, sans-serif;">';
+    if (data.email) {
+        leftColumn += `<div style="margin-bottom: 4px;">${escapeHtml(data.email)}</div>`;
+    }
+    if (data.phone) {
+        leftColumn += `<div style="margin-bottom: 4px;">${escapeHtml(data.phone)}</div>`;
+    }
+    if (data.website) {
+        const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="${url}" style="color: white; text-decoration: underline;">${escapeHtml(data.website)}</a></div>`;
+    }
+    if (data.linkedin) {
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="https://linkedin.com/in/${data.linkedin}" style="color: white; text-decoration: underline;">${escapeHtml(data.linkedin)}</a></div>`;
+    }
+    if (data.github) {
+        const githubUrl = data.github.startsWith('http') ? data.github : `https://${data.github}`;
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="${githubUrl}" style="color: white; text-decoration: underline;">${escapeHtml(data.github)}</a></div>`;
+    }
+    if (data.location) {
+        leftColumn += `<div style="margin-bottom: 4px;">${escapeHtml(data.location)}</div>`;
+    }
+    leftColumn += '</div></div>';
+    
+    // Personal Information
+    leftColumn += '<div style="margin-bottom: 24px;">';
+    leftColumn += '<h2 style="font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.3); font-family: Calibri, Arial, sans-serif;">Personal Information</h2>';
+    leftColumn += '<div style="font-size: 12px; font-family: Calibri, Arial, sans-serif;">';
+    if (data.birthdate) {
+        leftColumn += `<div style="margin-bottom: 4px;">Year of birth: <strong>${escapeHtml(data.birthdate.split('-')[0])}</strong></div>`;
+    }
+    if (data.languages && data.languages.length > 0) {
+        const langList = data.languages.map(l => `<strong>${escapeHtml(l.name)}</strong>${l.level ? ` (${escapeHtml(l.level)})` : ''}`).join(', ');
+        leftColumn += `<div style="margin-bottom: 4px;">Languages: ${langList}</div>`;
+    }
+    leftColumn += '</div></div>';
+    
+    // Skills
+    if (data.skills && data.skills.trim()) {
+        leftColumn += '<div style="margin-bottom: 24px;">';
+        leftColumn += '<h2 style="font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.3); font-family: Calibri, Arial, sans-serif;">Skills</h2>';
+        leftColumn += '<ul style="font-size: 12px; list-style: none; padding-left: 0; margin: 0; font-family: Calibri, Arial, sans-serif;">';
+        data.skills.split('\n').filter(line => line.trim()).forEach(skill => {
+            leftColumn += `<li style="margin-bottom: 4px;">• ${escapeHtml(skill.trim())}</li>`;
+        });
+        leftColumn += '</ul></div>';
+    }
+    
+    leftColumn += '</div>';
+    
+    // Right column content (white area) - using table layout for better PDF compatibility
+    let rightColumn = '<div id="luxsleek-right-column" style="width: 67%; display: table-cell; vertical-align: top; box-sizing: border-box; background-color: white; color: black; padding: 24px; font-family: Calibri, Arial, sans-serif; font-size: 12px; position: relative; visibility: visible; opacity: 1;">';
+    
+    // Experience
+    if (data.experience && data.experience.length > 0) {
+        rightColumn += '<div style="margin-bottom: 24px;">';
+        rightColumn += '<h2 style="font-size: 16px; font-weight: bold; color: #304263; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #304263; font-family: Calibri, Arial, sans-serif;">Experience</h2>';
+        data.experience.forEach(entry => {
+            rightColumn += '<div style="margin-bottom: 16px;">';
+            const dateStr = formatDateForLuxSleek(entry.dateStart, entry.dateEnd);
+            rightColumn += `<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;">`;
+            rightColumn += `<div style="flex: 1; font-size: 12px;"><span style="font-weight: bold; text-transform: uppercase;">${escapeHtml(entry.position)}</span> at <em>${escapeHtml(entry.company)}${entry.city ? ` (${escapeHtml(entry.city)})` : ''}</em>.</div>`;
+            rightColumn += `<div style="font-weight: bold; text-align: right; margin-left: 16px; white-space: nowrap; font-size: 12px;">${dateStr}</div>`;
+            rightColumn += `</div>`;
+            if (entry.description) {
+                const items = entry.description.split('\n').filter(line => line.trim());
+                if (items.length > 0) {
+                    rightColumn += '<div style="font-size: 11px; color: #666; margin-top: 4px; font-family: Calibri, Arial, sans-serif;">';
+                    items.forEach(item => {
+                        rightColumn += `<div style="margin-bottom: 2px;">${escapeHtml(item.trim())}</div>`;
+                    });
+                    rightColumn += '</div>';
+                }
+            }
+            rightColumn += '</div>';
+        });
+        rightColumn += '</div>';
+    }
+    
+    // Education
+    if (data.education && data.education.length > 0) {
+        rightColumn += '<div style="margin-bottom: 24px;">';
+        rightColumn += '<h2 style="font-size: 16px; font-weight: bold; color: #304263; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #304263; font-family: Calibri, Arial, sans-serif;">Education</h2>';
+        data.education.forEach(entry => {
+            rightColumn += '<div style="margin-bottom: 16px;">';
+            const dateStr = formatDateForLuxSleek(entry.dateStart, entry.dateEnd);
+            rightColumn += `<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;">`;
+            rightColumn += `<div style="flex: 1; font-size: 12px;"><span style="font-weight: bold; text-transform: uppercase;">${escapeHtml(entry.degree)}</span>. <em>${escapeHtml(entry.university)}${entry.city ? ` (${escapeHtml(entry.city)})` : ''}</em>.</div>`;
+            rightColumn += `<div style="font-weight: bold; text-align: right; margin-left: 16px; white-space: nowrap; font-size: 12px;">${dateStr}</div>`;
+            rightColumn += `</div>`;
+            if (entry.thesis) {
+                rightColumn += `<div style="font-size: 11px; color: #666; margin-top: 4px; font-family: Calibri, Arial, sans-serif;">Thesis: <em>${escapeHtml(entry.thesis)}</em></div>`;
+            }
+            rightColumn += '</div>';
+        });
+        rightColumn += '</div>';
+    }
+    
+    // Projects (as Additional Education/Projects)
+    if (data.projects && data.projects.length > 0) {
+        rightColumn += '<div style="margin-bottom: 24px;">';
+        rightColumn += '<h2 style="font-size: 16px; font-weight: bold; color: #304263; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #304263; font-family: Calibri, Arial, sans-serif;">Projects</h2>';
+        data.projects.forEach(entry => {
+            rightColumn += '<div style="margin-bottom: 16px;">';
+            rightColumn += `<div style="font-size: 12px; font-family: Calibri, Arial, sans-serif;"><span style="font-weight: bold; text-transform: uppercase;">${escapeHtml(entry.title)}</span>${entry.tech ? ` (${escapeHtml(entry.tech)})` : ''}.</div>`;
+            if (entry.description) {
+                const items = entry.description.split('\n').filter(line => line.trim());
+                if (items.length > 0) {
+                    rightColumn += '<div style="font-size: 11px; color: #666; margin-top: 4px; font-family: Calibri, Arial, sans-serif;">';
+                    items.forEach(item => {
+                        rightColumn += `<div style="margin-bottom: 2px;">${escapeHtml(item.trim())}</div>`;
+                    });
+                    rightColumn += '</div>';
+                }
+            }
+            rightColumn += '</div>';
+        });
+        rightColumn += '</div>';
+    }
+    
+    // Hobbies
+    if (data.hobbies && data.hobbies.trim()) {
+        rightColumn += '<div style="margin-bottom: 24px;">';
+        rightColumn += '<h2 style="font-size: 16px; font-weight: bold; color: #304263; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #304263; font-family: Calibri, Arial, sans-serif;">Hobbies</h2>';
+        const hobbies = data.hobbies.split('\n').filter(line => line.trim());
+        hobbies.forEach(hobby => {
+            rightColumn += `<div style="font-size: 11px; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;"><em>${escapeHtml(hobby.trim())}</em></div>`;
+        });
+        rightColumn += '</div>';
+    }
+    
+    rightColumn += '</div>';
+    
+    // Combine into two-column layout using table for better PDF compatibility
+    // Using explicit table structure for maximum compatibility with html2pdf
+    return `<div id="luxsleek-wrapper" style="width: 100%; margin: 0; padding: 0; display: table; table-layout: fixed; min-height: 100vh; font-family: Calibri, Arial, sans-serif; font-size: 12px; border-collapse: collapse;"><div style="display: table-row;">${leftColumn}${rightColumn}</div></div>`;
+}
+
+// Format date for LuxSleek template (YYYY.MM--YYYY.MM format)
+function formatDateForLuxSleek(startDate, endDate) {
+    if (!startDate && !endDate) return 'Present';
+    
+    const formatDate = (dateStr) => {
+        if (!dateStr) return '';
+        const [year, month] = dateStr.split('-');
+        return `${year}.${month || '01'}`;
+    };
+    
+    const start = formatDate(startDate);
+    const end = endDate ? formatDate(endDate) : 'pres.';
+    
+    if (!start) return end;
+    return `${start}--${end}`;
+}
+
+// Generate Classic CV following Northeastern University COS Faculty CV Template
+// Reference: https://www.overleaf.com/latex/templates/northeastern-university-cos-faculty-cv-template/zfgnyhdpmpqg
+function generateClassicNUCV(data) {
+    let html = '';
+    const baseStyle = 'font-family: Calibri, Arial, sans-serif; font-size: 12px;';
+    const headerStyle = 'font-family: Calibri, Arial, sans-serif; font-size: 20px; font-weight: bold;';
+    const sectionStyle = 'font-family: Calibri, Arial, sans-serif; font-size: 14px; font-weight: bold;';
+    const subsectionStyle = 'font-family: Calibri, Arial, sans-serif; font-size: 13px; font-weight: bold;';
+    
+    // Header - Centered with "Curriculum Vitae"
+    html += '<div class="text-center mb-6 print:mb-4 pb-4 print:pb-2" style="' + baseStyle + '">';
+    html += `<h1 style="${headerStyle} margin-bottom: 4px;">${escapeHtml(data.name)}</h1>`;
+    html += `<div style="${baseStyle} font-weight: bold; margin-bottom: 2px;">Curriculum Vitae</div>`;
+    
+    // Contact info
+    const contactParts = [];
+    if (data.location) contactParts.push(escapeHtml(data.location));
+    if (data.email) contactParts.push(`<a href="mailto:${escapeHtml(data.email)}" style="color: inherit; text-decoration: none;">${escapeHtml(data.email)}</a>`);
+    if (data.website) {
+        const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
+        contactParts.push(`<a href="${url}" style="color: inherit; text-decoration: none;">${escapeHtml(data.website)}</a>`);
+    } else if (data.linkedin) {
+        contactParts.push(`<a href="https://linkedin.com/in/${escapeHtml(data.linkedin)}" style="color: inherit; text-decoration: none;">${escapeHtml(data.linkedin)}</a>`);
+    }
+    
+    if (contactParts.length > 0) {
+        html += `<div style="${baseStyle} font-size: 11px;">${contactParts.join(' | ')}</div>`;
+    }
+    html += '</div>';
+    
+    // EDUCATION & EMPLOYMENT HISTORY (combined section)
+    const hasEducation = data.education && data.education.length > 0;
+    const hasExperience = data.experience && data.experience.length > 0;
+    
+    if (hasEducation || hasExperience) {
+        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
+        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">EDUCATION & EMPLOYMENT HISTORY</h2>`;
+        
+        // Education entries
+        if (hasEducation) {
+            data.education.forEach(entry => {
+                html += '<div class="mb-4 print:mb-3" style="margin-bottom: 16px;">';
+                html += `<div style="${baseStyle} font-weight: bold; font-size: 14px;">${escapeHtml(entry.degree)}</div>`;
+                
+                // Year of completion
+                if (entry.dateEnd) {
+                    const year = entry.dateEnd.split('-')[0];
+                    html += `<div style="${baseStyle}">Year of completion: ${year}</div>`;
+                } else if (entry.dateStart) {
+                    const year = entry.dateStart.split('-')[0];
+                    html += `<div style="${baseStyle}">Year of completion: ${year}</div>`;
+                }
+                
+                html += `<div style="${baseStyle}">${escapeHtml(entry.university)}</div>`;
+                if (entry.city) {
+                    html += `<div style="${baseStyle}">${escapeHtml(entry.city)}</div>`;
+                }
+                if (entry.thesis) {
+                    html += `<div style="${baseStyle} margin-top: 4px;">${escapeHtml(entry.thesis)}</div>`;
+                }
+                html += '</div>';
+            });
+        }
+        
+        // Experience/Employment entries
+        if (hasExperience) {
+            data.experience.forEach(entry => {
+                html += '<div class="mb-4 print:mb-3" style="margin-bottom: 16px;">';
+                html += `<div style="${baseStyle} font-weight: bold; font-size: 14px;">${escapeHtml(entry.position)}</div>`;
+                
+                // Time Period
+                const timePeriod = formatDateRange(entry.dateStart, entry.dateEnd);
+                html += `<div style="${baseStyle}">Time Period: ${escapeHtml(timePeriod)}</div>`;
+                
+                html += `<div style="${baseStyle}">${escapeHtml(entry.company)}</div>`;
+                if (entry.city) {
+                    html += `<div style="${baseStyle}">${escapeHtml(entry.city)}</div>`;
+                }
+                if (entry.description) {
+                    const items = entry.description.split('\n').filter(line => line.trim());
+                    if (items.length > 0) {
+                        html += '<div style="margin-top: 4px;">';
+                        items.forEach(item => {
+                            html += `<div style="${baseStyle}">${escapeHtml(item.trim())}</div>`;
+                        });
+                        html += '</div>';
+                    }
+                }
+                html += '</div>';
+            });
+        }
+        
+        html += '</div>';
+    }
+    
+    // PUBLICATIONS Section
+    if (data.publications && data.publications.trim()) {
+        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
+        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">PUBLICATIONS</h2>`;
+        
+        // For now, treat all publications as "Reviewed Articles" since we don't have categorization
+        // In a full implementation, you'd want to parse and categorize publications
+        html += `<div style="margin-left: 0;">`;
+        html += `<h3 style="${subsectionStyle} margin-bottom: 8px; margin-top: 8px;">Reviewed Articles</h3>`;
+        
+        const publications = data.publications.split('\n').filter(line => line.trim());
+        publications.forEach(pub => {
+            html += `<div style="${baseStyle} margin-bottom: 4px;">${escapeHtml(pub.trim())}</div>`;
+        });
+        
+        html += '</div></div>';
+    }
+    
+    // SKILLS (if provided, as a simple list)
+    if (data.skills && data.skills.trim()) {
+        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
+        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">TECHNICAL SKILLS</h2>`;
+        
+        const skills = data.skills.split('\n').filter(line => line.trim());
+        html += '<div style="margin-left: 0;">';
+        skills.forEach(skill => {
+            html += `<div style="${baseStyle} margin-bottom: 2px;">${escapeHtml(skill.trim())}</div>`;
+        });
+        html += '</div></div>';
+    }
+    
+    // LANGUAGES (if provided)
+    if (data.languages && data.languages.length > 0) {
+        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
+        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">LANGUAGES</h2>`;
+        
+        html += '<div style="margin-left: 0;">';
+        data.languages.forEach(entry => {
+            let langText = `<strong>${escapeHtml(entry.name)}</strong>`;
+            if (entry.level) {
+                langText += `: ${escapeHtml(entry.level)}`;
+            }
+            html += `<div style="${baseStyle} margin-bottom: 2px;">${langText}</div>`;
+        });
+        html += '</div></div>';
+    }
+    
+    // PROJECTS (if provided, could be part of Creative Activity)
+    if (data.projects && data.projects.length > 0) {
+        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
+        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">PROJECTS</h2>`;
+        
+        data.projects.forEach(entry => {
+            html += '<div class="mb-4 print:mb-3" style="margin-bottom: 12px;">';
+            html += `<div style="${baseStyle} font-weight: bold; font-size: 14px;">${escapeHtml(entry.title)}</div>`;
+            if (entry.tech) {
+                html += `<div style="${baseStyle} font-size: 11px; color: #666;">${escapeHtml(entry.tech)}</div>`;
+            }
+            if (entry.description) {
+                const items = entry.description.split('\n').filter(line => line.trim());
+                items.forEach(item => {
+                    html += `<div style="${baseStyle} margin-top: 2px;">${escapeHtml(item.trim())}</div>`;
+                });
+            }
+            html += '</div>';
+        });
+        html += '</div>';
+    }
+    
+    // AWARDS/SCHOLARSHIPS (if provided)
+    if (data.awards && data.awards.trim()) {
+        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
+        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">SCHOLARSHIPS AND AWARDS</h2>`;
+        
+        const awards = data.awards.split('\n').filter(line => line.trim());
+        html += '<div style="margin-left: 0;">';
+        awards.forEach(award => {
+            // Handle the dots pattern for date separation
+            const parts = award.trim().split(/\.\.\.\.\./);
+            if (parts.length === 2) {
+                html += `<div style="${baseStyle} margin-bottom: 2px; display: flex; justify-content: space-between;"><span>${escapeHtml(parts[0].trim())}</span><span>${escapeHtml(parts[1].trim())}</span></div>`;
+            } else {
+                html += `<div style="${baseStyle} margin-bottom: 2px;">${escapeHtml(award.trim())}</div>`;
+            }
+        });
+        html += '</div></div>';
+    }
     
     return html;
 }
@@ -1527,9 +2000,8 @@ function loadFormData(data) {
             }
             entry.querySelector('.edu-thesis').value = edu.thesis || '';
         });
-    } else {
-        addEducation();
     }
+    // Don't add empty entry if no data - form starts empty
     
     // Load experience entries
     const experienceContainer = document.getElementById('experienceContainer');
@@ -1555,9 +2027,8 @@ function loadFormData(data) {
             }
             entry.querySelector('.exp-description').value = exp.description || '';
         });
-    } else {
-        addExperience();
     }
+    // Don't add empty entry if no data - form starts empty
     
     // Load language entries
     const languagesContainer = document.getElementById('languagesContainer');
@@ -1569,9 +2040,8 @@ function loadFormData(data) {
             entry.querySelector('.lang-name').value = lang.name || '';
             entry.querySelector('.lang-level').value = lang.level || '';
         });
-    } else {
-        addLanguage();
     }
+    // Don't add empty entry if no data - form starts empty
     
     // Load volunteer entries
     const volunteerContainer = document.getElementById('volunteerContainer');

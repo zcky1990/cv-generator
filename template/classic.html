@@ -22,6 +22,12 @@
         <!-- html2pdf library -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
         <style>
+            /* Base font for entire document */
+            body, #cvContainer, #cvContainer * {
+                font-family: Calibri, Arial, sans-serif !important;
+                font-size: 12px !important;
+            }
+            
             :root {
                 --radius: 0.65rem;
                 --background: 0 0% 100%;
@@ -117,6 +123,37 @@
             
             .hover\:bg-primary\/90:hover { background-color: hsl(var(--primary) / 0.9); }
             .hover\:bg-secondary\/80:hover { background-color: hsl(var(--secondary) / 0.8); }
+            
+            /* Calibri font and size overrides for classic template */
+            #cvContainer {
+                font-family: Calibri, Arial, sans-serif !important;
+                font-size: 12px !important;
+            }
+            #cvContainer h1 {
+                font-size: 20px !important; /* Name - was text-3xl (24px) */
+                font-weight: bold !important;
+            }
+            #cvContainer h2 {
+                font-size: 14px !important; /* Section headers - was text-xl (18px) */
+                font-weight: bold !important;
+            }
+            #cvContainer .text-lg,
+            #cvContainer .print\:text-base {
+                font-size: 14px !important; /* University/Company names - was text-lg (16px) */
+            }
+            #cvContainer .text-sm,
+            #cvContainer .print\:text-xs {
+                font-size: 11px !important; /* Small text - was text-sm (14px) */
+            }
+            #cvContainer .text-xs {
+                font-size: 10px !important; /* Extra small text */
+            }
+            #cvContainer .text-2xl {
+                font-size: 18px !important; /* Large headings */
+            }
+            #cvContainer .text-3xl {
+                font-size: 20px !important; /* Extra large headings */
+            }
         </style>
 </head>
 <body class="bg-background text-foreground min-h-screen print:bg-white print:p-0 print:m-0">
@@ -283,12 +320,23 @@
                     #cvContainer {
                         background: white !important;
                         color: black !important;
+                        font-family: Calibri, Arial, sans-serif !important;
+                        font-size: 12px !important;
                     }
                     #cvContainer * {
                         color: black !important;
+                        font-family: Calibri, Arial, sans-serif !important;
+                    }
+                    #cvContainer h1 {
+                        font-size: 20px !important;
+                    }
+                    #cvContainer h2 {
+                        font-size: 14px !important;
                     }
                     #cvContainer a {
                         color: black !important;
+                        font-family: Calibri, Arial, sans-serif !important;
+                        text-decoration: none !important;
                     }
                 `;
                 document.head.appendChild(colorFixStyle);
