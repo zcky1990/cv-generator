@@ -522,6 +522,11 @@ function generateLuxSleekCV(data) {
     const firstName = nameParts.join(' ');
     leftColumn += `<div style="margin-bottom: 16px;"><h1 style="font-size: 18px; font-weight: bold; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;">${escapeHtml(firstName)} <span>${escapeHtml(lastName)}</span></h1></div>`;
     
+    // Job Title
+    if (data.title && data.title.trim()) {
+        leftColumn += `<div style="font-size: 12px; margin-bottom: 16px; font-family: Calibri, Arial, sans-serif;">${escapeHtml(data.title)}</div>`;
+    }
+    
     // Profile/About section
     if (data.about && data.about.trim()) {
         leftColumn += '<div style="margin-bottom: 24px;">';
@@ -550,6 +555,14 @@ function generateLuxSleekCV(data) {
     if (data.github) {
         const githubUrl = data.github.startsWith('http') ? data.github : `https://${data.github}`;
         leftColumn += `<div style="margin-bottom: 4px;"><a href="${githubUrl}" style="color: white; text-decoration: none;">${escapeHtml(data.github)}</a></div>`;
+    }
+    if (data.dribbble) {
+        const dribbbleUrl = data.dribbble.startsWith('http') ? data.dribbble : `https://${data.dribbble}`;
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="${dribbbleUrl}" style="color: white; text-decoration: none;">${escapeHtml(data.dribbble)}</a></div>`;
+    }
+    if (data.instagram) {
+        const instagramUrl = data.instagram.startsWith('http') ? data.instagram : `https://${data.instagram}`;
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="${instagramUrl}" style="color: white; text-decoration: none;">${escapeHtml(data.instagram)}</a></div>`;
     }
     if (data.location) {
         leftColumn += `<div style="margin-bottom: 4px;">${escapeHtml(data.location)}</div>`;
@@ -619,7 +632,7 @@ function generateLuxSleekCV(data) {
             rightColumn += '<div style="margin-bottom: 16px;">';
             const dateStr = formatDateForLuxSleek(entry.dateStart, entry.dateEnd);
             rightColumn += `<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;">`;
-            rightColumn += `<div style="flex: 1; font-size: 12px;"><span style="font-weight: bold; text-transform: uppercase;">${escapeHtml(entry.degree)}</span>. <em>${escapeHtml(entry.university)}${entry.city ? ` (${escapeHtml(entry.city)})` : ''}</em>.</div>`;
+            rightColumn += `<div style="flex: 1; font-size: 12px;"><span style="font-weight: bold; text-transform: uppercase;">${escapeHtml(entry.degree)}</span>. <em>${escapeHtml(entry.university)}${entry.city ? ` (${escapeHtml(entry.city)})` : ''}</em>${entry.gpa ? ` - GPA: ${escapeHtml(entry.gpa)}` : ''}.</div>`;
             rightColumn += `<div style="text-align: right; margin-left: 16px; white-space: nowrap; font-size: 12px;">${dateStr}</div>`;
             rightColumn += `</div>`;
             if (entry.thesis) {
@@ -648,6 +661,54 @@ function generateLuxSleekCV(data) {
                 }
             }
             rightColumn += '</div>';
+        });
+        rightColumn += '</div>';
+    }
+    
+    // Volunteer
+    if (data.volunteer && data.volunteer.length > 0) {
+        rightColumn += '<div style="margin-bottom: 24px;">';
+        rightColumn += '<h2 style="font-size: 16px; font-weight: bold; color: #304263; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #304263; font-family: Calibri, Arial, sans-serif;">Volunteer</h2>';
+        data.volunteer.forEach(entry => {
+            rightColumn += '<div style="margin-bottom: 16px;">';
+            const dateStr = formatDateForLuxSleek(entry.dateStart, entry.dateEnd);
+            rightColumn += `<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;">`;
+            rightColumn += `<div style="flex: 1; font-size: 12px;"><div style="font-weight: bold; text-transform: uppercase;">${escapeHtml(entry.position)}</div><div style="font-size: 11px;">${escapeHtml(entry.organization)}</div></div>`;
+            rightColumn += `<div style="text-align: right; margin-left: 16px; white-space: nowrap; font-size: 12px;">${dateStr}</div>`;
+            rightColumn += `</div>`;
+            if (entry.description) {
+                const items = entry.description.split('\n').filter(line => line.trim());
+                if (items.length > 0) {
+                    rightColumn += '<div style="font-size: 11px; color: #666; margin-top: 4px; font-family: Calibri, Arial, sans-serif;">';
+                    items.forEach(item => {
+                        rightColumn += `<div style="margin-bottom: 2px;">${escapeHtml(item.trim())}</div>`;
+                    });
+                    rightColumn += '</div>';
+                }
+            }
+            rightColumn += '</div>';
+        });
+        rightColumn += '</div>';
+    }
+    
+    // Publications
+    if (data.publications && data.publications.trim()) {
+        rightColumn += '<div style="margin-bottom: 24px;">';
+        rightColumn += '<h2 style="font-size: 16px; font-weight: bold; color: #304263; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #304263; font-family: Calibri, Arial, sans-serif;">Publications</h2>';
+        const publications = data.publications.split('\n').filter(line => line.trim());
+        publications.forEach(pub => {
+            rightColumn += `<div style="font-size: 11px; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;">${escapeHtml(pub.trim())}</div>`;
+        });
+        rightColumn += '</div>';
+    }
+    
+    // Awards
+    if (data.awards && data.awards.trim()) {
+        rightColumn += '<div style="margin-bottom: 24px;">';
+        rightColumn += '<h2 style="font-size: 16px; font-weight: bold; color: #304263; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #304263; font-family: Calibri, Arial, sans-serif;">Awards</h2>';
+        const awards = data.awards.split('\n').filter(line => line.trim());
+        awards.forEach(award => {
+            rightColumn += `<div style="font-size: 11px; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;">${escapeHtml(award.trim())}</div>`;
         });
         rightColumn += '</div>';
     }
@@ -699,23 +760,48 @@ function generateClassicNUCV(data) {
     // Header - Centered with "Curriculum Vitae"
     html += '<div class="text-center mb-6 print:mb-4 pb-4 print:pb-2" style="' + baseStyle + '">';
     html += `<h1 style="${headerStyle} margin-bottom: 4px;">${escapeHtml(data.name)}</h1>`;
+    if (data.title && data.title.trim()) {
+        html += `<div style="${baseStyle} font-size: 13px; margin-bottom: 2px;">${escapeHtml(data.title)}</div>`;
+    }
     html += `<div style="${baseStyle} font-weight: bold; margin-bottom: 2px;">Curriculum Vitae</div>`;
     
     // Contact info
     const contactParts = [];
     if (data.location) contactParts.push(escapeHtml(data.location));
+    if (data.phone) contactParts.push(escapeHtml(data.phone));
     if (data.email) contactParts.push(`<a href="mailto:${escapeHtml(data.email)}" style="color: inherit; text-decoration: none;">${escapeHtml(data.email)}</a>`);
     if (data.website) {
         const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
         contactParts.push(`<a href="${url}" style="color: inherit; text-decoration: none;">${escapeHtml(data.website)}</a>`);
-    } else if (data.linkedin) {
+    }
+    if (data.linkedin) {
         contactParts.push(`<a href="https://linkedin.com/in/${escapeHtml(data.linkedin)}" style="color: inherit; text-decoration: none;">${escapeHtml(data.linkedin)}</a>`);
+    }
+    if (data.github) {
+        const githubUrl = data.github.startsWith('http') ? data.github : `https://${data.github}`;
+        contactParts.push(`<a href="${githubUrl}" style="color: inherit; text-decoration: none;">${escapeHtml(data.github)}</a>`);
+    }
+    if (data.dribbble) {
+        const dribbbleUrl = data.dribbble.startsWith('http') ? data.dribbble : `https://${data.dribbble}`;
+        contactParts.push(`<a href="${dribbbleUrl}" style="color: inherit; text-decoration: none;">${escapeHtml(data.dribbble)}</a>`);
+    }
+    if (data.instagram) {
+        const instagramUrl = data.instagram.startsWith('http') ? data.instagram : `https://${data.instagram}`;
+        contactParts.push(`<a href="${instagramUrl}" style="color: inherit; text-decoration: none;">${escapeHtml(data.instagram)}</a>`);
     }
     
     if (contactParts.length > 0) {
         html += `<div style="${baseStyle} font-size: 11px;">${contactParts.join(' | ')}</div>`;
     }
     html += '</div>';
+    
+    // About/Bio section
+    if (data.about && data.about.trim()) {
+        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
+        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">ABOUT</h2>`;
+        html += `<div style="${baseStyle}">${escapeHtml(data.about).replace(/\n/g, '<br>')}</div>`;
+        html += '</div>';
+    }
     
     // EDUCATION & EMPLOYMENT HISTORY (combined section)
     const hasEducation = data.education && data.education.length > 0;
@@ -743,6 +829,9 @@ function generateClassicNUCV(data) {
                 html += `<div style="${baseStyle}">${escapeHtml(entry.university)}</div>`;
                 if (entry.city) {
                     html += `<div style="${baseStyle}">${escapeHtml(entry.city)}</div>`;
+                }
+                if (entry.gpa) {
+                    html += `<div style="${baseStyle}">GPA: ${escapeHtml(entry.gpa)}</div>`;
                 }
                 if (entry.thesis) {
                     html += `<div style="${baseStyle} margin-top: 4px;">${escapeHtml(entry.thesis)}</div>`;
@@ -851,6 +940,49 @@ function generateClassicNUCV(data) {
         html += '</div>';
     }
     
+    // VOLUNTEER (if provided)
+    if (data.volunteer && data.volunteer.length > 0) {
+        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
+        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">VOLUNTEER EXPERIENCE</h2>`;
+        
+        data.volunteer.forEach(entry => {
+            html += '<div class="mb-4 print:mb-3" style="margin-bottom: 16px;">';
+            html += `<div style="${baseStyle} font-weight: bold; font-size: 14px;">${escapeHtml(entry.position)}</div>`;
+            
+            // Time Period
+            const timePeriod = formatDateRange(entry.dateStart, entry.dateEnd);
+            html += `<div style="${baseStyle}">Time Period: ${escapeHtml(timePeriod)}</div>`;
+            
+            html += `<div style="${baseStyle}">${escapeHtml(entry.organization)}</div>`;
+            if (entry.description) {
+                const items = entry.description.split('\n').filter(line => line.trim());
+                if (items.length > 0) {
+                    html += '<div style="margin-top: 4px;">';
+                    items.forEach(item => {
+                        html += `<div style="${baseStyle}">${escapeHtml(item.trim())}</div>`;
+                    });
+                    html += '</div>';
+                }
+            }
+            html += '</div>';
+        });
+        
+        html += '</div>';
+    }
+    
+    // HOBBIES & INTERESTS (if provided)
+    if (data.hobbies && data.hobbies.trim()) {
+        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
+        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">HOBBIES & INTERESTS</h2>`;
+        
+        const hobbies = data.hobbies.split('\n').filter(line => line.trim());
+        html += '<div style="margin-left: 0;">';
+        hobbies.forEach(hobby => {
+            html += `<div style="${baseStyle} margin-bottom: 2px;">${escapeHtml(hobby.trim())}</div>`;
+        });
+        html += '</div></div>';
+    }
+    
     // AWARDS/SCHOLARSHIPS (if provided)
     if (data.awards && data.awards.trim()) {
         html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
@@ -918,6 +1050,21 @@ function generateMinimalCV(data) {
         const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
         leftColumn += `<div style="margin-bottom: 4px;"><a href="${url}" style="color: #000; text-decoration: none;">${escapeHtml(data.website)}</a></div>`;
     }
+    if (data.github) {
+        const githubUrl = data.github.startsWith('http') ? data.github : `https://${data.github}`;
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="${githubUrl}" style="color: #000; text-decoration: none;">${escapeHtml(data.github)}</a></div>`;
+    }
+    if (data.dribbble) {
+        const dribbbleUrl = data.dribbble.startsWith('http') ? data.dribbble : `https://${data.dribbble}`;
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="${dribbbleUrl}" style="color: #000; text-decoration: none;">${escapeHtml(data.dribbble)}</a></div>`;
+    }
+    if (data.instagram) {
+        const instagramUrl = data.instagram.startsWith('http') ? data.instagram : `https://${data.instagram}`;
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="${instagramUrl}" style="color: #000; text-decoration: none;">${escapeHtml(data.instagram)}</a></div>`;
+    }
+    if (data.birthdate) {
+        leftColumn += `<div style="margin-bottom: 4px;">${escapeHtml(data.birthdate)}</div>`;
+    }
     
     leftColumn += '</div></div>';
     leftColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
@@ -955,9 +1102,15 @@ function generateMinimalCV(data) {
             if (dateStr) {
                 leftColumn += `<div style="margin-bottom: 8px; font-weight: bold; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px;">${escapeHtml(dateStr)}</div>`;
             }
-            leftColumn += `<div style="margin-bottom: 4px; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px;">${escapeHtml(entry.university)}</div>`;
+            leftColumn += `<div style="margin-bottom: 4px; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px;">${escapeHtml(entry.university)}${entry.city ? `, ${escapeHtml(entry.city)}` : ''}</div>`;
             if (entry.degree) {
-                leftColumn += `<div style="margin-bottom: 8px; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px;">${escapeHtml(entry.degree)}</div>`;
+                leftColumn += `<div style="margin-bottom: 4px; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px;">${escapeHtml(entry.degree)}</div>`;
+            }
+            if (entry.gpa) {
+                leftColumn += `<div style="margin-bottom: 4px; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px;">GPA: ${escapeHtml(entry.gpa)}</div>`;
+            }
+            if (entry.thesis) {
+                leftColumn += `<div style="margin-bottom: 8px; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px; font-style: italic;">${escapeHtml(entry.thesis)}</div>`;
             }
         });
         
@@ -974,6 +1127,35 @@ function generateMinimalCV(data) {
         const skills = data.skills.split('\n').filter(line => line.trim());
         skills.forEach(skill => {
             leftColumn += `<div style="margin-bottom: 2px;">• ${escapeHtml(skill.trim())}</div>`;
+        });
+        
+        leftColumn += '</div></div>';
+        leftColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
+    }
+    
+    // Languages Section
+    if (data.languages && data.languages.length > 0) {
+        leftColumn += '<div style="margin-bottom: 24px;">';
+        leftColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">LANGUAGES</div>`;
+        leftColumn += '<div style="font-family: \'Montserrat\', Arial, sans-serif; font-size: 11px; line-height: 1.8;">';
+        
+        data.languages.forEach(entry => {
+            leftColumn += `<div style="margin-bottom: 2px;">${escapeHtml(entry.name)}${entry.level ? ` - ${escapeHtml(entry.level)}` : ''}</div>`;
+        });
+        
+        leftColumn += '</div></div>';
+        leftColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
+    }
+    
+    // Hobbies Section
+    if (data.hobbies && data.hobbies.trim()) {
+        leftColumn += '<div style="margin-bottom: 24px;">';
+        leftColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">HOBBIES</div>`;
+        leftColumn += '<div style="font-family: \'Montserrat\', Arial, sans-serif; font-size: 11px; line-height: 1.8;">';
+        
+        const hobbies = data.hobbies.split('\n').filter(line => line.trim());
+        hobbies.forEach(hobby => {
+            leftColumn += `<div style="margin-bottom: 2px;">• ${escapeHtml(hobby.trim())}</div>`;
         });
         
         leftColumn += '</div></div>';
@@ -1005,7 +1187,7 @@ function generateMinimalCV(data) {
             }
             
             rightColumn += '<div style="margin-bottom: 24px;">';
-            rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 4px;">${escapeHtml(entry.company)}</div>`;
+            rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 4px;">${escapeHtml(entry.company)}${entry.city ? `, ${escapeHtml(entry.city)}` : ''}</div>`;
             rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 8px;">${escapeHtml(entry.position)}${dateStr ? ` | ${dateStr}` : ''}</div>`;
             
             if (entry.description) {
@@ -1052,6 +1234,89 @@ function generateMinimalCV(data) {
             rightColumn += '</div>';
             
             if (index < data.projects.length - 1) {
+                rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
+            }
+        });
+    }
+    
+    // Volunteer Section
+    if (data.volunteer && data.volunteer.length > 0) {
+        if (data.experience && data.experience.length > 0 || data.projects && data.projects.length > 0) {
+            rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
+        }
+        rightColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">VOLUNTEER</div>`;
+        if (data.experience && data.experience.length > 0 || data.projects && data.projects.length > 0) {
+            rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
+        }
+        
+        data.volunteer.forEach((entry, index) => {
+            let dateStr = '';
+            if (entry.dateStart && entry.dateEnd) {
+                const startYear = entry.dateStart.split('-')[0];
+                const endYear = entry.dateEnd.split('-')[0];
+                dateStr = `${startYear}-${endYear}`;
+            } else if (entry.dateStart) {
+                const startYear = entry.dateStart.split('-')[0];
+                dateStr = `${startYear}-Present`;
+            } else if (entry.dateEnd) {
+                const endYear = entry.dateEnd.split('-')[0];
+                dateStr = `-${endYear}`;
+            }
+            
+            rightColumn += '<div style="margin-bottom: 24px;">';
+            rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 4px;">${escapeHtml(entry.organization)}</div>`;
+            rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 8px;">${escapeHtml(entry.position)}${dateStr ? ` | ${dateStr}` : ''}</div>`;
+            
+            if (entry.description) {
+                const items = entry.description.split('\n').filter(line => line.trim());
+                rightColumn += '<div style="font-size: 11px; line-height: 1.6;">';
+                items.forEach(item => {
+                    rightColumn += `<div style="margin-bottom: 4px;">${escapeHtml(item.trim())}</div>`;
+                });
+                rightColumn += '</div>';
+            }
+            
+            rightColumn += '</div>';
+            
+            if (index < data.volunteer.length - 1) {
+                rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
+            }
+        });
+    }
+    
+    // Publications Section
+    if (data.publications && data.publications.trim()) {
+        if (data.experience && data.experience.length > 0 || data.projects && data.projects.length > 0 || data.volunteer && data.volunteer.length > 0) {
+            rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
+        }
+        rightColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">PUBLICATIONS</div>`;
+        if (data.experience && data.experience.length > 0 || data.projects && data.projects.length > 0 || data.volunteer && data.volunteer.length > 0) {
+            rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
+        }
+        
+        const publications = data.publications.split('\n').filter(line => line.trim());
+        publications.forEach((pub, index) => {
+            rightColumn += `<div style="font-size: 11px; margin-bottom: 8px; line-height: 1.6;">${escapeHtml(pub.trim())}</div>`;
+            if (index < publications.length - 1) {
+                rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
+            }
+        });
+    }
+    
+    // Awards Section
+    if (data.awards && data.awards.trim()) {
+        if (data.experience && data.experience.length > 0 || data.projects && data.projects.length > 0 || data.volunteer && data.volunteer.length > 0 || data.publications && data.publications.trim()) {
+            rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
+        }
+        rightColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">AWARDS</div>`;
+        if (data.experience && data.experience.length > 0 || data.projects && data.projects.length > 0 || data.volunteer && data.volunteer.length > 0 || data.publications && data.publications.trim()) {
+            rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
+        }
+        
+        const awards = data.awards.split('\n').filter(line => line.trim());
+        awards.forEach((award, index) => {
+            rightColumn += `<div style="font-size: 11px; margin-bottom: 8px; line-height: 1.6;">${escapeHtml(award.trim())}</div>`;
+            if (index < awards.length - 1) {
                 rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
             }
         });
