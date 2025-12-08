@@ -1,9 +1,64 @@
 // Collect form data
+// Handle photo upload
+function handlePhotoUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    // Check if it's an image
+    if (!file.type.startsWith('image/')) {
+        alert('Please select an image file');
+        event.target.value = '';
+        return;
+    }
+    
+    // Check file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+        alert('Image size should be less than 2MB');
+        event.target.value = '';
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const photoData = e.target.result;
+        // Store in a hidden input or directly in localStorage temporarily
+        document.getElementById('photo').setAttribute('data-photo', photoData);
+        
+        // Show preview
+        const preview = document.getElementById('photoPreview');
+        const previewImg = document.getElementById('photoPreviewImg');
+        if (preview && previewImg) {
+            previewImg.src = photoData;
+            preview.classList.remove('hidden');
+        }
+    };
+    reader.readAsDataURL(file);
+}
+
+// Remove photo
+function removePhoto() {
+    const photoInput = document.getElementById('photo');
+    const preview = document.getElementById('photoPreview');
+    
+    if (photoInput) {
+        photoInput.value = '';
+        photoInput.removeAttribute('data-photo');
+    }
+    
+    if (preview) {
+        preview.classList.add('hidden');
+    }
+}
+
 function collectFormData() {
     const selectedTemplate = document.querySelector('input[name="template"]:checked')?.value || 'classic';
+    const photoInput = document.getElementById('photo');
+    const photoData = photoInput?.getAttribute('data-photo') || '';
+    
     const data = {
         template: selectedTemplate,
         name: document.getElementById('name').value,
+        photo: photoData, // Store photo as base64 data URL
         title: document.getElementById('title')?.value || '',
         phone: document.getElementById('phone')?.value || '',
         birthdate: document.getElementById('birthdate')?.value || '',
@@ -1042,10 +1097,14 @@ function generateProductDesignerCV(data) {
     // LEFT COLUMN (~25% width) - Sidebar
     let leftColumn = '<div id="product-designer-left-column" style="display: table-cell; width: 25%; vertical-align: top; padding: 24px; box-sizing: border-box;">';
     
-    // Profile Picture Placeholder (circular)
-    leftColumn += '<div style="width: 48px; height: 48px; border-radius: 50%; background-color: ' + colors.lightest + '; margin-bottom: 10px; overflow: hidden;">';
-    leftColumn += '<div style="width: 100%; height: 100%; background-color: ' + colors.lightest + '; display: flex; align-items: center; justify-content: center; color: ' + colors.light + '; font-size: ' + captionSize + ';">Photo</div>';
-    leftColumn += '</div>';
+    // Profile Picture (show if available, hide completely if not)
+    if (data.photo && data.photo.trim()) {
+        leftColumn += '<div style="width: 48px; height: 48px; border-radius: 50%; margin-bottom: 10px; overflow: hidden; background-color: ' + colors.lightest + ';">';
+        // Don't escape the photo data URL - it's already a valid data URL
+        leftColumn += `<img src="${data.photo}" alt="Profile Photo" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
+        leftColumn += '</div>';
+    }
+    // If no photo, don't add the placeholder div at all
     
     // Name
     leftColumn += '<div style="margin-bottom: 4px;">';
@@ -2744,6 +2803,19 @@ function loadFormData(data) {
     
     // Load personal information
     if (data.name) document.getElementById('name').value = data.name;
+    
+    // Load photo if available
+    if (data.photo) {
+        const photoInput = document.getElementById('photo');
+        const preview = document.getElementById('photoPreview');
+        const previewImg = document.getElementById('photoPreviewImg');
+        if (photoInput && preview && previewImg) {
+            photoInput.setAttribute('data-photo', data.photo);
+            previewImg.src = data.photo;
+            preview.classList.remove('hidden');
+        }
+    }
+    
     if (data.title && document.getElementById('title')) document.getElementById('title').value = data.title;
     if (data.phone && document.getElementById('phone')) document.getElementById('phone').value = data.phone;
     if (data.birthdate && document.getElementById('birthdate')) document.getElementById('birthdate').value = data.birthdate;

@@ -477,6 +477,14 @@
                                 <input type="text" id="name" name="name" required placeholder="John Doe" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
                             </div>
                             <div class="space-y-2">
+                                <label for="photo" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Profile Photo</label>
+                                <input type="file" id="photo" name="photo" accept="image/*" onchange="handlePhotoUpload(event)" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                <div id="photoPreview" class="mt-2 hidden">
+                                    <img id="photoPreviewImg" src="" alt="Profile photo preview" class="w-24 h-24 object-cover rounded-full border-2 border-border">
+                                    <button type="button" onclick="removePhoto()" class="mt-2 text-sm text-destructive hover:underline">Remove photo</button>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
                                 <label for="title" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Job Title/Position</label>
                                 <input type="text" id="title" name="title" placeholder="Frontend Developer" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
                             </div>
