@@ -495,6 +495,11 @@ function generateCVFromData(data) {
         return generateMinimalCV(data);
     }
     
+    // Special handling for product-designer template (two-column product designer layout)
+    if (template === 'product-designer') {
+        return generateProductDesignerCV(data);
+    }
+    
     let html = generateHeader(template, data);
     
     html += generateEducation(data.education, template);
@@ -584,7 +589,7 @@ function generateLuxSleekCV(data) {
     
     // Skills
     if (data.skills && data.skills.trim()) {
-        leftColumn += '<div style="margin-bottom: 24px;">';
+        leftColumn += '<div style="margin-top: 24px; margin-bottom: 24px;">';
         leftColumn += '<h2 style="font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.3); font-family: Calibri, Arial, sans-serif;">Skills</h2>';
         leftColumn += '<ul style="font-size: 12px; list-style: none; padding-left: 0; margin: 0; font-family: Calibri, Arial, sans-serif;">';
         data.skills.split('\n').filter(line => line.trim()).forEach(skill => {
@@ -761,7 +766,7 @@ function generateClassicNUCV(data) {
     html += '<div class="text-center mb-6 print:mb-4 pb-4 print:pb-2" style="' + baseStyle + '">';
     html += `<h1 style="${headerStyle} margin-bottom: 4px;">${escapeHtml(data.name)}</h1>`;
     if (data.title && data.title.trim()) {
-        html += `<div style="${baseStyle} font-size: 13px; margin-bottom: 2px;">${escapeHtml(data.title)}</div>`;
+        html += `<div style="${baseStyle} font-size: 13px; margin-bottom: 15px;">${escapeHtml(data.title)}</div>`;
     }
     html += `<div style="${baseStyle} font-weight: bold; margin-bottom: 2px;">Curriculum Vitae</div>`;
     
@@ -1003,6 +1008,307 @@ function generateClassicNUCV(data) {
     }
     
     return html;
+}
+
+// Generate Product Designer CV - Two-column product designer layout
+// Based on Figma design: https://www.figma.com/design/sOYN6lK8xpQkALwzTzNiV7/Resume-Template-for-Product-Designers--UX-UI---Community-
+function generateProductDesignerCV(data) {
+    const fontFamily = "'DM Sans', 'Inter', 'Arial', sans-serif";
+    const interFont = "'Inter', 'Arial', sans-serif";
+    
+    // Color scheme from Figma
+    const colors = {
+        dark: '#2E2E48',
+        medium: '#47516B',
+        light: '#79819A',
+        lightest: '#E2E6EE',
+        sidebarBg: '#F5F7FA',
+        dribbble: '#EA4C89',
+        linkedin: '#0077B5'
+    };
+    
+    // Font sizes (12px base, adjusted for hierarchy)
+    const nameSize = '20px';
+    const titleSize = '14px';
+    const sectionHeaderSize = '14px';
+    const bodySize = '12px';
+    const smallSize = '11px';
+    const captionSize = '10px';
+    
+    // Start two-column layout
+    let html = '<div style="display: table; width: 100%; border-collapse: collapse; font-family: ' + fontFamily + ';">';
+    html += '<div style="display: table-row;">';
+    
+    // LEFT COLUMN (~25% width) - Sidebar
+    let leftColumn = '<div id="product-designer-left-column" style="display: table-cell; width: 25%; vertical-align: top; padding: 24px; box-sizing: border-box;">';
+    
+    // Profile Picture Placeholder (circular)
+    leftColumn += '<div style="width: 48px; height: 48px; border-radius: 50%; background-color: ' + colors.lightest + '; margin-bottom: 10px; overflow: hidden;">';
+    leftColumn += '<div style="width: 100%; height: 100%; background-color: ' + colors.lightest + '; display: flex; align-items: center; justify-content: center; color: ' + colors.light + '; font-size: ' + captionSize + ';">Photo</div>';
+    leftColumn += '</div>';
+    
+    // Name
+    leftColumn += '<div style="margin-bottom: 4px;">';
+    leftColumn += `<h1 style="font-family: ${interFont}; font-size: ${nameSize}; font-weight: 500; color: ${colors.dark}; margin: 0; line-height: 20px;">${escapeHtml(data.name)}</h1>`;
+    leftColumn += '</div>';
+    
+    // Job Title
+    if (data.title && data.title.trim()) {
+        leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${titleSize}; font-weight: 500; color: #333333; margin-bottom: 10px; line-height: 16px;">${escapeHtml(data.title)}</div>`;
+    }
+    
+    // Divider
+    leftColumn += `<div class="product-designer-divider" style="border-top: 0.5px solid ${colors.lightest}; width: 119px; margin: 10px 0;"></div>`;
+    
+    // Contact Section
+    leftColumn += '<div style="margin-bottom: 12px;">';
+    
+    // Portfolio/Website
+    if (data.website) {
+        const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
+        leftColumn += '<div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">';
+        leftColumn += `<div style="width: 16px; height: 16px; border-radius: 50%; background-color: ${colors.lightest}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">`;
+        leftColumn += `<span style="font-size: 8px; color: ${colors.medium};">🔗</span>`;
+        leftColumn += '</div>';
+        leftColumn += '<div style="flex: 1;">';
+        leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${captionSize}; color: ${colors.light}; line-height: 1.4; margin-bottom: 2px;">Portfolio</div>`;
+        leftColumn += `<a href="${url}" style="font-family: ${fontFamily}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; text-decoration: none; line-height: 1.4; display: block;">${escapeHtml(data.website)}</a>`;
+        leftColumn += '</div></div>';
+    }
+    
+    // Email
+    if (data.email) {
+        leftColumn += '<div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">';
+        leftColumn += `<div style="width: 16px; height: 16px; border-radius: 50%; background-color: ${colors.lightest}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">`;
+        leftColumn += `<span style="font-size: 8px; color: ${colors.medium};">✉</span>`;
+        leftColumn += '</div>';
+        leftColumn += '<div style="flex: 1;">';
+        leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${captionSize}; color: ${colors.light}; line-height: 1.4; margin-bottom: 2px;">Email</div>`;
+        leftColumn += `<a href="mailto:${escapeHtml(data.email)}" style="font-family: ${fontFamily}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; text-decoration: none; line-height: 1.4; display: block;">${escapeHtml(data.email)}</a>`;
+        leftColumn += '</div></div>';
+    }
+    
+    // Phone
+    if (data.phone) {
+        leftColumn += '<div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">';
+        leftColumn += `<div style="width: 16px; height: 16px; border-radius: 50%; background-color: ${colors.lightest}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">`;
+        leftColumn += `<span style="font-size: 8px; color: ${colors.medium};">📞</span>`;
+        leftColumn += '</div>';
+        leftColumn += '<div style="flex: 1;">';
+        leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${captionSize}; color: ${colors.light}; line-height: 1.4; margin-bottom: 2px;">Phone</div>`;
+        leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4;">${escapeHtml(data.phone)}</div>`;
+        leftColumn += '</div></div>';
+    }
+    
+    leftColumn += '</div>';
+    
+    // Divider
+    leftColumn += `<div class="product-designer-divider" style="border-top: 0.5px solid ${colors.lightest}; width: 119px; margin: 10px 0;"></div>`;
+    
+    // Socials Section
+    leftColumn += '<div style="margin-bottom: 12px;">';
+    leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${captionSize}; color: ${colors.light}; margin-bottom: 12px; line-height: 1.4;">Socials</div>`;
+    
+    // Instagram
+    if (data.instagram) {
+        const instagramUrl = data.instagram.startsWith('http') ? data.instagram : `https://${data.instagram}`;
+        leftColumn += '<div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">';
+        leftColumn += `<div style="width: 16px; height: 16px; flex-shrink: 0;">`;
+        leftColumn += `<span style="font-size: 12px;">📷</span>`;
+        leftColumn += '</div>';
+        leftColumn += '<div style="flex: 1;">';
+        leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${captionSize}; color: ${colors.light}; line-height: 1.4; margin-bottom: 2px;">Instagram</div>`;
+        leftColumn += `<a href="${instagramUrl}" style="font-family: ${fontFamily}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; text-decoration: none; line-height: 1.4; display: block;">${escapeHtml(data.instagram)}</a>`;
+        leftColumn += '</div></div>';
+    }
+    
+    // Dribbble
+    if (data.dribbble) {
+        const dribbbleUrl = data.dribbble.startsWith('http') ? data.dribbble : `https://${data.dribbble}`;
+        leftColumn += '<div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">';
+        leftColumn += `<div style="width: 16px; height: 16px; border-radius: 50%; background-color: ${colors.dribbble}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">`;
+        leftColumn += `<span style="font-size: 8px; color: white;">D</span>`;
+        leftColumn += '</div>';
+        leftColumn += '<div style="flex: 1;">';
+        leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${captionSize}; color: ${colors.light}; line-height: 1.4; margin-bottom: 2px;">Dribbble</div>`;
+        leftColumn += `<a href="${dribbbleUrl}" style="font-family: ${fontFamily}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; text-decoration: none; line-height: 1.4; display: block;">${escapeHtml(data.dribbble)}</a>`;
+        leftColumn += '</div></div>';
+    }
+    
+    // LinkedIn
+    if (data.linkedin) {
+        leftColumn += '<div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">';
+        leftColumn += `<div style="width: 16px; height: 16px; border-radius: 50%; background-color: ${colors.linkedin}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0px 2px 8px rgba(0,0,0,0.06);">`;
+        leftColumn += `<span style="font-size: 8px; color: white;">in</span>`;
+        leftColumn += '</div>';
+        leftColumn += '<div style="flex: 1;">';
+        leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${captionSize}; color: ${colors.light}; line-height: 1.4; margin-bottom: 2px;">Linkedin</div>`;
+        leftColumn += `<a href="https://linkedin.com/in/${escapeHtml(data.linkedin)}" style="font-family: ${fontFamily}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; text-decoration: none; line-height: 1.4; display: block;">${escapeHtml(data.linkedin)}</a>`;
+        leftColumn += '</div></div>';
+    }
+    
+    leftColumn += '</div>';
+    
+    // Divider
+    leftColumn += `<div class="product-designer-divider" style="border-top: 0.5px solid ${colors.lightest}; width: 119px; margin: 10px 0;"></div>`;
+    
+    // Skills Section
+    if (data.skills && data.skills.trim()) {
+        leftColumn += '<div style="margin-bottom: 12px;">';
+        leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${captionSize}; color: ${colors.light}; margin-bottom: 10px; line-height: 1.4;">Skills</div>`;
+        const skills = data.skills.split('\n').filter(line => line.trim()).join(', ');
+        leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${bodySize}; color: ${colors.light}; line-height: 1.5;">${escapeHtml(skills)}</div>`;
+        leftColumn += '</div>';
+    }
+    
+    leftColumn += '</div>';
+    
+    // RIGHT COLUMN (~75% width) - Main Content
+    let rightColumn = '<div style="display: table-cell; width: 75%; vertical-align: top; padding: 40px 24px 24px 39px; background-color: white; box-sizing: border-box;">';
+    
+    // About Me Section
+    if (data.about && data.about.trim()) {
+        rightColumn += '<div class="product-designer-section" style="margin-bottom: 16px;">';
+        rightColumn += `<div class="product-designer-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 12px;">About Me</div>`;
+        rightColumn += `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0;">${escapeHtml(data.about).replace(/\n/g, '<br>')}</p>`;
+        rightColumn += '</div>';
+    }
+    
+    // Experience Section
+    if (data.experience && data.experience.length > 0) {
+        rightColumn += '<div class="product-designer-section" style="margin-bottom: 16px;">';
+        rightColumn += `<div class="product-designer-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Experience</div>`;
+        
+        data.experience.forEach(entry => {
+            rightColumn += '<div class="product-designer-entry" style="margin-bottom: 16px;">';
+            
+            // Position & Company
+            rightColumn += '<div style="margin-bottom: 6px;">';
+            rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 600; color: #2C2F37; margin-bottom: 4px;">${escapeHtml(entry.position)} | ${escapeHtml(entry.company)}</div>`;
+            const dateStr = formatDateForATS(entry.dateStart, entry.dateEnd);
+            rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4; margin-bottom: 6px;">${escapeHtml(dateStr)}${entry.city ? `, ${escapeHtml(entry.city)}` : ''}</div>`;
+            rightColumn += '</div>';
+            
+            // Description
+            if (entry.description) {
+                rightColumn += `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 16px 0;">${escapeHtml(entry.description).replace(/\n/g, '<br>')}</p>`;
+            }
+            
+            rightColumn += '</div>';
+        });
+        
+        rightColumn += '</div>';
+    }
+    
+    // Education Section
+    if (data.education && data.education.length > 0) {
+        rightColumn += '<div class="product-designer-section" style="margin-bottom: 16px;">';
+        rightColumn += `<div class="product-designer-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Education</div>`;
+        
+        data.education.forEach(entry => {
+            rightColumn += '<div class="product-designer-entry" style="margin-bottom: 16px;">';
+            
+            // Degree
+            rightColumn += '<div style="margin-bottom: 6px;">';
+            rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 600; color: #2C2F37; margin-bottom: 4px;">${escapeHtml(entry.degree)}</div>`;
+            const dateStr = formatDateForATSEducation(entry.dateStart, entry.dateEnd);
+            rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4; margin-bottom: 6px;">${escapeHtml(dateStr)}${entry.city ? `, ${escapeHtml(entry.city)}` : ''}</div>`;
+            rightColumn += '</div>';
+            
+            // Description/Thesis
+            if (entry.thesis) {
+                rightColumn += `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 16px 0;">${escapeHtml(entry.thesis).replace(/\n/g, '<br>')}</p>`;
+            }
+            
+            rightColumn += '</div>';
+        });
+        
+        rightColumn += '</div>';
+    }
+    
+    // Projects Section
+    if (data.projects && data.projects.length > 0) {
+        rightColumn += '<div class="product-designer-section" style="margin-bottom: 16px;">';
+        rightColumn += `<div class="product-designer-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Projects</div>`;
+        
+        data.projects.forEach(project => {
+            rightColumn += '<div class="product-designer-entry" style="margin-bottom: 16px;">';
+            
+            // Project Title & Tech
+            rightColumn += '<div style="margin-bottom: 6px;">';
+            const projectTitle = project.url ? `<a href="${project.url.startsWith('http') ? project.url : 'https://' + project.url}" style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 600; color: ${colors.dark}; text-decoration: none;">${escapeHtml(project.title)}</a>` : `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 600; color: #2C2F37;">${escapeHtml(project.title)}</div>`;
+            rightColumn += projectTitle;
+            if (project.tech) {
+                rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4; margin-top: 2px;">${escapeHtml(project.tech)}</div>`;
+            }
+            rightColumn += '</div>';
+            
+            // Project Description
+            if (project.description) {
+                rightColumn += `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 16px 0;">${escapeHtml(project.description).replace(/\n/g, '<br>')}</p>`;
+            }
+            
+            rightColumn += '</div>';
+        });
+        
+        rightColumn += '</div>';
+    }
+    
+    // Certifications Section (using Awards data only)
+    if (data.awards && data.awards.trim()) {
+        rightColumn += '<div class="product-designer-section" style="margin-bottom: 16px;">';
+        rightColumn += `<div class="product-designer-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Certifications</div>`;
+        
+        const awards = data.awards.split('\n').filter(line => line.trim());
+        awards.forEach(award => {
+            rightColumn += `<p class="product-designer-entry" style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 8px 0;">${escapeHtml(award.trim())}</p>`;
+        });
+        
+        rightColumn += '</div>';
+    }
+    
+    rightColumn += '</div>';
+    
+    // Close table structure
+    html += leftColumn + rightColumn;
+    html += '</div></div>';
+    
+    return html;
+}
+
+function formatDateForATS(startDate, endDate) {
+    if (!startDate && !endDate) return '';
+    
+    const formatMonthYear = (dateStr) => {
+        if (!dateStr) return '';
+        const [year, month] = dateStr.split('-');
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const monthIndex = parseInt(month) - 1;
+        return `${monthNames[monthIndex] || 'Jan'} ${year}`;
+    };
+    
+    const start = formatMonthYear(startDate);
+    const end = endDate ? formatMonthYear(endDate) : 'Now';
+    
+    if (!start) return end;
+    return `${start} – ${end}`;
+}
+
+// Format date for ATS template - Education (e.g., "2018 - 2023")
+function formatDateForATSEducation(startDate, endDate) {
+    if (!startDate && !endDate) return '';
+    
+    const formatYear = (dateStr) => {
+        if (!dateStr) return '';
+        return dateStr.split('-')[0];
+    };
+    
+    const start = formatYear(startDate);
+    const end = endDate ? formatYear(endDate) : '';
+    
+    if (!start) return end;
+    if (!end) return start;
+    return `${start} - ${end}`;
 }
 
 // Generate Minimal CV - Two-column minimalist layout
