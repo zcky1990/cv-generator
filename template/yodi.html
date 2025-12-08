@@ -122,6 +122,38 @@
             
             .hover\:bg-primary\/90:hover { background-color: hsl(var(--primary) / 0.9); }
             .hover\:bg-secondary\/80:hover { background-color: hsl(var(--secondary) / 0.8); }
+            
+            /* Page break control for PDF */
+            .yodi-header-section {
+                page-break-inside: avoid;
+                page-break-after: avoid;
+            }
+            
+            .yodi-main-content {
+                page-break-inside: avoid;
+            }
+            
+            .yodi-section {
+                page-break-inside: avoid;
+                page-break-after: avoid;
+            }
+            
+            .yodi-entry {
+                page-break-inside: avoid;
+            }
+            
+            @media print {
+                .yodi-header-section,
+                .yodi-main-content,
+                .yodi-section,
+                .yodi-entry {
+                    page-break-inside: avoid !important;
+                }
+                
+                .yodi-section {
+                    page-break-after: avoid !important;
+                }
+            }
         </style>
     </head>
     <body class="bg-background text-foreground min-h-screen print:bg-white print:p-0 print:m-0">
@@ -240,8 +272,9 @@
                         compress: true
                     },
                     pagebreak: {
-                        mode: [ 'css', 'legacy'],
-                        avoid: ['.yodi-main-content', '.yodi-header-section'],
+                        mode: ['css', 'legacy'],
+                        avoid: ['.yodi-header-section', '.yodi-entry'],
+
                     }
                 };
 
