@@ -127,6 +127,21 @@
             
             .hover\:bg-primary\/90:hover { background-color: hsl(var(--primary) / 0.9); }
             .hover\:bg-secondary\/80:hover { background-color: hsl(var(--secondary) / 0.8); }
+            
+            /* Ensure left column is full height for PDF */
+            #luxsleek-left-column,
+            #cvContainer #luxsleek-left-column {
+                height: 279.4mm !important; /* US Letter height (11 inches) */
+                min-height: 279.4mm !important;
+            }
+            #luxsleek-wrapper,
+            #cvContainer #luxsleek-wrapper {
+                height: 279.4mm !important;
+                min-height: 279.4mm !important;
+            }
+            #luxsleek-wrapper > div {
+                height: 100% !important;
+            }
         </style>
     </head>
     <body class="bg-background text-foreground min-h-screen print:bg-white print:p-0 print:m-0">
@@ -169,7 +184,7 @@
                 <!-- CV Container -->
                 <div class="flex justify-center items-start px-4 py-6 print:p-0 print:m-0">
                     <div
-                        id="cvContainer" class="cv-preview bg-card text-foreground rounded-lg shadow-lg p-6 md:p-8 print:shadow-none print:rounded-none print:p-0 print:m-0 print:bg-white print:w-full print:max-w-full print:min-h-[792px] print:text-black print:mx-0" style="margin: 0 auto; padding: 24px;">
+                        id="cvContainer" class="cv-preview bg-card text-foreground rounded-lg shadow-lg print:shadow-none print:rounded-none print:p-0 print:m-0 print:bg-white print:w-full print:max-w-full print:min-h-[792px] print:text-black print:mx-0" style="margin: 0 auto;">
                         <!-- CV content will be generated here -->
                         <div id="loadingMessage" class="text-center py-8">
                             <p class="text-muted-foreground">Loading CV...</p>
@@ -231,7 +246,7 @@
                     console.warn('Could not get name from localStorage:', e);
                 }
 
-                // Configure html2pdf options
+                // Configure html2pdf options - simplified, pass container as is
                 const options = {
                     margin: [0, 0, 0, 0],
                     filename: filename,
@@ -244,26 +259,7 @@
                         useCORS: true,
                         letterRendering: true,
                         logging: false,
-                        width: cvContainer.scrollWidth,
-                        height: cvContainer.scrollHeight,
-                        windowWidth: cvContainer.scrollWidth,
-                        windowHeight: cvContainer.scrollHeight,
-                        allowTaint: true,
-                        backgroundColor: '#ffffff',
-                        removeContainer: false,
-                        onclone: function(clonedDoc) {
-                            // Ensure left column is visible in cloned document
-                            const clonedLeftCol = clonedDoc.querySelector('#luxsleek-left-column');
-                            if (clonedLeftCol) {
-                                clonedLeftCol.style.display = 'table-cell';
-                                clonedLeftCol.style.visibility = 'visible';
-                                clonedLeftCol.style.opacity = '1';
-                                clonedLeftCol.style.width = '33%';
-                                clonedLeftCol.style.backgroundColor = '#304263';
-                                clonedLeftCol.style.background = '#304263';
-                                clonedLeftCol.style.color = 'white';
-                            }
-                        }
+                        backgroundColor: '#ffffff'
                     },
                     jsPDF: {
                         unit: 'mm',
@@ -287,187 +283,8 @@
                         button.innerHTML = '<span>⏳</span> Generating PDF...';
                     }
 
-                    // Force HSL colors for html2pdf compatibility and fix layout
-                    const colorFixStyle = document.createElement('style');
-                    colorFixStyle.id = 'pdf-color-fix';
-                    colorFixStyle.textContent = `
-                        :root, #cvContainer, #cvContainer * {
-                            --background: hsl(0 0% 100%) !important;
-                            --foreground: hsl(0 0% 3.9%) !important;
-                            --card: hsl(0 0% 100%) !important;
-                            --card-foreground: hsl(0 0% 3.9%) !important;
-                            --primary: hsl(0 0% 9%) !important;
-                            --primary-foreground: hsl(0 0% 98%) !important;
-                            --secondary: hsl(0 0% 96.1%) !important;
-                            --secondary-foreground: hsl(0 0% 9%) !important;
-                            --muted: hsl(0 0% 96.1%) !important;
-                            --muted-foreground: hsl(0 0% 45.1%) !important;
-                            --accent: hsl(0 0% 96.1%) !important;
-                            --accent-foreground: hsl(0 0% 9%) !important;
-                            --destructive: hsl(0 84.2% 60.2%) !important;
-                            --destructive-foreground: hsl(0 0% 98%) !important;
-                            --border: hsl(0 0% 89.8%) !important;
-                            --input: hsl(0 0% 89.8%) !important;
-                            --ring: hsl(0 0% 3.9%) !important;
-                            --luxsleek-blue: 220 40% 28% !important;
-                        }
-                        #cvContainer {
-                            background: white !important;
-                            color: black !important;
-                            margin: 0 !important;
-                            padding: 0 !important;
-                            width: 100% !important;
-                            max-width: 100% !important;
-                            overflow: visible !important;
-                            position: relative !important;
-                        }
-                        /* Table layout for better PDF compatibility */
-                        #cvContainer > div,
-                        #luxsleek-wrapper,
-                        #cvContainer #luxsleek-wrapper,
-                        #cvContainer > div#luxsleek-wrapper {
-                            margin: 0 !important;
-                            padding: 0 !important;
-                            width: 100% !important;
-                            display: table !important;
-                            table-layout: fixed !important;
-                            min-height: 100vh !important;
-                            overflow: visible !important;
-                            position: relative !important;
-                            font-family: Calibri, Arial, sans-serif !important;
-                            font-size: 12px !important;
-                            border-collapse: collapse !important;
-                        }
-                        /* Table row wrapper */
-                        #luxsleek-wrapper > div,
-                        #cvContainer #luxsleek-wrapper > div {
-                            display: table-row !important;
-                        }
-                        /* Left column - table cell */
-                        *[id="luxsleek-left-column"],
-                        *[id*="luxsleek-left"],
-                        #luxsleek-left-column,
-                        #cvContainer #luxsleek-left-column,
-                        #cvContainer > div > div#luxsleek-left-column,
-                        #cvContainer > div #luxsleek-left-column,
-                        div#luxsleek-left-column {
-                            width: 33% !important;
-                            display: table-cell !important;
-                            vertical-align: top !important;
-                            background-color: #304263 !important;
-                            background: #304263 !important;
-                            color: white !important;
-                            min-height: 100vh !important;
-                            visibility: visible !important;
-                            opacity: 1 !important;
-                            font-family: Calibri, Arial, sans-serif !important;
-                            font-size: 12px !important;
-                        }
-                        /* Right column - table cell */
-                        #luxsleek-right-column,
-                        #cvContainer #luxsleek-right-column,
-                        #cvContainer > div > div#luxsleek-right-column,
-                        #cvContainer > div #luxsleek-right-column,
-                        div#luxsleek-right-column {
-                            width: 67% !important;
-                            display: table-cell !important;
-                            vertical-align: top !important;
-                            background-color: white !important;
-                            color: black !important;
-                            visibility: visible !important;
-                            opacity: 1 !important;
-                            font-family: Calibri, Arial, sans-serif !important;
-                            font-size: 12px !important;
-                        }
-                        /* Fallback for any div with width 33% */
-                        #cvContainer > div > div[style*="width: 33%"],
-                        #cvContainer > div > div[style*="width: 33%"] {
-                            width: 33% !important;
-                            display: table-cell !important;
-                            vertical-align: top !important;
-                            background-color: #304263 !important;
-                            color: white !important;
-                            min-height: 100vh !important;
-                            visibility: visible !important;
-                            opacity: 1 !important;
-                            font-family: Calibri, Arial, sans-serif !important;
-                            font-size: 12px !important;
-                            position: relative !important;
-                        }
-                        /* Fallback for any div with width 67% */
-                        #cvContainer > div > div[style*="width: 67%"],
-                        #cvContainer > div > div[style*="width: 67%"] {
-                            display: table-cell !important;
-                            vertical-align: top !important;
-                            background-color: white !important;
-                            color: black !important;
-                            visibility: visible !important;
-                            opacity: 1 !important;
-                            font-family: Calibri, Arial, sans-serif !important;
-                            font-size: 12px !important;
-                        }
-                        #cvContainer * {
-                            color: inherit !important;
-                        }
-                        #cvContainer > div > div[style*="width: 33%"] * {
-                            color: white !important;
-                        }
-                        #cvContainer > div > div[style*="width: 67%"] * {
-                            color: black !important;
-                        }
-                        #cvContainer a {
-                            color: inherit !important;
-                        }
-                    `;
-                    document.head.appendChild(colorFixStyle);
-
-                    // Wait for styles to apply and ensure layout is rendered
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                    
-                    // Force multiple reflows to ensure html2canvas sees the layout
-                    cvContainer.offsetHeight;
-                    const leftCol = cvContainer.querySelector('#luxsleek-left-column');
-                    const rightCol = cvContainer.querySelector('#luxsleek-right-column');
-                    const wrapper = cvContainer.querySelector('#luxsleek-wrapper');
-                    
-                    if (leftCol) {
-                        // Ensure left column is visible and properly styled
-                        leftCol.style.display = 'table-cell';
-                        leftCol.style.visibility = 'visible';
-                        leftCol.style.opacity = '1';
-                        leftCol.style.width = '33%';
-                        leftCol.style.backgroundColor = '#304263';
-                        leftCol.style.background = '#304263';
-                        leftCol.style.color = 'white';
-                        leftCol.style.minHeight = '100vh';
-                        leftCol.offsetHeight; // Force reflow
-                    }
-                    
-                    if (rightCol) {
-                        rightCol.style.display = 'table-cell';
-                        rightCol.style.visibility = 'visible';
-                        rightCol.style.opacity = '1';
-                        rightCol.style.width = '67%';
-                        rightCol.offsetHeight; // Force reflow
-                    }
-                    
-                    if (wrapper) {
-                        wrapper.style.display = 'table';
-                        wrapper.style.tableLayout = 'fixed';
-                        wrapper.style.width = '100%';
-                        wrapper.offsetHeight; // Force reflow
-                    }
-                    
-                    // Additional wait for rendering
-                    await new Promise(resolve => setTimeout(resolve, 300));
-
-                    // Generate and download PDF
+                    // Generate and download PDF - pass container as is
                     await html2pdf().set(options).from(cvContainer).save();
-
-                    // Remove color fix after PDF generation
-                    if (colorFixStyle.parentNode) {
-                        colorFixStyle.parentNode.removeChild(colorFixStyle);
-                    }
 
                     // Restore button
                     if (button) {
@@ -477,12 +294,6 @@
                 } catch (error) {
                     console.error('Error generating PDF:', error);
                     alert('Error generating PDF. Please try again.');
-
-                    // Remove color fix if it exists
-                    const colorFixStyle = document.getElementById('pdf-color-fix');
-                    if (colorFixStyle && colorFixStyle.parentNode) {
-                        colorFixStyle.parentNode.removeChild(colorFixStyle);
-                    }
 
                     // Restore button
                     if (button) {

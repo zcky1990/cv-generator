@@ -508,13 +508,14 @@ function generateLuxSleekCV(data) {
     const luxsleekBlue = '#304263';
     
     // Left column content (blue sidebar) - using table layout for better PDF compatibility
-    let leftColumn = '<div id="luxsleek-left-column" style="width: 33%; min-height: 100vh; display: table-cell; vertical-align: top; box-sizing: border-box; background-color: #304263; background: #304263; color: white; padding: 24px; font-family: Calibri, Arial, sans-serif; font-size: 12px; position: relative; visibility: visible; opacity: 1;">';
+    // Use fixed height for PDF (11in = letter size height) and 100vh for screen
+    let leftColumn = '<div id="luxsleek-left-column" style="width: 33%; min-height: 100vh; height: 279.4mm; display: table-cell; vertical-align: top; box-sizing: border-box; background-color: #304263; background: #304263; color: white; padding: 24px; font-family: Calibri, Arial, sans-serif; font-size: 12px; position: relative; visibility: visible; opacity: 1;">';
     
     // Name
     const nameParts = data.name.split(' ');
     const lastName = nameParts.pop() || '';
     const firstName = nameParts.join(' ');
-    leftColumn += `<div style="margin-bottom: 16px;"><h1 style="font-size: 18px; font-weight: bold; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;">${escapeHtml(firstName)} <span style="text-transform: uppercase;">${escapeHtml(lastName)}</span></h1></div>`;
+    leftColumn += `<div style="margin-bottom: 16px;"><h1 style="font-size: 18px; font-weight: bold; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;">${escapeHtml(firstName)} <span>${escapeHtml(lastName)}</span></h1></div>`;
     
     // Profile/About section
     if (data.about && data.about.trim()) {
@@ -529,21 +530,21 @@ function generateLuxSleekCV(data) {
     leftColumn += '<h2 style="font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.3); font-family: Calibri, Arial, sans-serif;">Contact Details</h2>';
     leftColumn += '<div style="font-size: 12px; font-family: Calibri, Arial, sans-serif;">';
     if (data.email) {
-        leftColumn += `<div style="margin-bottom: 4px;">${escapeHtml(data.email)}</div>`;
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="mailto:${escapeHtml(data.email)}" style="color: white; text-decoration: none;">${escapeHtml(data.email)}</a></div>`;
     }
     if (data.phone) {
         leftColumn += `<div style="margin-bottom: 4px;">${escapeHtml(data.phone)}</div>`;
     }
     if (data.website) {
         const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
-        leftColumn += `<div style="margin-bottom: 4px;"><a href="${url}" style="color: white; text-decoration: underline;">${escapeHtml(data.website)}</a></div>`;
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="${url}" style="color: white; text-decoration: none;">${escapeHtml(data.website)}</a></div>`;
     }
     if (data.linkedin) {
-        leftColumn += `<div style="margin-bottom: 4px;"><a href="https://linkedin.com/in/${data.linkedin}" style="color: white; text-decoration: underline;">${escapeHtml(data.linkedin)}</a></div>`;
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="https://linkedin.com/in/${data.linkedin}" style="color: white; text-decoration: none;">${escapeHtml(data.linkedin)}</a></div>`;
     }
     if (data.github) {
         const githubUrl = data.github.startsWith('http') ? data.github : `https://${data.github}`;
-        leftColumn += `<div style="margin-bottom: 4px;"><a href="${githubUrl}" style="color: white; text-decoration: underline;">${escapeHtml(data.github)}</a></div>`;
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="${githubUrl}" style="color: white; text-decoration: none;">${escapeHtml(data.github)}</a></div>`;
     }
     if (data.location) {
         leftColumn += `<div style="margin-bottom: 4px;">${escapeHtml(data.location)}</div>`;
@@ -587,8 +588,8 @@ function generateLuxSleekCV(data) {
             rightColumn += '<div style="margin-bottom: 16px;">';
             const dateStr = formatDateForLuxSleek(entry.dateStart, entry.dateEnd);
             rightColumn += `<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;">`;
-            rightColumn += `<div style="flex: 1; font-size: 12px;"><span style="font-weight: bold; text-transform: uppercase;">${escapeHtml(entry.position)}</span> at <em>${escapeHtml(entry.company)}${entry.city ? ` (${escapeHtml(entry.city)})` : ''}</em>.</div>`;
-            rightColumn += `<div style="font-weight: bold; text-align: right; margin-left: 16px; white-space: nowrap; font-size: 12px;">${dateStr}</div>`;
+            rightColumn += `<div style="flex: 1; font-size: 12px;"><div style="font-weight: bold; text-transform: uppercase;">${escapeHtml(entry.position)}</div><div style="font-size: 11px;">${escapeHtml(entry.company)}${entry.city ? ` (${escapeHtml(entry.city)})` : ''}</div></div>`;
+            rightColumn += `<div style="text-align: right; margin-left: 16px; white-space: nowrap; font-size: 12px;">${dateStr}</div>`;
             rightColumn += `</div>`;
             if (entry.description) {
                 const items = entry.description.split('\n').filter(line => line.trim());
@@ -614,7 +615,7 @@ function generateLuxSleekCV(data) {
             const dateStr = formatDateForLuxSleek(entry.dateStart, entry.dateEnd);
             rightColumn += `<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;">`;
             rightColumn += `<div style="flex: 1; font-size: 12px;"><span style="font-weight: bold; text-transform: uppercase;">${escapeHtml(entry.degree)}</span>. <em>${escapeHtml(entry.university)}${entry.city ? ` (${escapeHtml(entry.city)})` : ''}</em>.</div>`;
-            rightColumn += `<div style="font-weight: bold; text-align: right; margin-left: 16px; white-space: nowrap; font-size: 12px;">${dateStr}</div>`;
+            rightColumn += `<div style="text-align: right; margin-left: 16px; white-space: nowrap; font-size: 12px;">${dateStr}</div>`;
             rightColumn += `</div>`;
             if (entry.thesis) {
                 rightColumn += `<div style="font-size: 11px; color: #666; margin-top: 4px; font-family: Calibri, Arial, sans-serif;">Thesis: <em>${escapeHtml(entry.thesis)}</em></div>`;
@@ -671,14 +672,14 @@ function formatDateForLuxSleek(startDate, endDate) {
     const formatDate = (dateStr) => {
         if (!dateStr) return '';
         const [year, month] = dateStr.split('-');
-        return `${year}.${month || '01'}`;
+        return `${month || '01'}/${year}`;
     };
     
     const start = formatDate(startDate);
-    const end = endDate ? formatDate(endDate) : 'pres.';
+    const end = endDate ? formatDate(endDate) : 'Present';
     
     if (!start) return end;
-    return `${start}--${end}`;
+    return `${start} - ${end}`;
 }
 
 // Generate Classic CV following Northeastern University COS Faculty CV Template
