@@ -626,6 +626,16 @@ function generateLuxSleekCV(data) {
         leftColumn += `<div style="font-size: 12px; margin-bottom: 16px; font-family: Calibri, Arial, sans-serif;">${escapeHtml(data.title)}</div>`;
     }
     
+    // Profile Image (only if present) - placed under role
+    if (data.photo && data.photo.trim()) {
+        leftColumn += '<div style="margin-bottom: 24px;">';
+        // Portrait format container (210px width x 300px height = 3:4.3 ratio)
+        leftColumn += '<div style="width: 100%; max-width: 210px; height: 300px; overflow: hidden; background-color: rgba(255,255,255,0.1); position: relative;">';
+        // Don't escape the photo data URL - it's already a valid data URL
+        leftColumn += `<img src="${data.photo}" alt="Profile Photo" style="width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; position: absolute; top: 0; left: 0;">`;
+        leftColumn += '</div></div>';
+    }
+    
     // Profile/About section
     if (data.about && data.about.trim()) {
         leftColumn += '<div style="margin-bottom: 24px;">';
