@@ -167,7 +167,7 @@
                             <tr>
                                 <td class="pr-2 py-1 whitespace-nowrap">Paper Size:</td>
                                 <td class="py-1">
-                                    <select id="paperSize" class="h-9 rounded-md border border-input bg-background px-2 py-1 text-sm" onchange="updatePaperSize(this.value)">
+                                    <select id="paperSize" class="w-full h-9 rounded-md border border-input bg-background px-2 py-1 text-sm" onchange="updatePaperSize(this.value)">
                                         <option value="letter">Letter</option>
                                         <option value="a4">A4</option>
                                         <option value="legal">Legal</option>
@@ -177,7 +177,7 @@
                             <tr>
                                 <td class="pr-2 py-1 whitespace-nowrap">Orientation:</td>
                                 <td class="py-1">
-                                    <select id="orientation" class="h-9 rounded-md border border-input bg-background px-2 py-1 text-sm" onchange="updateOrientation(this.value)">
+                                    <select id="orientation" class="w-full h-9 rounded-md border border-input bg-background px-2 py-1 text-sm" onchange="updateOrientation(this.value)">
                                         <option value="portrait">Portrait</option>
                                         <option value="landscape">Landscape</option>
                                     </select>
@@ -186,25 +186,25 @@
                             <tr>
                                 <td class="pr-2 py-1 whitespace-nowrap">Top (mm):</td>
                                 <td class="py-1">
-                                    <input type="number" id="topMargin" min="0" max="20" step="1" value="10" class="w-14 h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('top', this.value)">
+                                    <input type="number" id="topMargin" min="0" max="20" step="1" value="10" class="w-full h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('top', this.value)">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="pr-2 py-1 whitespace-nowrap">Bottom (mm):</td>
                                 <td class="py-1">
-                                    <input type="number" id="bottomMargin" min="0" max="20" step="1" value="20" class="w-14 h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('bottom', this.value)">
+                                    <input type="number" id="bottomMargin" min="0" max="20" step="1" value="20" class="w-full h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('bottom', this.value)">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="pr-2 py-1 whitespace-nowrap">Right (mm):</td>
                                 <td class="py-1">
-                                    <input type="number" id="rightMargin" min="0" max="20" step="1" value="0" class="w-14 h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('right', this.value)">
+                                    <input type="number" id="rightMargin" min="0" max="20" step="1" value="0" class="w-full h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('right', this.value)">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="pr-2 py-1 whitespace-nowrap">Left (mm):</td>
                                 <td class="py-1">
-                                    <input type="number" id="leftMargin" min="0" max="20" step="1" value="0" class="w-14 h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('left', this.value)">
+                                    <input type="number" id="leftMargin" min="0" max="20" step="1" value="0" class="w-full h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('left', this.value)">
                                 </td>
                             </tr>
                         </table>
