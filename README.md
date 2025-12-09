@@ -1,13 +1,13 @@
 # CV Builder - Professional Resume Builder
 
-A modern, web-based CV builder that generates professional PDF resumes with multiple beautiful templates. No LaTeX knowledge required - just fill in the form and download your CV as a PDF!
+A modern, web-based CV builder that generates professional PDF resumes with multiple beautiful templates. No LaTeX knowledge required - just fill in the form and download Your CV Preview as a PDF!
 
 ## Features
 
 - 🎨 **5 Professional Templates**: Choose from Yodi, Classic, LuxSleek, Minimal, and Nabhel templates
 - 📝 **Easy-to-Use Form**: Intuitive interface for all CV sections
 - 🔄 **Dynamic Sections**: Add or remove entries dynamically (experience, projects, education, etc.)
-- 📄 **Direct PDF Generation**: Download your CV as a PDF instantly using html2pdf.js
+- 📄 **Direct PDF Generation**: Download Your CV Preview as a PDF instantly using html2pdf.js
 - 💾 **Auto-Save**: Your data is automatically saved to browser localStorage
 - 🎯 **Page Customization**: Adjust paper size, orientation, and margins (top, bottom, left, right)
 - 🌓 **Dark Mode**: Toggle between light and dark themes
@@ -39,12 +39,12 @@ A modern, web-based CV builder that generates professional PDF resumes with mult
 ### Getting Started
 
 1. Open `index.html` in your web browser
-2. Fill in all the relevant sections of your CV
+2. Fill in all the relevant sections of Your CV Preview
 3. Select a template from the template selector
-4. Click "Preview CV" to see your CV with the selected template
+4. Click "Preview CV" to see Your CV Preview with the selected template
 5. In the preview:
    - Adjust page options (paper size, orientation, margins) using the fixed menu on the right
-   - Click "Download PDF" to save your CV as a PDF file
+   - Click "Download PDF" to save Your CV Preview as a PDF file
    - Click "Back to Edit" to return to the form
    - Toggle dark/light theme as needed
 
@@ -60,7 +60,7 @@ All settings are automatically saved and will be applied when generating the PDF
 
 ### Data Persistence
 
-Your CV data is automatically saved to your browser's localStorage. This means:
+Your CV Preview data is automatically saved to your browser's localStorage. This means:
 - Your data persists between browser sessions
 - You can close and reopen the page without losing your work
 - Data is stored locally on your device (no server required)
@@ -145,4 +145,4 @@ If you encounter any issues:
 
 ---
 
-**Note**: This is a static web application - no server or backend required. Just open `index.html` in your browser and start building your CV!
+**Note**: This is a static web application - no server or backend required. Just open `index.html` in your browser and start building Your CV Preview!

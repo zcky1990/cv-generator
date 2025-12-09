@@ -142,10 +142,85 @@
             #luxsleek-wrapper > div {
                 height: 100% !important;
             }
+            
+            /* Drawer styles */
+            .drawer-closed {
+                width: 0px;
+            }
+            .drawer-open {
+                width: 280px;
+            }
+            .drawer-item-icon {
+                transition: all 0.2s ease;
+            }
+            .drawer-item.active {
+                background-color: hsl(var(--primary));
+                color: hsl(var(--primary-foreground));
+            }
+            .drawer-item.active .drawer-item-icon {
+                color: hsl(var(--primary-foreground));
+            }
+            .drawer-item.active .drawer-item-content {
+                color: hsl(var(--primary-foreground));
+            }
+            .drawer-item.active .drawer-item-content .text-muted-foreground {
+                color: hsl(var(--primary-foreground) / 0.8);
+            }
+            
+            /* Drawer toggle button transitions */
+            #drawerToggle {
+                transition: all 0.3s ease-in-out;
+            }
+            #drawerToggleIcon {
+                transition: all 0.3s ease-in-out;
+            }
+            #drawerToggleText {
+                transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            }
         </style>
     </head>
     <body class="bg-background text-foreground min-h-screen print:bg-white print:p-0 print:m-0">
-        <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 p-4 md:p-6 print:p-0 print:m-0 print:bg-white">
+        <!-- Left Drawer -->
+        <div id="leftDrawer" class="fixed left-0 top-0 h-full bg-card border-r border-border shadow-xl/30 z-40 transition-all duration-300 ease-in-out drawer-closed print:hidden">
+            <!-- Drawer Toggle Button -->
+            <button id="drawerToggle" onclick="toggleDrawer()" class="flex flex-col gap-2 absolute top-1/2 -translate-y-1/2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border border-border rounded-lg shadow-lg p-4 print:hidden items-center justify-center" style="width: 120px; height: 120px; right: -145px; transition: all 0.3s ease-in-out;">
+                <p id="drawerToggleText" class="text-sm text-muted-foreground text-center" style="opacity: 1; transform: scale(1); transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;">Treat Me Coffee</p>
+                <svg id="drawerToggleIcon" class="text-foreground" style="width: 50px; height: 50px; transition: all 0.3s ease-in-out;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.121 18.121" xml:space="preserve"><path style="fill:#e4e7e7" d="m15.292 3.397-1.717 14.724H4.548L2.829 3.397z"/><path style="fill:#c8cbcb" d="m4.417 16.992.132 1.129h9.026l.131-1.129zM2.896 3.964l1.351 11.569L15.217 4.04l.01-.076z"/><path style="fill:#349886" d="M9.061 6.795a3.399 3.399 0 1 0 .002 6.798 3.399 3.399 0 0 0-.002-6.798m1.678 4.907c-.302-.167-.701-.289-1.152-.344l.023-.181a1.128 1.128 0 0 0-.549-2.118c-.625 0-1.133.507-1.133 1.133 0 .425.237.791.584.984l.024.181c-.452.056-.851.177-1.152.344a2.25 2.25 0 0 1-.588-1.509 2.265 2.265 0 1 1 4.53 0c0 .583-.225 1.108-.587 1.51"/><path style="fill:#2b414d" d="M2.832 1.699H15.29c.626 0 1.133.507 1.133 1.133v1.133H1.699V2.831c0-.626.507-1.133 1.133-1.133"/><path style="fill:#475f6c" d="M4.53 0h9.061c.626 0 1.133.507 1.133 1.133v.566H3.398v-.566C3.398.507 3.905 0 4.53 0"/><path style="fill:#2e8676" d="M9.061 9.061c-.625 0-1.133.507-1.133 1.133 0 .397.211.736.52.938l1.528-1.6a1.13 1.13 0 0 0-.916-.47m0-2.265a3.399 3.399 0 0 0-2.193 5.992l1.303-1.365a2.9 2.9 0 0 0-.788.281 2.25 2.25 0 0 1-.588-1.51A2.265 2.265 0 0 1 9.059 7.93c.681 0 1.284.306 1.699.781l.788-.826a3.38 3.38 0 0 0-2.487-1.089"/></svg>
+            </button>
+            
+            <!-- Drawer Content -->
+            <div class="h-full flex flex-col py-4 overflow-hidden">
+                <!-- Drawer Items Container -->
+                <div class="flex-1 flex flex-col items-center justify-center gap-4 px-4">
+                    <!-- Title -->
+                    <h2 class="text-xl font-bold text-foreground text-center">Treat me coffee</h2>
+                    
+                    <!-- Image -->
+                    <div class="flex justify-center cursor-pointer" onclick="openImageModal()">
+                        <img src="../images/G700863694-0703A01-default.png" alt="Coffee" class="max-w-full h-auto rounded-lg shadow-md hover:opacity-80 transition-opacity">
+                    </div>
+                    
+                    <!-- Thanks -->
+                    <p class="text-sm text-muted-foreground text-center">Thanks</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Image Modal -->
+        <div id="imageModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center print:hidden" onclick="closeImageModal(event)">
+            <div class="relative max-w-4xl max-h-[90vh] mx-4" onclick="event.stopPropagation()">
+                <!-- Close Button -->
+                <button onclick="closeImageModal()" class="absolute -top-10 right-0 text-white hover:text-gray-300 transition-colors">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+                <!-- Image -->
+                <img src="../images/G700863694-0703A01-default.png" alt="Coffee" class="max-w-full max-h-[90vh] rounded-lg shadow-2xl object-contain">
+            </div>
+        </div>
+        
+        <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 p-4 md:p-6 print:p-0 print:m-0 print:bg-white transition-all duration-300" id="mainContent">
             <div
                 class="max-w-4xl mx-auto bg-card rounded-lg shadow-sm print:max-w-none print:shadow-none print:rounded-none print:m-0">
                 <!-- Fixed Page Options Menu on Right -->
@@ -205,7 +280,7 @@
                     <div class="p-4 md:p-6">
                         <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
                             <div class="flex items-center gap-4">
-                                <h1 class="text-xl md:text-2xl font-bold tracking-tight">Your CV</h1>
+                                <h1 class="text-xl md:text-2xl font-bold tracking-tight">Your CV Preview</h1>
                             </div>
                             <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                                 <button onclick="downloadPDF(event)" class="inline-flex items-center justify-center text-sm font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 h-9 rounded-md gap-1.5 px-4 shadow-sm border-0 cursor-pointer flex-1 sm:flex-none">
@@ -562,6 +637,106 @@
             document.addEventListener('DOMContentLoaded', function () {
                 initTheme();
                 loadAndGenerateCV();
+            });
+            
+            // Drawer functionality
+            let drawerOpen = false;
+            
+            function toggleDrawer() {
+                const drawer = document.getElementById('leftDrawer');
+                const drawerToggle = document.getElementById('drawerToggle');
+                const drawerToggleText = document.getElementById('drawerToggleText');
+                const toggleIcon = document.getElementById('drawerToggleIcon');
+                const mainContent = document.getElementById('mainContent');
+                const drawerItems = document.querySelectorAll('.drawer-item-content');
+                
+                drawerOpen = !drawerOpen;
+                
+                if (drawerOpen) {
+                    drawer.classList.remove('drawer-closed');
+                    drawer.classList.add('drawer-open');
+                    drawerToggleText.style.opacity = '0';
+                    drawerToggleText.style.transform = 'scale(0.8)';
+                    setTimeout(() => {
+                        drawerToggleText.classList.add('hidden');
+                    }, 150);
+                    drawerToggle.style.width = '80px';
+                    drawerToggle.style.height = '80px';
+                    drawerToggle.style.right = '-48px';
+                    toggleIcon.style.width = '48px';
+                    toggleIcon.style.height = '48px';
+                    if (mainContent) {
+                        mainContent.style.marginLeft = '280px';
+                    }
+                    drawerItems.forEach(item => {
+                        item.classList.remove('hidden');
+                    });
+                } else {
+                    drawer.classList.remove('drawer-open');
+                    drawer.classList.add('drawer-closed');
+                    drawerToggleText.classList.remove('hidden');
+                    setTimeout(() => {
+                        drawerToggleText.style.opacity = '1';
+                        drawerToggleText.style.transform = 'scale(1)';
+                    }, 10);
+                    drawerToggle.style.width = '120px';
+                    drawerToggle.style.height = '120px';
+                    drawerToggle.style.right = '-145px';
+                    toggleIcon.style.width = '50px';
+                    toggleIcon.style.height = '50px';
+                    if (mainContent) {
+                        mainContent.style.marginLeft = '0px';
+                    }
+                    drawerItems.forEach(item => {
+                        item.classList.add('hidden');
+                    });
+                }
+            }
+            
+            // Image Modal functions
+            function openImageModal() {
+                const modal = document.getElementById('imageModal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    modal.style.zIndex = '9999';
+                    modal.classList.add('flex');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+            
+            function closeImageModal(event) {
+                const modal = document.getElementById('imageModal');
+                if (modal) {
+                    modal.classList.add('hidden');
+                    modal.style.zIndex = '0';
+                    modal.classList.remove('flex');
+                    document.body.style.overflow = '';
+                }
+            }
+            
+            // Close modal on Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeImageModal();
+                }
+            });
+            
+            // Initialize drawer state
+            document.addEventListener('DOMContentLoaded', function() {
+                const drawer = document.getElementById('leftDrawer');
+                const mainContent = document.getElementById('mainContent');
+                const drawerItems = document.querySelectorAll('.drawer-item-content');
+                
+                if (drawer && mainContent) {
+                    drawer.classList.add('drawer-closed');
+                    mainContent.style.marginLeft = '0px';
+                    mainContent.style.transition = 'margin-left 0.3s ease-in-out';
+                    if (drawerItems.length > 0) {
+                        drawerItems.forEach(item => {
+                            item.classList.add('hidden');
+                        });
+                    }
+                }
             });
         </script>
     </body>
