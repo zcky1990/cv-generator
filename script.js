@@ -1361,9 +1361,11 @@ function generateUXUIDesignerCV(data) {
     
     let html = '<div style="font-family: ' + fontFamily + '; width: 100%; padding: 24px; box-sizing: border-box;">';
     
-    // HEADER SECTION - Single column layout
-    html += '<div class="yodi-header-section" style="margin-bottom: 10px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">';
+    // HEADER SECTION - Two column layout (name/title left, contact right)
+    html += '<div class="yodi-header-section" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">';
     
+    // Left side: Name, Title, About
+    html += '<div style="flex: 1; min-width: 0;">';
     // Name and Title on one line
     html += `<div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 7px;">`;
     html += `<h1 style="font-size: ${nameSize}; font-weight: normal; color: ${colors.black}; margin: 0; line-height: 28px;">${escapeHtml(data.name)}</h1>`;
@@ -1373,10 +1375,35 @@ function generateUXUIDesignerCV(data) {
     
     // About section
     if (data.about && data.about.trim()) {
-        html += `<p style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px; margin: 0; margin-bottom: 12px;">${escapeHtml(data.about).replace(/\n/g, '<br>')}</p>`;
+        html += `<p style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px; margin: 0;">${escapeHtml(data.about).replace(/\n/g, '<br>')}</p>`;
+    }
+    html += '</div>';
+    
+    // Right side: Contact info
+    if (data.website || data.email || data.phone || data.location) {
+        html += `<div style="width: 107px; flex-shrink: 0; text-align: right;">`;
+        html += `<div style="font-size: ${smallSize}; color: ${colors.bodyText}; line-height: 14px;">`;
+        if (data.website) {
+            const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
+            html += `<div style="margin-bottom: 2px;"><a href="${url}" style="color: ${colors.bodyText}; text-decoration: none;">${escapeHtml(data.website.replace(/^https?:\/\//, ''))}</a></div>`;
+        }
+        if (data.email) {
+            html += `<div style="margin-bottom: 2px;">${escapeHtml(data.email)}</div>`;
+        }
+        if (data.phone) {
+            html += `<div style="margin-bottom: 2px;">${escapeHtml(data.phone)}</div>`;
+        }
+        if (data.location) {
+            html += `<div>${escapeHtml(data.location)}</div>`;
+        }
+        html += '</div>';
+        html += '</div>';
     }
     
     html += '</div>';
+    
+    // Horizontal divider line
+    html += `<div style="width: 100%; height: 1px; background-color: ${colors.sectionHeader}; margin: 20px 0; page-break-inside: avoid;"></div>`;
     
     // MAIN CONTENT - Two columns
     html += '<div class="yodi-main-content" style="display: flex; gap: 31px; align-items: flex-start; page-break-inside: avoid; break-inside: avoid;">';
@@ -1408,13 +1435,14 @@ function generateUXUIDesignerCV(data) {
             if (entry.description) {
                 const descLines = entry.description.split('\n').filter(line => line.trim());
                 if (descLines.length > 0) {
+                    // First line as regular text
                     leftColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(descLines[0])}</div>`;
                     
                     // Bullet points (remaining lines)
                     if (descLines.length > 1) {
-                        leftColumn += '<ul style="margin: 4px 0; padding-left: 0; list-style: disc; list-style-position: inside;">';
+                        leftColumn += '<ul style="margin: 4px 0; padding-left: 16px; list-style: disc; list-style-position: outside;">';
                         for (let i = 1; i < descLines.length; i++) {
-                            leftColumn += `<li style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px; margin-bottom: 4px;">${escapeHtml(descLines[i])}</li>`;
+                            leftColumn += `<li style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(descLines[i])}</li>`;
                         }
                         leftColumn += '</ul>';
                     }
@@ -1425,29 +1453,9 @@ function generateUXUIDesignerCV(data) {
     
     leftColumn += '</div>';
     
-    // RIGHT COLUMN (narrower) - Contact, Education, Certificate, Skills, Languages
+    // RIGHT COLUMN (narrower) - Education, Certificate, Skills, Languages
+    // Note: Contact info is now in the header, not in right column
     let rightColumn = '<div style="width: 177px; flex-shrink: 0;">';
-    
-    // Contact info at the top of right column
-    if (data.website || data.email || data.phone || data.location) {
-        rightColumn += `<div class="yodi-section" style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.sectionHeader}; margin-bottom: 12px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Contact</div>`;
-        rightColumn += '<div style="margin-bottom: 12px;"></div>';
-        rightColumn += '<div class="yodi-entry" style="margin-bottom: 20px; page-break-inside: avoid; break-inside: avoid;">';
-        if (data.website) {
-            const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
-            rightColumn += `<div style="font-size: ${smallSize}; color: ${colors.bodyText}; line-height: 14px; margin-bottom: 2px;"><a href="${url}" style="color: ${colors.bodyText}; text-decoration: none;">${escapeHtml(data.website.replace(/^https?:\/\//, ''))}</a></div>`;
-        }
-        if (data.email) {
-            rightColumn += `<div style="font-size: ${smallSize}; color: ${colors.bodyText}; line-height: 14px; margin-bottom: 2px;">${escapeHtml(data.email)}</div>`;
-        }
-        if (data.phone) {
-            rightColumn += `<div style="font-size: ${smallSize}; color: ${colors.bodyText}; line-height: 14px; margin-bottom: 2px;">${escapeHtml(data.phone)}</div>`;
-        }
-        if (data.location) {
-            rightColumn += `<div style="font-size: ${smallSize}; color: ${colors.bodyText}; line-height: 14px;">${escapeHtml(data.location)}</div>`;
-        }
-        rightColumn += '</div>';
-    }
     
     // Education Section
     if (data.education && data.education.length > 0) {
@@ -1469,37 +1477,80 @@ function generateUXUIDesignerCV(data) {
         });
     }
     
-    // Certificate Section (from Projects/Awards)
-    const hasCertificates = (data.projects && data.projects.length > 0) || (data.awards && data.awards.trim());
-    if (hasCertificates) {
+    // Projects Section (in right column, after education)
+    if (data.projects && data.projects.length > 0) {
+        rightColumn += `<div class="yodi-section" style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.sectionHeader}; margin-bottom: 12px; margin-top: 20px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Projects</div>`;
+        rightColumn += '<div style="margin-bottom: 12px;"></div>';
+        
+        data.projects.forEach(project => {
+            rightColumn += '<div class="yodi-entry" style="margin-bottom: 12px; page-break-inside: avoid; break-inside: avoid;">';
+            rightColumn += `<div style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">${escapeHtml(project.title)}</div>`;
+            if (project.tech) {
+                const techParts = project.tech.split(',');
+                if (techParts.length > 0 && techParts[0].trim()) {
+                    rightColumn += `<div style="font-size: ${bodySize}; font-style: italic; color: ${colors.dateLocation}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(techParts[0].trim())}</div>`;
+                }
+            }
+            if (project.description) {
+                rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px;">${escapeHtml(project.description).replace(/\n/g, ' ')}</div>`;
+            }
+            rightColumn += '</div>';
+        });
+    }
+    
+    // Certificate Section - Parse awards to extract name, dates, and description
+    if (data.awards && data.awards.trim()) {
         rightColumn += `<div class="yodi-section" style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.sectionHeader}; margin-bottom: 12px; margin-top: 20px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Certificate</div>`;
         rightColumn += '<div style="margin-bottom: 12px;"></div>';
         
-        if (data.projects && data.projects.length > 0) {
-            data.projects.forEach(project => {
-                rightColumn += '<div class="yodi-entry" style="margin-bottom: 12px; page-break-inside: avoid; break-inside: avoid;">';
-                rightColumn += `<div style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">${escapeHtml(project.title)}</div>`;
-                if (project.tech) {
-                    const techParts = project.tech.split(',');
-                    if (techParts.length > 0 && techParts[0].trim()) {
-                        rightColumn += `<div style="font-size: ${bodySize}; font-style: italic; color: ${colors.dateLocation}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(techParts[0].trim())}</div>`;
+        const awards = data.awards.split('\n').filter(line => line.trim());
+        awards.forEach(award => {
+            rightColumn += '<div class="yodi-entry" style="margin-bottom: 12px; page-break-inside: avoid; break-inside: avoid;">';
+            
+            // Try to parse certificate format: "Name Date Range Description" or "Name ..... Date Range"
+            const awardText = award.trim();
+            // Check for date pattern (e.g., "Sep 2022 - Jan 2023", "Jan 2023 - Present", or "2022-2023")
+            const datePattern = /(\w{3}\s+\d{4}\s*-\s*(\w{3}\s+\d{4}|Present|\d{4})|\d{4}\s*-\s*(\d{4}|Present)|\d{4})/;
+            const dateMatch = awardText.match(datePattern);
+            
+            if (dateMatch) {
+                // Has date - extract name, date, and description
+                const dateStr = dateMatch[0];
+                const dateIndex = awardText.indexOf(dateStr);
+                const beforeDate = awardText.substring(0, dateIndex).trim();
+                const afterDate = awardText.substring(dateIndex + dateStr.length).trim();
+                
+                // Name is before date (remove trailing dots/spaces)
+                const name = beforeDate.replace(/\.+\s*$/, '').trim();
+                
+                // Description is after date
+                const description = afterDate.replace(/^[-–—]\s*/, '').trim(); // Remove leading dash if present
+                
+                rightColumn += `<div style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">${escapeHtml(name)}</div>`;
+                rightColumn += `<div style="font-size: ${bodySize}; font-style: italic; color: ${colors.dateLocation}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(dateStr)}</div>`;
+                if (description) {
+                    rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px;">${escapeHtml(description)}</div>`;
+                }
+            } else {
+                // No date - try to parse "Name ..... Year" format
+                const dotPattern = /\.{3,}/;
+                const dotMatch = awardText.match(dotPattern);
+                if (dotMatch) {
+                    const parts = awardText.split(dotPattern);
+                    const name = parts[0].trim();
+                    const year = parts.slice(1).join('').trim();
+                    rightColumn += `<div style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">${escapeHtml(name)}</div>`;
+                    if (year) {
+                        rightColumn += `<div style="font-size: ${bodySize}; font-style: italic; color: ${colors.dateLocation}; line-height: 18px;">${escapeHtml(year)}</div>`;
                     }
+                } else {
+                    // Just show as name
+                    rightColumn += `<div style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">${escapeHtml(awardText)}</div>`;
                 }
-                if (project.description) {
-                    rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px;">${escapeHtml(project.description).replace(/\n/g, ' ')}</div>`;
-                }
-                rightColumn += '</div>';
-            });
-        }
-        
-        if (data.awards && data.awards.trim()) {
-            const awards = data.awards.split('\n').filter(line => line.trim());
-            awards.forEach(award => {
-                rightColumn += '<div class="yodi-entry" style="margin-bottom: 12px; page-break-inside: avoid; break-inside: avoid;">';
-                rightColumn += `<div style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">${escapeHtml(award.trim())}</div>`;
-                rightColumn += '</div>';
-            });
-        }
+            }
+            
+            rightColumn += '</div>';
+        });
     }
     
     // Skills & Software Section
@@ -1507,12 +1558,71 @@ function generateUXUIDesignerCV(data) {
         rightColumn += `<div class="yodi-section" style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.sectionHeader}; margin-bottom: 12px; margin-top: 20px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Skills & Software</div>`;
         rightColumn += '<div style="margin-bottom: 12px;"></div>';
         
-        rightColumn += `<div style="font-size: ${bodySize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">Skills</div>`;
-        const skills = data.skills.split('\n').filter(line => line.trim()).join(', ');
-        rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px; margin-bottom: 12px;">${escapeHtml(skills)}</div>`;
+        // Try to parse Skills and Software separately
+        const skillsText = data.skills.trim();
+        let skillsList = '';
+        let softwareList = '';
         
-        rightColumn += `<div style="font-size: ${bodySize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">Software</div>`;
-        rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px;">${escapeHtml(skills)}</div>`;
+        // Check if there are explicit labels
+        const skillsMatch = skillsText.match(/Skills?[:\s]+(.*?)(?:\n|$|Software)/i);
+        const softwareMatch = skillsText.match(/Software[:\s]+(.*?)(?:\n|$)/i);
+        
+        if (skillsMatch && softwareMatch) {
+            // Has both labels - extract separately
+            skillsList = skillsMatch[1].trim();
+            softwareList = softwareMatch[1].trim();
+        } else {
+            // No labels - try to split by lines and check for patterns
+            const lines = skillsText.split('\n').filter(line => line.trim());
+            const skillsLines = [];
+            const softwareLines = [];
+            
+            let currentSection = 'skills';
+            lines.forEach(line => {
+                const lowerLine = line.toLowerCase();
+                if (lowerLine.includes('software') || lowerLine.startsWith('software:')) {
+                    currentSection = 'software';
+                    const content = line.replace(/^software:?\s*/i, '').trim();
+                    if (content) softwareLines.push(content);
+                } else if (lowerLine.includes('skill') || lowerLine.startsWith('skill:')) {
+                    currentSection = 'skills';
+                    const content = line.replace(/^skill:?\s*/i, '').trim();
+                    if (content) skillsLines.push(content);
+                } else {
+                    // Add to current section
+                    if (currentSection === 'software') {
+                        softwareLines.push(line.trim());
+                    } else {
+                        skillsLines.push(line.trim());
+                    }
+                }
+            });
+            
+            if (skillsLines.length > 0 || softwareLines.length > 0) {
+                skillsList = skillsLines.join(', ');
+                softwareList = softwareLines.join(', ');
+            } else {
+                // Fallback: use all as skills, and also as software
+                skillsList = lines.join(', ');
+                softwareList = lines.join(', ');
+            }
+        }
+        
+        // Display Skills
+        if (skillsList) {
+            rightColumn += `<div style="font-size: ${bodySize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">Skills</div>`;
+            rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px; margin-bottom: 12px;">${escapeHtml(skillsList)}</div>`;
+        }
+        
+        // Display Software
+        if (softwareList) {
+            rightColumn += `<div style="font-size: ${bodySize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">Software</div>`;
+            rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px;">${escapeHtml(softwareList)}</div>`;
+        } else if (skillsList) {
+            // If no software found but skills exist, show skills as software too
+            rightColumn += `<div style="font-size: ${bodySize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">Software</div>`;
+            rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px;">${escapeHtml(skillsList)}</div>`;
+        }
     }
     
     // Languages Section
