@@ -55,6 +55,28 @@ function collectFormData() {
     const photoInput = document.getElementById('photo');
     const photoData = photoInput?.getAttribute('data-photo') || '';
     
+    // Get page settings from localStorage if they exist, otherwise use null (templates will use defaults)
+    let margin = null;
+    let paperSize = null;
+    let orientation = null;
+    try {
+        const existingData = localStorage.getItem('cvData');
+        if (existingData) {
+            const parsed = JSON.parse(existingData);
+            if (parsed.margin && Array.isArray(parsed.margin) && parsed.margin.length === 4) {
+                margin = parsed.margin;
+            }
+            if (parsed.paperSize) {
+                paperSize = parsed.paperSize;
+            }
+            if (parsed.orientation) {
+                orientation = parsed.orientation;
+            }
+        }
+    } catch (e) {
+        // Ignore errors, use null
+    }
+    
     const data = {
         template: selectedTemplate,
         name: document.getElementById('name').value,
@@ -80,6 +102,17 @@ function collectFormData() {
         projects: [],
         awards: document.getElementById('awards').value
     };
+    
+    // Include page settings if they were previously set
+    if (margin !== null) {
+        data.margin = margin;
+    }
+    if (paperSize !== null) {
+        data.paperSize = paperSize;
+    }
+    if (orientation !== null) {
+        data.orientation = orientation;
+    }
     
     // Collect education entries
     document.querySelectorAll('#educationContainer > div').forEach(entry => {
@@ -1361,44 +1394,15 @@ function generateUXUIDesignerCV(data) {
     
     let html = '<div style="font-family: ' + fontFamily + '; width: 100%; padding: 24px; box-sizing: border-box;">';
     
-    // HEADER SECTION - Two column layout (name/title left, contact right)
-    html += '<div class="yodi-header-section" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">';
+    // HEADER SECTION - Name and Title only
+    html += '<div class="yodi-header-section" style="margin-bottom: 10px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">';
     
-    // Left side: Name, Title, About
-    html += '<div style="flex: 1; min-width: 0;">';
     // Name and Title on one line
     html += `<div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 7px;">`;
     html += `<h1 style="font-size: ${nameSize}; font-weight: normal; color: ${colors.black}; margin: 0; line-height: 28px;">${escapeHtml(data.name)}</h1>`;
     html += `<div style="width: 1px; height: 17px; background-color: ${colors.sectionHeader}; margin: 0 5px;"></div>`;
     html += `<div style="font-size: ${titleSize}; color: ${colors.sectionHeader}; line-height: 14px;">${escapeHtml(data.title || 'Product Designer')}</div>`;
     html += `</div>`;
-    
-    // About section
-    if (data.about && data.about.trim()) {
-        html += `<p style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px; margin: 0;">${escapeHtml(data.about).replace(/\n/g, '<br>')}</p>`;
-    }
-    html += '</div>';
-    
-    // Right side: Contact info
-    if (data.website || data.email || data.phone || data.location) {
-        html += `<div style="width: 107px; flex-shrink: 0; text-align: right;">`;
-        html += `<div style="font-size: ${smallSize}; color: ${colors.bodyText}; line-height: 14px;">`;
-        if (data.website) {
-            const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
-            html += `<div style="margin-bottom: 2px;"><a href="${url}" style="color: ${colors.bodyText}; text-decoration: none;">${escapeHtml(data.website.replace(/^https?:\/\//, ''))}</a></div>`;
-        }
-        if (data.email) {
-            html += `<div style="margin-bottom: 2px;">${escapeHtml(data.email)}</div>`;
-        }
-        if (data.phone) {
-            html += `<div style="margin-bottom: 2px;">${escapeHtml(data.phone)}</div>`;
-        }
-        if (data.location) {
-            html += `<div>${escapeHtml(data.location)}</div>`;
-        }
-        html += '</div>';
-        html += '</div>';
-    }
     
     html += '</div>';
     
@@ -1408,8 +1412,13 @@ function generateUXUIDesignerCV(data) {
     // MAIN CONTENT - Two columns
     html += '<div class="yodi-main-content" style="display: flex; gap: 31px; align-items: flex-start; page-break-inside: avoid; break-inside: avoid;">';
     
-    // LEFT COLUMN (wider) - Professional Experience
+    // LEFT COLUMN (wider) - About, Professional Experience
     let leftColumn = '<div style="flex: 1; min-width: 0;">';
+    
+    // About/Summary section at the top of left column
+    if (data.about && data.about.trim()) {
+        leftColumn += `<p style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px; margin: 0; margin-bottom: 12px;">${escapeHtml(data.about).replace(/\n/g, '<br>')}</p>`;
+    }
     
     // Professional Experience Section
     if (data.experience && data.experience.length > 0) {
@@ -1451,11 +1460,73 @@ function generateUXUIDesignerCV(data) {
         });
     }
     
+    // Projects Section (in left column, after experience)
+    if (data.projects && data.projects.length > 0) {
+        leftColumn += '<div style="margin-top: 20px;"></div>';
+        leftColumn += `<div class="yodi-section" style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.sectionHeader}; margin-bottom: 12px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Projects</div>`;
+        leftColumn += '<div style="margin-bottom: 8px;"></div>';
+        
+        data.projects.forEach((project, index) => {
+            if (index > 0) {
+                leftColumn += '<div style="margin-bottom: 8px;"></div>';
+            }
+            
+            // Project Title
+            leftColumn += '<div class="yodi-entry" style="margin-bottom: 4px; page-break-inside: avoid; break-inside: avoid;">';
+            leftColumn += `<span style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.black};">${escapeHtml(project.title)}</span>`;
+            if (project.tech) {
+                const techParts = project.tech.split(',');
+                if (techParts.length > 0 && techParts[0].trim()) {
+                    leftColumn += `<span style="font-size: ${sectionHeaderSize}; color: ${colors.black};"> / ${escapeHtml(techParts[0].trim())}</span>`;
+                }
+            }
+            leftColumn += '</div>';
+            
+            // Project Description
+            if (project.description) {
+                const descLines = project.description.split('\n').filter(line => line.trim());
+                if (descLines.length > 0) {
+                    // First line as regular text
+                    leftColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(descLines[0])}</div>`;
+                    
+                    // Bullet points (remaining lines)
+                    if (descLines.length > 1) {
+                        leftColumn += '<ul style="margin: 4px 0; padding-left: 16px; list-style: disc; list-style-position: outside;">';
+                        for (let i = 1; i < descLines.length; i++) {
+                            leftColumn += `<li style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(descLines[i])}</li>`;
+                        }
+                        leftColumn += '</ul>';
+                    }
+                }
+            }
+        });
+    }
+    
     leftColumn += '</div>';
     
-    // RIGHT COLUMN (narrower) - Education, Certificate, Skills, Languages
-    // Note: Contact info is now in the header, not in right column
+    // RIGHT COLUMN (narrower) - Contact, Education, Certificate, Skills, Languages
     let rightColumn = '<div style="width: 177px; flex-shrink: 0;">';
+    
+    // Contact info at the top of right column
+    if (data.website || data.email || data.phone || data.location) {
+        rightColumn += `<div class="yodi-section" style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.sectionHeader}; margin-bottom: 12px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Contact</div>`;
+        rightColumn += '<div style="margin-bottom: 12px;"></div>';
+        rightColumn += '<div class="yodi-entry" style="margin-bottom: 20px; page-break-inside: avoid; break-inside: avoid;">';
+        if (data.website) {
+            const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
+            rightColumn += `<div style="font-size: ${smallSize}; color: ${colors.bodyText}; line-height: 14px; margin-bottom: 2px;"><a href="${url}" style="color: ${colors.bodyText}; text-decoration: none;">${escapeHtml(data.website.replace(/^https?:\/\//, ''))}</a></div>`;
+        }
+        if (data.email) {
+            rightColumn += `<div style="font-size: ${smallSize}; color: ${colors.bodyText}; line-height: 14px; margin-bottom: 2px;">${escapeHtml(data.email)}</div>`;
+        }
+        if (data.phone) {
+            rightColumn += `<div style="font-size: ${smallSize}; color: ${colors.bodyText}; line-height: 14px; margin-bottom: 2px;">${escapeHtml(data.phone)}</div>`;
+        }
+        if (data.location) {
+            rightColumn += `<div style="font-size: ${smallSize}; color: ${colors.bodyText}; line-height: 14px;">${escapeHtml(data.location)}</div>`;
+        }
+        rightColumn += '</div>';
+    }
     
     // Education Section
     if (data.education && data.education.length > 0) {
@@ -1472,27 +1543,6 @@ function generateUXUIDesignerCV(data) {
                 rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 18px;">${escapeHtml(entry.thesis)}</div>`;
             } else if (entry.gpa) {
                 rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 18px;">GPA : ${escapeHtml(entry.gpa)}</div>`;
-            }
-            rightColumn += '</div>';
-        });
-    }
-    
-    // Projects Section (in right column, after education)
-    if (data.projects && data.projects.length > 0) {
-        rightColumn += `<div class="yodi-section" style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.sectionHeader}; margin-bottom: 12px; margin-top: 20px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Projects</div>`;
-        rightColumn += '<div style="margin-bottom: 12px;"></div>';
-        
-        data.projects.forEach(project => {
-            rightColumn += '<div class="yodi-entry" style="margin-bottom: 12px; page-break-inside: avoid; break-inside: avoid;">';
-            rightColumn += `<div style="font-size: ${sectionHeaderSize}; font-weight: bold; color: ${colors.black}; margin-bottom: 4px;">${escapeHtml(project.title)}</div>`;
-            if (project.tech) {
-                const techParts = project.tech.split(',');
-                if (techParts.length > 0 && techParts[0].trim()) {
-                    rightColumn += `<div style="font-size: ${bodySize}; font-style: italic; color: ${colors.dateLocation}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(techParts[0].trim())}</div>`;
-                }
-            }
-            if (project.description) {
-                rightColumn += `<div style="font-size: ${bodySize}; color: ${colors.bodyText}; line-height: 14px;">${escapeHtml(project.description).replace(/\n/g, ' ')}</div>`;
             }
             rightColumn += '</div>';
         });
