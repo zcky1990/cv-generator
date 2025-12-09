@@ -1767,6 +1767,23 @@ function generateMinimalCV(data) {
     leftColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">CONTACT</div>`;
     leftColumn += '<div style="font-family: \'Montserrat\', Arial, sans-serif; font-size: 11px; line-height: 1.8;">';
     
+    if (data.birthdate || data.cityOfBirth) {
+        let birthInfo = '';
+        if (data.birthdate) {
+            // Format date as "Month Day, Year" or just display the date
+            const date = new Date(data.birthdate);
+            if (!isNaN(date.getTime())) {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                birthInfo = date.toLocaleDateString('en-US', options);
+            } else {
+                birthInfo = data.birthdate;
+            }
+        }
+        if (data.cityOfBirth) {
+            birthInfo = birthInfo ? `${escapeHtml(data.cityOfBirth)}, ${birthInfo}` : escapeHtml(data.cityOfBirth);
+        }
+        leftColumn += `<div style="margin-bottom: 4px;">${birthInfo}</div>`;
+    }
     if (data.phone) {
         leftColumn += `<div style="margin-bottom: 4px;">${escapeHtml(data.phone)}</div>`;
     }
@@ -1777,7 +1794,7 @@ function generateMinimalCV(data) {
         leftColumn += `<div style="margin-bottom: 4px;">${escapeHtml(data.location)}</div>`;
     }
     if (data.linkedin) {
-        leftColumn += `<div style="margin-bottom: 4px;"><a href="https://linkedin.com/in/${escapeHtml(data.linkedin)}" style="color: #000; text-decoration: none;">in ${escapeHtml(data.linkedin)}</a></div>`;
+        leftColumn += `<div style="margin-bottom: 4px;"><a href="https://linkedin.com/in/${escapeHtml(data.linkedin)}" style="color: #000; text-decoration: none;">in: ${escapeHtml(data.linkedin)}</a></div>`;
     }
     if (data.website) {
         const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
@@ -1794,23 +1811,6 @@ function generateMinimalCV(data) {
     if (data.instagram) {
         const instagramUrl = data.instagram.startsWith('http') ? data.instagram : `https://${data.instagram}`;
         leftColumn += `<div style="margin-bottom: 4px;"><a href="${instagramUrl}" style="color: #000; text-decoration: none;">${escapeHtml(data.instagram)}</a></div>`;
-    }
-    if (data.birthdate || data.cityOfBirth) {
-        let birthInfo = '';
-        if (data.birthdate) {
-            // Format date as "Month Day, Year" or just display the date
-            const date = new Date(data.birthdate);
-            if (!isNaN(date.getTime())) {
-                const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                birthInfo = date.toLocaleDateString('en-US', options);
-            } else {
-                birthInfo = data.birthdate;
-            }
-        }
-        if (data.cityOfBirth) {
-            birthInfo = birthInfo ? `${birthInfo}, ${escapeHtml(data.cityOfBirth)}` : escapeHtml(data.cityOfBirth);
-        }
-        leftColumn += `<div style="margin-bottom: 4px;">${birthInfo}</div>`;
     }
     
     leftColumn += '</div></div>';
@@ -1947,19 +1947,11 @@ function generateMinimalCV(data) {
             }
             
             rightColumn += '</div>';
-            
-            // Add separator between entries (except last)
-            if (index < data.experience.length - 1) {
-                rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
-            }
         });
     }
     
     // Projects Section (if no experience or as additional section)
     if (data.projects && data.projects.length > 0) {
-        if (data.experience && data.experience.length > 0) {
-            rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
-        }
         rightColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">PROJECTS</div>`;
         if (data.experience && data.experience.length > 0) {
             rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
@@ -1979,10 +1971,6 @@ function generateMinimalCV(data) {
             }
             
             rightColumn += '</div>';
-            
-            if (index < data.projects.length - 1) {
-                rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
-            }
         });
     }
     
@@ -2033,9 +2021,6 @@ function generateMinimalCV(data) {
     
     // Publications Section
     if (data.publications && data.publications.trim()) {
-        if (data.experience && data.experience.length > 0 || data.projects && data.projects.length > 0 || data.volunteer && data.volunteer.length > 0) {
-            rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
-        }
         rightColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">PUBLICATIONS</div>`;
         if (data.experience && data.experience.length > 0 || data.projects && data.projects.length > 0 || data.volunteer && data.volunteer.length > 0) {
             rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
@@ -2044,17 +2029,11 @@ function generateMinimalCV(data) {
         const publications = data.publications.split('\n').filter(line => line.trim());
         publications.forEach((pub, index) => {
             rightColumn += `<div style="font-size: 11px; margin-bottom: 8px; line-height: 1.6;">${escapeHtml(pub.trim())}</div>`;
-            if (index < publications.length - 1) {
-                rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
-            }
         });
     }
     
     // Awards Section
     if (data.awards && data.awards.trim()) {
-        if (data.experience && data.experience.length > 0 || data.projects && data.projects.length > 0 || data.volunteer && data.volunteer.length > 0 || data.publications && data.publications.trim()) {
-            rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
-        }
         rightColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">AWARDS</div>`;
         if (data.experience && data.experience.length > 0 || data.projects && data.projects.length > 0 || data.volunteer && data.volunteer.length > 0 || data.publications && data.publications.trim()) {
             rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
