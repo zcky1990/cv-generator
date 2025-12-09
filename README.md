@@ -1,127 +1,148 @@
-# CV Builder - Simple CV LaTeX Template
+# CV Builder - Professional Resume Builder
 
-A web-based CV builder that generates a professional LaTeX CV based on the [Simple CV template from Overleaf](https://www.overleaf.com/latex/templates/simple-cv/wmsyrgqwwqnc).
+A modern, web-based CV builder that generates professional PDF resumes with multiple beautiful templates. No LaTeX knowledge required - just fill in the form and download your CV as a PDF!
 
 ## Features
 
-- 🎨 Beautiful, modern web interface
-- 📝 Easy-to-use form for all CV sections
-- 🔄 Dynamic addition/removal of entries
-- 📄 Generates LaTeX code ready for compilation
-- 💾 Download as `.tex` file
-- 📋 Copy to clipboard functionality
-- 🎯 Based on the professional Simple CV template
+- 🎨 **5 Professional Templates**: Choose from Yodi, Classic, LuxSleek, Minimal, and Nabhel templates
+- 📝 **Easy-to-Use Form**: Intuitive interface for all CV sections
+- 🔄 **Dynamic Sections**: Add or remove entries dynamically (experience, projects, education, etc.)
+- 📄 **Direct PDF Generation**: Download your CV as a PDF instantly using html2pdf.js
+- 💾 **Auto-Save**: Your data is automatically saved to browser localStorage
+- 🎯 **Page Customization**: Adjust paper size, orientation, and margins (top, bottom, left, right)
+- 🌓 **Dark Mode**: Toggle between light and dark themes
+- 📱 **Responsive Design**: Works on desktop, tablet, and mobile devices
+- 🖨️ **Print-Optimized**: Templates are optimized for PDF generation and printing
+
+## Templates
+
+1. **Yodi** - Modern, clean design with emphasis on visual hierarchy
+2. **Classic** - Traditional professional layout with balanced spacing
+3. **LuxSleek** - Elegant and sophisticated design
+4. **Minimal** - Clean and minimalist approach
+5. **Nabhel** - Structured layout with clear sections
 
 ## Sections Included
 
-- Personal Information (Name, Email, Website, LinkedIn, GitHub)
-- Education
-- Experience
-- Publications
-- Teaching
-- Skills
-- Languages
-- Projects
-- Scholarships and Awards
-- Extracurricular Activities
+- **Personal Information**: Name, title, email, phone, location, website, LinkedIn, GitHub
+- **Summary/About**: Professional summary or about section
+- **Experience**: Work history with company, position, dates, and descriptions
+- **Education**: Academic background with institution, degree, and dates
+- **Projects**: Portfolio projects with descriptions and links
+- **Skills**: Technical and soft skills
+- **Certificates**: Professional certifications
+- **Languages**: Language proficiency
+- **Contact**: Additional contact information
 
 ## Usage
 
-### Option 1: Use the Web Interface (Recommended)
+### Getting Started
 
 1. Open `index.html` in your web browser
 2. Fill in all the relevant sections of your CV
-3. Click "Generate LaTeX CV" or "Preview" to see the generated LaTeX code
-4. Click "Download .tex File" to save the file
-5. Compile the `.tex` file using a LaTeX compiler (e.g., pdflatex, xelatex, or upload to Overleaf)
+3. Select a template from the template selector
+4. Click "Preview CV" to see your CV with the selected template
+5. In the preview:
+   - Adjust page options (paper size, orientation, margins) using the fixed menu on the right
+   - Click "Download PDF" to save your CV as a PDF file
+   - Click "Back to Edit" to return to the form
+   - Toggle dark/light theme as needed
 
-### Option 2: Use the Template Directly
+### Page Options
 
-1. Open `cv-template.tex` in a text editor
-2. Replace the placeholder content with your information
-3. Compile using a LaTeX compiler
+In the preview mode, you'll find a fixed menu on the right side with page customization options:
 
-## Compiling the LaTeX File
+- **Paper Size**: Choose from Letter, A4, or Legal
+- **Orientation**: Portrait or Landscape
+- **Margins**: Adjust top, bottom, left, and right margins (in millimeters)
 
-### Using Overleaf (Easiest)
+All settings are automatically saved and will be applied when generating the PDF.
 
-1. Go to [Overleaf](https://www.overleaf.com)
-2. Create a new project
-3. Upload your `cv.tex` file
-4. Click "Recompile" to generate the PDF
+### Data Persistence
 
-### Using Local LaTeX Installation
-
-If you have LaTeX installed locally:
-
-```bash
-pdflatex cv.tex
-```
-
-Or using XeLaTeX:
-
-```bash
-xelatex cv.tex
-```
+Your CV data is automatically saved to your browser's localStorage. This means:
+- Your data persists between browser sessions
+- You can close and reopen the page without losing your work
+- Data is stored locally on your device (no server required)
 
 ## File Structure
 
 ```
 cv-builder/
-├── index.html          # Main web interface
-├── styles.css          # Styling for the web interface
-├── script.js           # JavaScript for form handling and LaTeX generation
-├── cv-template.tex     # Direct LaTeX template (can be edited manually)
-└── README.md           # This file
+├── index.html              # Main form interface
+├── script.js               # Core logic for form handling and CV generation
+├── template/
+│   ├── yodi.html          # Yodi template
+│   ├── classic.html       # Classic template
+│   ├── luxsleek.html      # LuxSleek template
+│   ├── minimal.html       # Minimal template
+│   └── nabhel.html        # Nabhel template
+└── README.md              # This file
 ```
 
 ## Requirements
 
 - A modern web browser (Chrome, Firefox, Safari, Edge)
-- A LaTeX compiler (for compiling the generated `.tex` file):
-  - Online: [Overleaf](https://www.overleaf.com) (recommended)
-  - Local: TeX Live, MiKTeX, or MacTeX
-
-## Tips
-
-- **Date Formats**: Use formats like "2020-Current", "Summer 2019", "2018-2020"
-- **Publications**: Follow the format shown in the placeholder text
-- **Awards**: Use "Award Name ..... Year" format (dots will be converted to proper spacing)
-- **Special Characters**: The form automatically escapes LaTeX special characters
-- **Empty Sections**: Leave sections empty if you don't need them - they won't appear in the output
-
-## Customization
-
-### Modifying the Template
-
-You can customize the LaTeX template by editing `cv-template.tex` or modifying the template string in `script.js`.
-
-### Styling the Web Interface
-
-Edit `styles.css` to change the appearance of the web interface.
+- No server or backend required - works entirely in the browser
+- No LaTeX installation needed - PDFs are generated client-side
 
 ## Browser Compatibility
 
-- Chrome/Edge (latest)
-- Firefox (latest)
-- Safari (latest)
+- Chrome/Edge (latest) ✅
+- Firefox (latest) ✅
+- Safari (latest) ✅
+
+## Tips
+
+- **Date Formats**: Use formats like "2020 - Present", "Jan 2019 - Dec 2020", "2018-2020"
+- **Empty Sections**: Leave sections empty if you don't need them - they won't appear in the output
+- **Multiple Entries**: Use the "+ Add" buttons to add multiple entries to sections like Experience, Education, Projects, etc.
+- **Page Margins**: Adjust margins based on your content and printer requirements
+- **Template Selection**: Try different templates to see which one best showcases your experience
+
+## Customization
+
+### Modifying Templates
+
+Each template is a standalone HTML file in the `template/` directory. You can:
+- Edit the HTML structure
+- Modify CSS styles (inline or in style tags)
+- Adjust the layout and design
+
+### Adding New Templates
+
+1. Create a new HTML file in the `template/` directory
+2. Follow the structure of existing templates
+3. Include the required JavaScript functions:
+   - `loadPageSettings()` - Load saved page settings
+   - `updateMargin()` - Update margin values
+   - `updatePaperSize()` - Update paper size
+   - `updateOrientation()` - Update orientation
+   - `applyMargins()` - Apply margin styles
+   - `savePageSettings()` - Save page settings
+   - `downloadPDF()` - Generate and download PDF
+   - `goBack()` - Return to form
+4. Update `script.js` to include your template in the generation logic
+
+## Technical Details
+
+- **PDF Generation**: Uses [html2pdf.js](https://github.com/eKoopmans/html2pdf.js) library
+- **Styling**: Tailwind CSS for responsive design
+- **Storage**: Browser localStorage for data persistence
+- **No Dependencies**: All libraries are loaded via CDN
 
 ## License
 
 This project is open source and available for personal and commercial use.
 
-## Credits
-
-Based on the [Simple CV template](https://www.overleaf.com/latex/templates/simple-cv/wmsyrgqwwqnc) from Overleaf.
-
 ## Support
 
 If you encounter any issues:
-1. Make sure all required fields are filled
-2. Check that your LaTeX installation is up to date
-3. Verify that all special characters are properly handled
+1. Make sure you're using a modern, up-to-date browser
+2. Check browser console for any JavaScript errors
+3. Ensure you have sufficient browser storage for localStorage
+4. Try clearing browser cache if experiencing display issues
 
 ---
 
 **Note**: This is a static web application - no server or backend required. Just open `index.html` in your browser and start building your CV!
-
