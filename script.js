@@ -1762,6 +1762,16 @@ function generateMinimalCV(data) {
         leftColumn += `<div class="minimal-title" style="${titleStyle}">${escapeHtml(data.title)}</div>`;
     }
     
+    // Profile Image (only if present) - placed after name and title for better visual flow
+    if (data.photo && data.photo.trim()) {
+        leftColumn += '<div style="margin-top: 20px; margin-bottom: 20px;">';
+        // Portrait format container (210px width x 300px height = 3:4.3 ratio)
+        leftColumn += '<div style="width: 210px; height: 300px; overflow: hidden; background-color: #f0f0f0; position: relative;">';
+        // Don't escape the photo data URL - it's already a valid data URL
+        leftColumn += `<img src="${data.photo}" alt="Profile Photo" style="width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; position: absolute; top: 0; left: 0;">`;
+        leftColumn += '</div></div>';
+    }
+
     // Contact Section
     leftColumn += '<div style="margin-top: 30px; margin-bottom: 30px;">';
     leftColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">CONTACT</div>`;
