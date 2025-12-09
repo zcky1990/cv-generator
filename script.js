@@ -84,6 +84,7 @@ function collectFormData() {
         title: document.getElementById('title')?.value || '',
         phone: document.getElementById('phone')?.value || '',
         birthdate: document.getElementById('birthdate')?.value || '',
+        cityOfBirth: document.getElementById('cityOfBirth')?.value || '',
         location: document.getElementById('location')?.value || '',
         website: document.getElementById('website').value,
         email: document.getElementById('email').value,
@@ -672,7 +673,11 @@ function generateLuxSleekCV(data) {
     leftColumn += '<h2 style="font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.3); font-family: Calibri, Arial, sans-serif;">Personal Information</h2>';
     leftColumn += '<div style="font-size: 12px; font-family: Calibri, Arial, sans-serif;">';
     if (data.birthdate) {
-        leftColumn += `<div style="margin-bottom: 4px;">Year of birth: <strong>${escapeHtml(data.birthdate.split('-')[0])}</strong></div>`;
+        const birthYear = data.birthdate.split('-')[0];
+        const cityText = data.cityOfBirth ? `, ${escapeHtml(data.cityOfBirth)}` : '';
+        leftColumn += `<div style="margin-bottom: 4px;">Year of birth: <strong>${escapeHtml(birthYear)}${cityText}</strong></div>`;
+    } else if (data.cityOfBirth) {
+        leftColumn += `<div style="margin-bottom: 4px;">City of birth: <strong>${escapeHtml(data.cityOfBirth)}</strong></div>`;
     }
     if (data.languages && data.languages.length > 0) {
         const langList = data.languages.map(l => `<strong>${escapeHtml(l.name)}</strong>${l.level ? ` (${escapeHtml(l.level)})` : ''}`).join(', ');
@@ -1790,8 +1795,22 @@ function generateMinimalCV(data) {
         const instagramUrl = data.instagram.startsWith('http') ? data.instagram : `https://${data.instagram}`;
         leftColumn += `<div style="margin-bottom: 4px;"><a href="${instagramUrl}" style="color: #000; text-decoration: none;">${escapeHtml(data.instagram)}</a></div>`;
     }
-    if (data.birthdate) {
-        leftColumn += `<div style="margin-bottom: 4px;">${escapeHtml(data.birthdate)}</div>`;
+    if (data.birthdate || data.cityOfBirth) {
+        let birthInfo = '';
+        if (data.birthdate) {
+            // Format date as "Month Day, Year" or just display the date
+            const date = new Date(data.birthdate);
+            if (!isNaN(date.getTime())) {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                birthInfo = date.toLocaleDateString('en-US', options);
+            } else {
+                birthInfo = data.birthdate;
+            }
+        }
+        if (data.cityOfBirth) {
+            birthInfo = birthInfo ? `${birthInfo}, ${escapeHtml(data.cityOfBirth)}` : escapeHtml(data.cityOfBirth);
+        }
+        leftColumn += `<div style="margin-bottom: 4px;">${birthInfo}</div>`;
     }
     
     leftColumn += '</div></div>';
@@ -2700,6 +2719,9 @@ function populateTemplate(templateData, data) {
     html = html.replace(/\{\{#if birthdate\}\}([\s\S]*?)\{\{\/if\}\}/g, (match, content) => {
         return (data.birthdate && data.birthdate.trim()) ? content : '';
     });
+    html = html.replace(/\{\{#if cityOfBirth\}\}([\s\S]*?)\{\{\/if\}\}/g, (match, content) => {
+        return (data.cityOfBirth && data.cityOfBirth.trim()) ? content : '';
+    });
     html = html.replace(/\{\{#if phone\}\}([\s\S]*?)\{\{\/if\}\}/g, (match, content) => {
         return (data.phone && data.phone.trim()) ? content : '';
     });
@@ -2720,6 +2742,7 @@ function populateTemplate(templateData, data) {
     html = html.replace(/\{\{phone\}\}/g, escapeHtml(data.phone || ''));
     html = html.replace(/\{\{email\}\}/g, escapeHtml(data.email || '')); // Also replace any remaining email placeholders
     html = html.replace(/\{\{birthdate\}\}/g, escapeHtml(data.birthdate || ''));
+    html = html.replace(/\{\{cityOfBirth\}\}/g, escapeHtml(data.cityOfBirth || ''));
     html = html.replace(/\{\{location\}\}/g, escapeHtml(data.location || ''));
     html = html.replace(/\{\{about\}\}/g, escapeHtml(data.about || ''));
     html = html.replace(/\{\{contactInfo\}\}/g, generateContactInfo(data));
@@ -3182,6 +3205,7 @@ function loadFormData(data) {
     if (data.title && document.getElementById('title')) document.getElementById('title').value = data.title;
     if (data.phone && document.getElementById('phone')) document.getElementById('phone').value = data.phone;
     if (data.birthdate && document.getElementById('birthdate')) document.getElementById('birthdate').value = data.birthdate;
+    if (data.cityOfBirth && document.getElementById('cityOfBirth')) document.getElementById('cityOfBirth').value = data.cityOfBirth;
     if (data.location && document.getElementById('location')) document.getElementById('location').value = data.location;
     if (data.website) document.getElementById('website').value = data.website;
     if (data.email) document.getElementById('email').value = data.email;
