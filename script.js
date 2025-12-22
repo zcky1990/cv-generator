@@ -1160,7 +1160,7 @@ function generateProductDesignerCV(data) {
     let html = '<div style="display: flex; width: 100%; font-family: ' + fontFamily + ';">';
     
     // LEFT COLUMN (~25% width) - Sidebar
-    let leftColumn = '<div id="nabhel-left-column" style="flex: 0 0 25%; padding: 24px; box-sizing: border-box;">';
+    let leftColumn = '<div id="nabhel-left-column" style="flex: 0 0 25%; padding: 24px 24px 0 0; box-sizing: border-box;">';
     
     // Profile Picture (show if available, hide completely if not)
     if (data.photo && data.photo.trim()) {
