@@ -1522,7 +1522,7 @@ function generateUXUIDesignerCV(data) {
     
     // MAIN CONTENT - Two columns
     // LEFT COLUMN (wider) - About, Professional Experience
-    let leftColumn = '<div style="flex: 1; min-width: 0; padding-right: 8px;">';
+    let leftColumn = '<div style="padding-right: 8px;">';
     
     // About/Summary section at the top of left column with improved styling
     if (data.about && data.about.trim()) {
@@ -1612,7 +1612,7 @@ function generateUXUIDesignerCV(data) {
     leftColumn += '</div>';
     
     // RIGHT COLUMN (narrower) - Contact, Education, Certificate, Skills, Languages
-    let rightColumn = '<div style="width: 200px; flex-shrink: 0; padding-left: 8px;">';
+    let rightColumn = '<div style="width: 200px; padding-left: 8px;">';
     
     // Contact info at the top of right column with improved styling
     if (data.website || data.email || data.phone || data.location || data.linkedin || data.github || data.dribbble) {
@@ -1799,8 +1799,8 @@ function generateUXUIDesignerCV(data) {
     
     rightColumn += '</div>';
     
-    // Close columns - apply flex styles directly with improved spacing
-    html += `<div style="display: flex; gap: 40px; align-items: flex-start; page-break-inside: avoid; break-inside: avoid; justify-content: space-between;">${leftColumn}${rightColumn}</div>`;
+    // Output columns directly without wrapper div - cvContainer is the only wrapper
+    html += leftColumn + rightColumn;
     
     html += '</div>';
     
