@@ -129,19 +129,17 @@
             .hover\:bg-secondary\/80:hover { background-color: hsl(var(--secondary) / 0.8); }
             
             /* Ensure left column is full height for PDF */
-            #luxsleek-left-column,
-            #cvContainer #luxsleek-left-column {
-                height: 279.4mm !important; /* US Letter height (11 inches) */
+            /* #luxsleek-left-column, #luxsleek-left-column {
+                height: 279.4mm !important; 
+                min-height: 279.4mm !important;
+            } */
+            #luxsleek-wrapper, #luxsleek-wrapper {
+                /* height: 279.4mm !important; */
                 min-height: 279.4mm !important;
             }
-            #luxsleek-wrapper,
-            #cvContainer #luxsleek-wrapper {
-                height: 279.4mm !important;
-                min-height: 279.4mm !important;
-            }
-            #luxsleek-wrapper > div {
+            /* #luxsleek-wrapper > div {
                 height: 100% !important;
-            }
+            } */
             
             /* Drawer styles */
             .drawer-closed {

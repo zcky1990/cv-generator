@@ -611,9 +611,9 @@ function generateCVFromData(data) {
 function generateLuxSleekCV(data) {
     const luxsleekBlue = '#304263';
     
-    // Left column content (blue sidebar) - using table layout for better PDF compatibility
+    // Left column content (blue sidebar) - using flexbox layout
     // Use fixed height for PDF (11in = letter size height) and 100vh for screen
-    let leftColumn = '<div id="luxsleek-left-column" style="width: 33%; min-height: 100vh; height: 279.4mm; display: table-cell; vertical-align: top; box-sizing: border-box; background-color: #304263; background: #304263; color: white; padding: 24px; font-family: Calibri, Arial, sans-serif; font-size: 12px; position: relative; visibility: visible; opacity: 1;">';
+    let leftColumn = '<div id="luxsleek-left-column" style="flex: 0 0 33%; min-height: 100vh; /* height: 279.4mm; */ box-sizing: border-box; background-color: #304263; background: #304263; color: white; padding: 24px; font-family: Calibri, Arial, sans-serif; font-size: 12px; position: relative; visibility: visible; opacity: 1;">';
     
     // Name
     const nameParts = data.name.split(' ');
@@ -708,13 +708,17 @@ function generateLuxSleekCV(data) {
     
     leftColumn += '</div>';
     
-    // Right column content (white area) - using table layout for better PDF compatibility
-    let rightColumn = '<div id="luxsleek-right-column" style="width: 67%; display: table-cell; vertical-align: top; box-sizing: border-box; background-color: white; color: black; padding: 24px; font-family: Calibri, Arial, sans-serif; font-size: 12px; position: relative; visibility: visible; opacity: 1;">';
+    // Right column content (white area) - using flexbox layout
+    let rightColumn = '<div id="luxsleek-right-column" style="flex: 0 0 67%; box-sizing: border-box; background-color: white; color: black; padding: 24px; font-family: Calibri, Arial, sans-serif; font-size: 12px; position: relative; visibility: visible; opacity: 1;">';
+    
+    // Track if this is the first section
+    let isFirstSection = true;
     
     // Experience
     if (data.experience && data.experience.length > 0) {
-        rightColumn += '<div style="margin-bottom: 24px;">';
+        rightColumn += `<div style="${isFirstSection ? 'margin-bottom: 24px;' : 'margin-top: 24px; margin-bottom: 24px;'}">`;
         rightColumn += '<h2 style="font-size: 16px; font-weight: bold; color: #304263; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #304263; font-family: Calibri, Arial, sans-serif;">Experience</h2>';
+        isFirstSection = false;
         data.experience.forEach(entry => {
             rightColumn += '<div style="margin-bottom: 16px;">';
             const dateStr = formatDateForLuxSleek(entry.dateStart, entry.dateEnd);
@@ -739,8 +743,9 @@ function generateLuxSleekCV(data) {
     
     // Education
     if (data.education && data.education.length > 0) {
-        rightColumn += '<div style="margin-bottom: 24px;">';
+        rightColumn += `<div style="${isFirstSection ? 'margin-bottom: 24px;' : 'margin-top: 24px; margin-bottom: 24px;'}">`;
         rightColumn += '<h2 style="font-size: 16px; font-weight: bold; color: #304263; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #304263; font-family: Calibri, Arial, sans-serif;">Education</h2>';
+        isFirstSection = false;
         data.education.forEach(entry => {
             rightColumn += '<div style="margin-bottom: 16px;">';
             const dateStr = formatDateForLuxSleek(entry.dateStart, entry.dateEnd);
@@ -758,8 +763,9 @@ function generateLuxSleekCV(data) {
     
     // Projects (as Additional Education/Projects)
     if (data.projects && data.projects.length > 0) {
-        rightColumn += '<div style="margin-top:24px; margin-bottom: 24px;">';
+        rightColumn += `<div style="${isFirstSection ? 'margin-bottom: 24px;' : 'margin-top: 24px; margin-bottom: 24px;'}">`;
         rightColumn += '<h2 style="font-size: 16px; font-weight: bold; color: #304263; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #304263; font-family: Calibri, Arial, sans-serif;">Projects</h2>';
+        isFirstSection = false;
         data.projects.forEach(entry => {
             rightColumn += '<div style="margin-bottom: 16px;">';
             rightColumn += `<div style="font-size: 12px; font-family: Calibri, Arial, sans-serif;"><span style="font-weight: bold; text-transform: uppercase;">${escapeHtml(entry.title)}</span>${entry.tech ? ` (${escapeHtml(entry.tech)})` : ''}.</div>`;
@@ -780,8 +786,9 @@ function generateLuxSleekCV(data) {
     
     // Volunteer
     if (data.volunteer && data.volunteer.length > 0) {
-        rightColumn += '<div style="margin-bottom: 24px;">';
+        rightColumn += `<div style="${isFirstSection ? 'margin-bottom: 24px;' : 'margin-top: 24px; margin-bottom: 24px;'}">`;
         rightColumn += '<h2 style="font-size: 16px; font-weight: bold; color: #304263; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #304263; font-family: Calibri, Arial, sans-serif;">Volunteer</h2>';
+        isFirstSection = false;
         data.volunteer.forEach(entry => {
             rightColumn += '<div style="margin-bottom: 16px;">';
             const dateStr = formatDateForLuxSleek(entry.dateStart, entry.dateEnd);
@@ -806,8 +813,9 @@ function generateLuxSleekCV(data) {
     
     // Publications
     if (data.publications && data.publications.trim()) {
-        rightColumn += '<div style="margin-bottom: 24px;">';
+        rightColumn += `<div style="${isFirstSection ? 'margin-bottom: 24px;' : 'margin-top: 24px; margin-bottom: 24px;'}">`;
         rightColumn += '<h2 style="font-size: 16px; font-weight: bold; color: #304263; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #304263; font-family: Calibri, Arial, sans-serif;">Publications</h2>';
+        isFirstSection = false;
         const publications = data.publications.split('\n').filter(line => line.trim());
         publications.forEach(pub => {
             rightColumn += `<div style="font-size: 11px; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;">${escapeHtml(pub.trim())}</div>`;
@@ -817,8 +825,9 @@ function generateLuxSleekCV(data) {
     
     // Awards
     if (data.awards && data.awards.trim()) {
-        rightColumn += '<div style="margin-bottom: 24px;">';
+        rightColumn += `<div style="${isFirstSection ? 'margin-bottom: 24px;' : 'margin-top: 24px; margin-bottom: 24px;'}">`;
         rightColumn += '<h2 style="font-size: 16px; font-weight: bold; color: #304263; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #304263; font-family: Calibri, Arial, sans-serif;">Awards</h2>';
+        isFirstSection = false;
         const awards = data.awards.split('\n').filter(line => line.trim());
         awards.forEach(award => {
             rightColumn += `<div style="font-size: 11px; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;">${escapeHtml(award.trim())}</div>`;
@@ -828,8 +837,9 @@ function generateLuxSleekCV(data) {
     
     // Hobbies
     if (data.hobbies && data.hobbies.trim()) {
-        rightColumn += '<div style="margin-bottom: 24px;">';
+        rightColumn += `<div style="${isFirstSection ? 'margin-bottom: 24px;' : 'margin-top: 24px; margin-bottom: 24px;'}">`;
         rightColumn += '<h2 style="font-size: 16px; font-weight: bold; color: #304263; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 4px; border-bottom: 2px solid #304263; font-family: Calibri, Arial, sans-serif;">Hobbies</h2>';
+        isFirstSection = false;
         const hobbies = data.hobbies.split('\n').filter(line => line.trim());
         hobbies.forEach(hobby => {
             rightColumn += `<div style="font-size: 11px; margin-bottom: 4px; font-family: Calibri, Arial, sans-serif;"><em>${escapeHtml(hobby.trim())}</em></div>`;
@@ -839,14 +849,13 @@ function generateLuxSleekCV(data) {
     
     rightColumn += '</div>';
     
-    // Combine into two-column layout using table for better PDF compatibility
-    // Using explicit table structure for maximum compatibility with html2pdf
-    return `<div id="luxsleek-wrapper" style="width: 100%; margin: 0; padding: 0; display: table; table-layout: fixed; min-height: 100vh; font-family: Calibri, Arial, sans-serif; font-size: 12px; border-collapse: collapse;"><div style="display: table-row;">${leftColumn}${rightColumn}</div></div>`;
+    // Combine into two-column layout using flexbox
+    return `<div id="luxsleek-wrapper" style="width: 100%; margin: 0; padding: 0; display: flex; min-height: 100vh; font-family: Calibri, Arial, sans-serif; font-size: 12px;">${leftColumn}${rightColumn}</div>`;
 }
 
 // Format date for LuxSleek template (YYYY.MM--YYYY.MM format)
 function formatDateForLuxSleek(startDate, endDate) {
-    if (!startDate && !endDate) return 'Present';
+    if (!startDate && !endDate) return '';
     
     const formatDate = (dateStr) => {
         if (!dateStr) return '';
@@ -855,7 +864,11 @@ function formatDateForLuxSleek(startDate, endDate) {
     };
     
     const start = formatDate(startDate);
-    const end = endDate ? formatDate(endDate) : 'Present';
+    let end = '';
+
+    if (startDate && startDate != ""){
+        end = endDate ? formatDate(endDate) : 'Present';
+    }
     
     if (!start) return end;
     return `${start} - ${end}`;
