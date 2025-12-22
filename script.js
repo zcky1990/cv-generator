@@ -1262,7 +1262,7 @@ function generateProductDesignerCV(data) {
     // LinkedIn
     if (data.linkedin) {
         leftColumn += '<div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">';
-        leftColumn += `<div style="width: 16px; height: 16px; border-radius: 50%; background-color: ${colors.linkedin}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0px 2px 8px rgba(0,0,0,0.06);">`;
+        leftColumn += `<div style="width: 16px; height: 16px; border-radius: 50%; background-color: black; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0px 2px 8px rgba(0,0,0,0.06);">`;
         leftColumn += `<span style="font-size: 8px; color: white;">in</span>`;
         leftColumn += '</div>';
         leftColumn += '<div style="flex: 1;">';
@@ -1339,6 +1339,11 @@ function generateProductDesignerCV(data) {
             rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4; margin-bottom: 6px;">${escapeHtml(dateStr)}${entry.city ? ` ${escapeHtml(entry.city)}` : ''}</div>`;
             rightColumn += '</div>';
             
+            // Description/Thesis
+            if (entry.university) {
+                rightColumn += `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 16px 0;">${escapeHtml(entry.university).replace(/\n/g, '<br>')}</p>`;
+            }
+
             // Description/Thesis
             if (entry.thesis) {
                 rightColumn += `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 16px 0;">${escapeHtml(entry.thesis).replace(/\n/g, '<br>')}</p>`;
