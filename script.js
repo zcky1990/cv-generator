@@ -1363,81 +1363,79 @@ function generateProductDesignerCV(data) {
 function generateUXUIDesignerCV(data) {
     const fontFamily = 'Arial, sans-serif';
     
-    // Color scheme from Figma design
+    // Enhanced color scheme - more modern and professional
     const colors = {
-        sectionHeader: '#b0b7bd',  // Light grey for section headers
-        bodyText: '#55595d',       // Dark grey for body text
-        dateLocation: '#abb3ba',   // Medium grey for dates/locations
-        black: '#000000'           // Black for names/titles
+        sectionHeader: '#8a9196',  // Refined grey for section headers
+        bodyText: '#4a5568',       // Improved contrast for body text
+        dateLocation: '#718096',   // Better readability for dates/locations
+        black: '#1a202c',         // Softer black for better print quality
+        linkColor: '#2d3748'       // Subtle link color
     };
     
-    // Font sizes from Figma
-    const nameSize = '24px';
-    const titleSize = '24px';
-    const sectionHeaderSize = '12px';
-    const bodySize = '10px';
-    const smallSize = '9.5px';
+    // Improved font sizes with better hierarchy
+    const nameSize = '26px';
+    const titleSize = '22px';
+    const sectionHeaderSize = '13px';
+    const bodySize = '11px';
+    const smallSize = '10px';
     
-    let html = '<div style="font-family: ' + fontFamily + '; width: 100%; padding: 24px; box-sizing: border-box;">';
+    let html = '<div style="font-family: ' + fontFamily + '; width: 100%; padding: 28px; box-sizing: border-box; max-width: 100%;">';
     
-    // HEADER SECTION - Name and Title only
-    html += '<div class="yodi-header-section" style="margin-bottom: 10px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">';
+    // HEADER SECTION - Name and Title with improved styling
+    html += '<div class="yodi-header-section" style="margin-bottom: 16px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">';
     
-    // Name and Title on one line
-    html += `<div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 7px;">`;
-    html += `<h1 class="text-[${colors.black}] dark:text-white" style="font-size: ${nameSize}; font-weight: normal; margin: 0; line-height: 28px;">${escapeHtml(data.name)}</h1>`;
-    html += `<div style="width: 1px; height: 17px; background-color: ${colors.sectionHeader}; margin: 0 5px;"></div>`;
-    html += `<div class="text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${titleSize}; line-height: 14px;">${escapeHtml(data.title || 'Product Designer')}</div>`;
+    // Name and Title on one line with better alignment
+    html += `<div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">`;
+    html += `<h1 class="text-[${colors.black}] dark:text-white" style="font-size: ${nameSize}; font-weight: 600; margin: 0; line-height: 1.2; letter-spacing: -0.5px;">${escapeHtml(data.name)}</h1>`;
+    html += `<div style="width: 1px; height: 20px; background-color: ${colors.sectionHeader}; margin: 0 8px; opacity: 0.6;"></div>`;
+    html += `<div class="text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${titleSize}; line-height: 1.3; font-weight: 400;">${escapeHtml(data.title || 'Product Designer')}</div>`;
     html += `</div>`;
     
     html += '</div>';
     
-    // Horizontal divider line
-    html += `<div style="width: 100%; height: 1px; background-color: ${colors.sectionHeader}; margin: 20px 0; page-break-inside: avoid;"></div>`;
+    // Horizontal divider line with improved styling
+    html += `<div style="width: 100%; height: 1.5px; background-color: ${colors.sectionHeader}; margin: 24px 0; opacity: 0.4; page-break-inside: avoid;"></div>`;
     
     // MAIN CONTENT - Two columns
-    html += '<div class="yodi-main-content" style="display: flex; gap: 31px; align-items: flex-start; page-break-inside: avoid; break-inside: avoid;">';
-    
     // LEFT COLUMN (wider) - About, Professional Experience
-    let leftColumn = '<div style="flex: 1; min-width: 0;">';
+    let leftColumn = '<div style="flex: 1; min-width: 0; padding-right: 8px;">';
     
-    // About/Summary section at the top of left column
+    // About/Summary section at the top of left column with improved styling
     if (data.about && data.about.trim()) {
-        leftColumn += `<p class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 14px; margin: 0; margin-bottom: 12px;">${escapeHtml(data.about).replace(/\n/g, '<br>')}</p>`;
+        leftColumn += `<p class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.6; margin: 0; margin-bottom: 20px; color: ${colors.bodyText};">${escapeHtml(data.about).replace(/\n/g, '<br>')}</p>`;
     }
     
-    // Professional Experience Section
+    // Professional Experience Section with improved styling
     if (data.experience && data.experience.length > 0) {
-        leftColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: bold; margin-bottom: 12px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Professional Experience</div>`;
-        leftColumn += '<div style="margin-bottom: 8px;"></div>';
+        leftColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; margin-bottom: 16px; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Professional Experience</div>`;
         
         data.experience.forEach((entry, index) => {
             if (index > 0) {
-                leftColumn += '<div style="margin-bottom: 8px;"></div>';
+                leftColumn += '<div style="margin-bottom: 16px;"></div>';
             }
             
-            // Company / Position
-            leftColumn += '<div class="yodi-entry" style="margin-bottom: 4px; page-break-inside: avoid; break-inside: avoid;">';
-            leftColumn += `<span class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: bold;">${escapeHtml(entry.company)}</span>`;
-            leftColumn += `<span class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; > / ${escapeHtml(entry.position)}</span>`;
+            // Company / Position with improved formatting
+            leftColumn += '<div class="yodi-entry" style="margin-bottom: 6px; page-break-inside: avoid; break-inside: avoid;">';
+            leftColumn += `<span class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; color: ${colors.black};">${escapeHtml(entry.company)}</span>`;
+            leftColumn += `<span class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; color: ${colors.black};"> - ${escapeHtml(entry.position)}</span>`;
             leftColumn += '</div>';
             
-            // Date and Location
+            // Date and Location with improved styling
             const dateStr = formatDateForATS(entry.dateStart, entry.dateEnd);
-            leftColumn += `<div class="text-[${colors.dateLocation}] dark:text-white" style="font-size: ${bodySize}; font-style: italic; line-height: 18px; margin-bottom: 4px;">${escapeHtml(dateStr)}${entry.city ? ` / ${escapeHtml(entry.city)}` : ''}</div>`;
+            leftColumn += `<div class="text-[${colors.dateLocation}] dark:text-white" style="font-size: ${bodySize}; font-style: italic; line-height: 1.5; margin-bottom: 8px; color: ${colors.dateLocation};">${escapeHtml(dateStr)}${entry.city ? `${escapeHtml(entry.city)}` : ''}</div>`;
             
-            // Company description
+            // Company description with improved formatting
             if (entry.description) {
                 const descLines = entry.description.split('\n').filter(line => line.trim());
                 if (descLines.length > 0) {
                     // First line as regular text
-                    leftColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(descLines[0])}</div>`;
+                    leftColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.6; margin-bottom: 6px; color: ${colors.bodyText};">${escapeHtml(descLines[0])}</div>`;
                     
-                    // Bullet points (remaining lines)
+                    // Bullet points (remaining lines) with improved styling
                     if (descLines.length > 1) {
-                        leftColumn += '<ul style="margin: 4px 0; padding-left: 16px; list-style: disc; list-style-position: outside;">';
+                        leftColumn += '<ul style="margin: 6px 0 0 0; padding-left: 18px; list-style: disc; list-style-position: outside;">';
                         for (let i = 1; i < descLines.length; i++) {
-                            leftColumn += `<li class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(descLines[i])}</li>`;
+                            leftColumn += `<li class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.6; margin-bottom: 4px; color: ${colors.bodyText};">${escapeHtml(descLines[i])}</li>`;
                         }
                         leftColumn += '</ul>';
                     }
@@ -1446,40 +1444,39 @@ function generateUXUIDesignerCV(data) {
         });
     }
     
-    // Projects Section (in left column, after experience)
+    // Projects Section (in left column, after experience) with improved styling
     if (data.projects && data.projects.length > 0) {
-        leftColumn += '<div style="margin-top: 20px;"></div>';
-        leftColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: bold; margin-bottom: 12px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Projects</div>`;
-        leftColumn += '<div style="margin-bottom: 8px;"></div>';
+        leftColumn += '<div style="margin-top: 28px;"></div>';
+        leftColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Projects</div>`;
         
         data.projects.forEach((project, index) => {
             if (index > 0) {
-                leftColumn += '<div style="margin-bottom: 8px;"></div>';
+                leftColumn += '<div style="margin-bottom: 16px;"></div>';
             }
             
-            // Project Title
-            leftColumn += '<div class="yodi-entry" style="margin-bottom: 4px; page-break-inside: avoid; break-inside: avoid;">';
-            leftColumn += `<span class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: bold;">${escapeHtml(project.title)}</span>`;
+            // Project Title with improved formatting
+            leftColumn += '<div class="yodi-entry" style="margin-bottom: 6px; page-break-inside: avoid; break-inside: avoid;">';
+            leftColumn += `<span class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; color: ${colors.black};">${escapeHtml(project.title)}</span>`;
             if (project.tech) {
                 const techParts = project.tech.split(',');
                 if (techParts.length > 0 && techParts[0].trim()) {
-                    leftColumn += `<span class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize};"> / ${escapeHtml(techParts[0].trim())}</span>`;
+                    leftColumn += `<span class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; color: ${colors.black};"> / ${escapeHtml(techParts[0].trim())}</span>`;
                 }
             }
             leftColumn += '</div>';
             
-            // Project Description
+            // Project Description with improved formatting
             if (project.description) {
                 const descLines = project.description.split('\n').filter(line => line.trim());
                 if (descLines.length > 0) {
                     // First line as regular text
-                    leftColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(descLines[0])}</div>`;
+                    leftColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.6; margin-bottom: 6px; color: ${colors.bodyText};">${escapeHtml(descLines[0])}</div>`;
                     
-                    // Bullet points (remaining lines)
+                    // Bullet points (remaining lines) with improved styling
                     if (descLines.length > 1) {
-                        leftColumn += '<ul style="margin: 4px 0; padding-left: 16px; list-style: disc; list-style-position: outside;">';
+                        leftColumn += '<ul style="margin: 6px 0 0 0; padding-left: 18px; list-style: disc; list-style-position: outside;">';
                         for (let i = 1; i < descLines.length; i++) {
-                            leftColumn += `<li class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(descLines[i])}</li>`;
+                            leftColumn += `<li class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.6; margin-bottom: 4px; color: ${colors.bodyText};">${escapeHtml(descLines[i])}</li>`;
                         }
                         leftColumn += '</ul>';
                     }
@@ -1491,44 +1488,56 @@ function generateUXUIDesignerCV(data) {
     leftColumn += '</div>';
     
     // RIGHT COLUMN (narrower) - Contact, Education, Certificate, Skills, Languages
-    let rightColumn = '<div style="width: 177px; flex-shrink: 0;">';
+    let rightColumn = '<div style="width: 200px; flex-shrink: 0; padding-left: 8px;">';
     
-    // Contact info at the top of right column
-    if (data.website || data.email || data.phone || data.location) {
-        rightColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: bold; margin-bottom: 12px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Contact</div>`;
-        rightColumn += '<div style="margin-bottom: 12px;"></div>';
-        rightColumn += '<div class="yodi-entry" style="margin-bottom: 20px; page-break-inside: avoid; break-inside: avoid;">';
+    // Contact info at the top of right column with improved styling
+    if (data.website || data.email || data.phone || data.location || data.linkedin || data.github || data.dribbble) {
+        rightColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Contact</div>`;
+        rightColumn += '<div class="yodi-entry" style="margin-bottom: 24px; page-break-inside: avoid; break-inside: avoid;">';
         if (data.website) {
             const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 14px; margin-bottom: 2px;"><a href="${url}" style="color: ${colors.bodyText}; text-decoration: none;">${escapeHtml(data.website.replace(/^https?:\/\//, ''))}</a></div>`;
+            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px; word-break: break-word;"><a href="${url}" style="color: ${colors.linkColor}; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s;">${escapeHtml(data.website.replace(/^https?:\/\//, ''))}</a></div>`;
         }
         if (data.email) {
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 14px; margin-bottom: 2px;">${escapeHtml(data.email)}</div>`;
+            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px; word-break: break-all;"><a href="mailto:${escapeHtml(data.email)}" style="color: ${colors.linkColor}; text-decoration: none;">${escapeHtml(data.email)}</a></div>`;
         }
         if (data.phone) {
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 14px; margin-bottom: 2px;">${escapeHtml(data.phone)}</div>`;
+            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px;">${escapeHtml(data.phone)}</div>`;
         }
         if (data.location) {
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 14px;">${escapeHtml(data.location)}</div>`;
+            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px;">${escapeHtml(data.location)}</div>`;
+        }
+        if (data.linkedin) {
+            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px;"><a href="https://linkedin.com/in/${escapeHtml(data.linkedin)}" style="color: ${colors.linkColor}; text-decoration: none;">LinkedIn</a></div>`;
+        }
+        if (data.github) {
+            const githubUrl = data.github.startsWith('http') ? data.github : `https://${data.github}`;
+            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px;"><a href="${githubUrl}" style="color: ${colors.linkColor}; text-decoration: none;">GitHub</a></div>`;
+        }
+        if (data.dribbble) {
+            const dribbbleUrl = data.dribbble.startsWith('http') ? data.dribbble : `https://${data.dribbble}`;
+            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px;"><a href="${dribbbleUrl}" style="color: ${colors.linkColor}; text-decoration: none;">Dribbble</a></div>`;
         }
         rightColumn += '</div>';
     }
     
-    // Education Section
+    // Education Section with improved styling
     if (data.education && data.education.length > 0) {
-        rightColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: bold; margin-bottom: 12px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Education</div>`;
-        rightColumn += '<div style="margin-bottom: 12px;"></div>';
+        rightColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; margin-bottom: 16px; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Education</div>`;
         
-        data.education.forEach(entry => {
-            rightColumn += '<div class="yodi-entry" style="margin-bottom: 12px; page-break-inside: avoid; break-inside: avoid;">';
-            rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: bold; line-height: 14px; margin-bottom: 4px;">${escapeHtml(entry.university)}</div>`;
-            rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${bodySize}; line-height: 18px; margin-bottom: 4px;">${escapeHtml(entry.degree)}</div>`;
+        data.education.forEach((entry, index) => {
+            if (index > 0) {
+                rightColumn += '<div style="margin-bottom: 8px;"></div>';
+            }
+            rightColumn += '<div class="yodi-entry" style="margin-bottom: 16px; page-break-inside: avoid; break-inside: avoid;">';
+            rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; line-height: 1.4; margin-bottom: 6px; color: ${colors.black};">${escapeHtml(entry.university)}</div>`;
+            rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.5; margin-bottom: 6px; color: ${colors.black};">${escapeHtml(entry.degree)}</div>`;
             const dateStr = formatDateForATSEducation(entry.dateStart, entry.dateEnd);
-            rightColumn += `<div class="text-[${colors.dateLocation}] dark:text-white" style="font-size: ${bodySize}; font-style: italic; line-height: 18px; margin-bottom: 4px;">${escapeHtml(dateStr)}</div>`;
+            rightColumn += `<div class="text-[${colors.dateLocation}] dark:text-white" style="font-size: ${bodySize}; font-style: italic; line-height: 1.5; margin-bottom: 6px; color: ${colors.dateLocation};">${escapeHtml(dateStr)}</div>`;
             if (entry.thesis) {
-                rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 18px;">${escapeHtml(entry.thesis)}</div>`;
+                rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.5; color: ${colors.bodyText};">${escapeHtml(entry.thesis)}</div>`;
             } else if (entry.gpa) {
-                rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 18px;">GPA : ${escapeHtml(entry.gpa)}</div>`;
+                rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.5; color: ${colors.bodyText};">GPA: ${escapeHtml(entry.gpa)}</div>`;
             }
             rightColumn += '</div>';
         });
@@ -1536,12 +1545,14 @@ function generateUXUIDesignerCV(data) {
     
     // Certificate Section - Parse awards to extract name, dates, and description
     if (data.awards && data.awards.trim()) {
-        rightColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: bold; margin-bottom: 12px; margin-top: 20px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Certificate</div>`;
-        rightColumn += '<div style="margin-bottom: 12px;"></div>';
+        rightColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; margin-bottom: 16px; margin-top: 24px; text-transform: uppercase; letter-spacing: 0.5px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Certificate</div>`;
         
         const awards = data.awards.split('\n').filter(line => line.trim());
-        awards.forEach(award => {
-            rightColumn += '<div class="yodi-entry" style="margin-bottom: 12px; page-break-inside: avoid; break-inside: avoid;">';
+        awards.forEach((award, index) => {
+            if (index > 0) {
+                rightColumn += '<div style="margin-bottom: 8px;"></div>';
+            }
+            rightColumn += '<div class="yodi-entry" style="margin-bottom: 16px; page-break-inside: avoid; break-inside: avoid;">';
             
             // Try to parse certificate format: "Name Date Range Description" or "Name ..... Date Range"
             const awardText = award.trim();
@@ -1562,10 +1573,10 @@ function generateUXUIDesignerCV(data) {
                 // Description is after date
                 const description = afterDate.replace(/^[-–—]\s*/, '').trim(); // Remove leading dash if present
                 
-                rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: bold; margin-bottom: 4px;">${escapeHtml(name)}</div>`;
-                rightColumn += `<div class="text-[${colors.dateLocation}] dark:text-white" style="font-size: ${bodySize}; font-style: italic; line-height: 18px; margin-bottom: 4px;">${escapeHtml(dateStr)}</div>`;
+                rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; margin-bottom: 6px; color: ${colors.black};">${escapeHtml(name)}</div>`;
+                rightColumn += `<div class="text-[${colors.dateLocation}] dark:text-white" style="font-size: ${bodySize}; font-style: italic; line-height: 1.5; margin-bottom: 6px; color: ${colors.dateLocation};">${escapeHtml(dateStr)}</div>`;
                 if (description) {
-                    rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 14px;">${escapeHtml(description)}</div>`;
+                    rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.5; color: ${colors.bodyText};">${escapeHtml(description)}</div>`;
                 }
             } else {
                 // No date - try to parse "Name ..... Year" format
@@ -1575,13 +1586,13 @@ function generateUXUIDesignerCV(data) {
                     const parts = awardText.split(dotPattern);
                     const name = parts[0].trim();
                     const year = parts.slice(1).join('').trim();
-                    rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: bold; margin-bottom: 4px;">${escapeHtml(name)}</div>`;
+                    rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; margin-bottom: 6px; color: ${colors.black};">${escapeHtml(name)}</div>`;
                     if (year) {
-                        rightColumn += `<div class="text-[${colors.dateLocation}] dark:text-white" style="font-size: ${bodySize}; font-style: italic; line-height: 18px;">${escapeHtml(year)}</div>`;
+                        rightColumn += `<div class="text-[${colors.dateLocation}] dark:text-white" style="font-size: ${bodySize}; font-style: italic; line-height: 1.5; color: ${colors.dateLocation};">${escapeHtml(year)}</div>`;
                     }
                 } else {
                     // Just show as name
-                    rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: bold; margin-bottom: 4px;">${escapeHtml(awardText)}</div>`;
+                    rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; margin-bottom: 6px; color: ${colors.black};">${escapeHtml(awardText)}</div>`;
                 }
             }
             
@@ -1589,10 +1600,9 @@ function generateUXUIDesignerCV(data) {
         });
     }
     
-    // Skills & Software Section
+    // Skills & Software Section with improved styling
     if (data.skills && data.skills.trim()) {
-        rightColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: bold; margin-bottom: 12px; margin-top: 20px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Skills & Software</div>`;
-        rightColumn += '<div style="margin-bottom: 12px;"></div>';
+        rightColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; margin-bottom: 16px; margin-top: 24px; text-transform: uppercase; letter-spacing: 0.5px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Skills & Software</div>`;
         
         // Try to parse Skills and Software separately
         const skillsText = data.skills.trim();
@@ -1644,40 +1654,38 @@ function generateUXUIDesignerCV(data) {
             }
         }
         
-        // Display Skills
+        // Display Skills with improved styling
         if (skillsList) {
-            rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${bodySize}; font-weight: bold; margin-bottom: 4px;">Skills</div>`;
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 14px; margin-bottom: 12px;">${escapeHtml(skillsList)}</div>`;
+            rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${bodySize}; font-weight: 700; margin-bottom: 6px; color: ${colors.black};">Skills</div>`;
+            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.5; margin-bottom: 16px; color: ${colors.bodyText};">${escapeHtml(skillsList)}</div>`;
         }
         
-        // Display Software
+        // Display Software with improved styling
         if (softwareList) {
-            rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${bodySize}; font-weight: bold; margin-bottom: 4px;">Software</div>`;
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 14px;">${escapeHtml(softwareList)}</div>`;
+            rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${bodySize}; font-weight: 700; margin-bottom: 6px; color: ${colors.black};">Software</div>`;
+            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.5; color: ${colors.bodyText};">${escapeHtml(softwareList)}</div>`;
         } else if (skillsList) {
             // If no software found but skills exist, show skills as software too
-            rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${bodySize}; font-weight: bold; margin-bottom: 4px;">Software</div>`;
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 14px;">${escapeHtml(skillsList)}</div>`;
+            rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${bodySize}; font-weight: 700; margin-bottom: 6px; color: ${colors.black};">Software</div>`;
+            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.5; color: ${colors.bodyText};">${escapeHtml(skillsList)}</div>`;
         }
     }
     
-    // Languages Section
+    // Languages Section with improved styling
     if (data.languages && data.languages.length > 0) {
-        rightColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: bold; margin-bottom: 12px; margin-top: 20px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Languages</div>`;
-        rightColumn += '<div style="margin-bottom: 12px;"></div>';
+        rightColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; margin-bottom: 16px; margin-top: 24px; text-transform: uppercase; letter-spacing: 0.5px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Languages</div>`;
         
-        data.languages.forEach(lang => {
+        data.languages.forEach((lang, index) => {
             const langName = lang.name || '';
             const langLevel = lang.level || '';
-            rightColumn += `<div class="yodi-entry text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 14px; margin-bottom: 4px; page-break-inside: avoid; break-inside: avoid;">${escapeHtml(langName)}${langLevel ? ` (${escapeHtml(langLevel)})` : ''}</div>`;
+            rightColumn += `<div class="yodi-entry text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.5; margin-bottom: ${index < data.languages.length - 1 ? '8px' : '0'}; page-break-inside: avoid; break-inside: avoid; color: ${colors.bodyText};">${escapeHtml(langName)}${langLevel ? ` (${escapeHtml(langLevel)})` : ''}</div>`;
         });
     }
     
     rightColumn += '</div>';
     
-    // Close columns
-    html += leftColumn + rightColumn;
-    html += '</div>';
+    // Close columns - apply flex styles directly with improved spacing
+    html += `<div style="display: flex; gap: 40px; align-items: flex-start; page-break-inside: avoid; break-inside: avoid; justify-content: space-between;">${leftColumn}${rightColumn}</div>`;
     
     html += '</div>';
     
