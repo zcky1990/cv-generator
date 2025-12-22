@@ -1759,31 +1759,39 @@ function generateMinimalCV(data) {
         if (data.cityOfBirth) {
             birthInfo = birthInfo ? `${escapeHtml(data.cityOfBirth)}, ${birthInfo}` : escapeHtml(data.cityOfBirth);
         }
-        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="font-size: 12px;"><svg width="10" height="10" viewBox="-0.025 -0.038 0.3 0.3" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" class="jam jam-calendar"><path d="M.225.088V.063A.013.013 0 0 0 .212.05H.199v.013a.013.013 0 0 1-.025 0V.05H.075v.013a.013.013 0 1 1-.025 0V.05H.038a.013.013 0 0 0-.013.013v.025zm0 .025h-.2v.075a.013.013 0 0 0 .013.013h.175A.013.013 0 0 0 .226.188zM.2.025h.013a.04.04 0 0 1 .038.038v.125a.04.04 0 0 1-.038.038H.038A.04.04 0 0 1 0 .188V.063A.04.04 0 0 1 .038.025h.013V.013a.013.013 0 1 1 .025 0v.013h.1V.013a.013.013 0 0 1 .025 0z"/></svg></span><span>${birthInfo}</span></div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="display:flex; justify-items: center; 
+    align-items: center; width: 12px; height: 12px;"><svg width="10" height="10" viewBox="-0.025 -0.038 0.3 0.3" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" class="jam jam-calendar"><path d="M.225.088V.063A.013.013 0 0 0 .212.05H.199v.013a.013.013 0 0 1-.025 0V.05H.075v.013a.013.013 0 1 1-.025 0V.05H.038a.013.013 0 0 0-.013.013v.025zm0 .025h-.2v.075a.013.013 0 0 0 .013.013h.175A.013.013 0 0 0 .226.188zM.2.025h.013a.04.04 0 0 1 .038.038v.125a.04.04 0 0 1-.038.038H.038A.04.04 0 0 1 0 .188V.063A.04.04 0 0 1 .038.025h.013V.013a.013.013 0 1 1 .025 0v.013h.1V.013a.013.013 0 0 1 .025 0z"/></svg></span><span>${birthInfo}</span></div>`;
     }
     if (data.phone) {
-        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="font-size: 10px;"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10" enable-background="new 0 0 32 32" xml:space="preserve" width="10" height="10"><path fill="none" stroke="#000000" stroke-width="0.625" stroke-miterlimit="10" d="M4.25 2.656 2.969 1.344c-0.156 -0.125 -0.375 -0.125 -0.531 0L1.469 2.344c-0.219 0.188 -0.281 0.5 -0.188 0.75 0.25 0.719 0.906 2.156 2.188 3.438s2.719 1.906 3.438 2.188c0.281 0.094 0.563 0.031 0.781 -0.156l0.969 -0.969c0.156 -0.156 0.156 -0.375 0 -0.531l-1.281 -1.281c-0.156 -0.156 -0.375 -0.156 -0.531 0L6.063 6.563s-0.875 -0.375 -1.563 -1.031 -1.031 -1.563 -1.031 -1.563l0.781 -0.781c0.156 -0.156 0.156 -0.406 0 -0.531z"/></svg></span><span>${escapeHtml(data.phone)}</span></div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="display:flex; justify-items: center; 
+    align-items: center; width: 12px; height: 12px;"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10" enable-background="new 0 0 32 32" xml:space="preserve" width="10" height="10"><path fill="none" stroke="#000000" stroke-width="0.625" stroke-miterlimit="10" d="M4.25 2.656 2.969 1.344c-0.156 -0.125 -0.375 -0.125 -0.531 0L1.469 2.344c-0.219 0.188 -0.281 0.5 -0.188 0.75 0.25 0.719 0.906 2.156 2.188 3.438s2.719 1.906 3.438 2.188c0.281 0.094 0.563 0.031 0.781 -0.156l0.969 -0.969c0.156 -0.156 0.156 -0.375 0 -0.531l-1.281 -1.281c-0.156 -0.156 -0.375 -0.156 -0.531 0L6.063 6.563s-0.875 -0.375 -1.563 -1.031 -1.031 -1.563 -1.031 -1.563l0.781 -0.781c0.156 -0.156 0.156 -0.406 0 -0.531z"/></svg></span><span>${escapeHtml(data.phone)}</span></div>`;
     }
     if (data.email) {
-        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="font-size: 10px;"><svg width="10" height="10" viewBox="0 0 0.3 0.3" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.025 0.075A0.025 0.025 0 0 1 0.05 0.05h0.2a0.025 0.025 0 0 1 0.025 0.025v0.15A0.025 0.025 0 0 1 0.25 0.25H0.05A0.025 0.025 0 0 1 0.025 0.225zm0.044 0L0.15 0.146 0.231 0.075zM0.25 0.092 0.158 0.172a0.014 0.014 0 0 1 -0.016 0L0.05 0.092v0.133h0.2z" fill="#0d0d0d"/></svg></span><a href="mailto:${escapeHtml(data.email)}" style="color: #000; text-decoration: none;">${escapeHtml(data.email)}</a></div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="display:flex; justify-items: center; 
+    align-items: center; width: 12px; height: 12px;"><svg width="10" height="10" viewBox="0 0 0.3 0.3" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.025 0.075A0.025 0.025 0 0 1 0.05 0.05h0.2a0.025 0.025 0 0 1 0.025 0.025v0.15A0.025 0.025 0 0 1 0.25 0.25H0.05A0.025 0.025 0 0 1 0.025 0.225zm0.044 0L0.15 0.146 0.231 0.075zM0.25 0.092 0.158 0.172a0.014 0.014 0 0 1 -0.016 0L0.05 0.092v0.133h0.2z" fill="#0d0d0d"/></svg></span><a href="mailto:${escapeHtml(data.email)}" style="color: #000; text-decoration: none;">${escapeHtml(data.email)}</a></div>`;
     }
     if (data.location) {
-        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="font-size: 12px;"><svg width="10" height="10" viewBox="0 0 0.3 0.3" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M.15.025c.062 0 .113.05.113.111q0 .061-.101.131L.15.275.143.27Q.038.199.038.136c0-.061.05-.111.112-.111m0 .025a.09.09 0 0 0-.088.087q0 .046.088.108Q.238.182.238.137A.087.087 0 0 0 .15.05m0 .025a.05.05 0 1 1 0 .1.05.05 0 0 1 0-.1M.15.1a.025.025 0 1 0 0 .05.025.025 0 0 0 0-.05"/></svg></span><span>${escapeHtml(data.location)}</span></div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="display:flex; justify-items: center; 
+    align-items: center; width: 12px; height: 12px;"><svg width="10" height="10" viewBox="0 0 0.3 0.3" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M.15.025c.062 0 .113.05.113.111q0 .061-.101.131L.15.275.143.27Q.038.199.038.136c0-.061.05-.111.112-.111m0 .025a.09.09 0 0 0-.088.087q0 .046.088.108Q.238.182.238.137A.087.087 0 0 0 .15.05m0 .025a.05.05 0 1 1 0 .1.05.05 0 0 1 0-.1M.15.1a.025.025 0 1 0 0 .05.025.025 0 0 0 0-.05"/></svg></span><span>${escapeHtml(data.location)}</span></div>`;
     }
     if (data.linkedin) {
-        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="width: 16px; height: 16px; border-radius: 50%; background-color: black; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0px 2px 8px rgba(0,0,0,0.06);"><span style="font-size: 8px; color: white;">in</span></span><a href="https://linkedin.com/in/${escapeHtml(data.linkedin)}" style="color: #000; text-decoration: none;">${escapeHtml(data.linkedin)}</a></div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="display:flex; justify-items: center; 
+    align-items: center; width: 12px; height: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 3 3"><path d="M2.4.4H.6a.2.2 0 0 0-.2.2v1.8a.2.2 0 0 0 .2.2h1.8a.2.2 0 0 0 .2-.2V.6a.2.2 0 0 0-.2-.2M1.095 2.2H.8v-.949h.295zm-.15-1.085a.172.172 0 1 1 0-.344.172.172 0 0 1 0 .344M2.2 2.2h-.295v-.462c0-.11-.002-.252-.153-.252-.153 0-.177.12-.177.244v.47H1.28v-.949h.283v.13h.004a.31.31 0 0 1 .279-.153c.299 0 .354.197.354.452z"/></svg></span><a href="https://linkedin.com/in/${escapeHtml(data.linkedin)}" style="color: #000; text-decoration: none;">${escapeHtml(data.linkedin)}</a></div>`;
     }
     if (data.website) {
         const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
-        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="font-size: 12px;">🔗</span><a href="${url}" style="color: #000; text-decoration: none;">${escapeHtml(data.website)}</a></div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="display:flex; justify-items: center; 
+    align-items: center; width: 12px; height: 12px;"><svg width="10" height="10" viewBox="-0.038 -0.038 0.3 0.3" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" class="jam jam-link"><path d="M.04.117a.012.012 0 0 1 .017 0 .012.012 0 0 1 0 .017L.031.16a.024.024 0 0 0 0 .034.024.024 0 0 0 .034 0l.06-.06a.012.012 0 0 0 0-.017.012.012 0 0 1 0-.017.012.012 0 0 1 .017 0 .036.036 0 0 1 0 .051l-.06.06a.05.05 0 0 1-.069 0 .05.05 0 0 1 0-.068zM.185.108a.012.012 0 0 1-.017 0 .012.012 0 0 1 0-.017L.194.065a.024.024 0 0 0 0-.034.024.024 0 0 0-.034 0L.1.091a.012.012 0 0 0 0 .017.012.012 0 0 1 0 .017.012.012 0 0 1-.017 0 .036.036 0 0 1 0-.051l.06-.06a.05.05 0 0 1 .069 0 .05.05 0 0 1 0 .068z"/></svg></span><a href="${url}" style="color: #000; text-decoration: none;">${escapeHtml(data.website)}</a></div>`;
     }
     if (data.github) {
         const githubUrl = data.github.startsWith('http') ? data.github : `https://${data.github}`;
-        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="font-size: 10px;"><svg width="10" height="9.796" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 9.796"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.985 0C2.228 0 0 2.245 0 5.022a5.02 5.02 0 0 0 3.409 4.764c.248.05.338-.108.338-.241 0-.116-.008-.516-.008-.931-1.387.299-1.676-.599-1.676-.599-.223-.582-.553-.732-.553-.732-.454-.308.033-.308.033-.308.503.033.768.516.768.516.446.765 1.164.549 1.453.416.041-.324.173-.549.314-.673-1.106-.116-2.27-.549-2.27-2.478 0-.549.198-.998.512-1.347-.049-.125-.223-.64.05-1.33 0 0 .421-.133 1.37.516a4.8 4.8 0 0 1 1.246-.166c.421 0 .85.058 1.246.166.949-.649 1.37-.516 1.37-.516.272.69.099 1.206.049 1.33.322.349.512.798.512 1.347 0 1.929-1.164 2.353-2.278 2.478.182.158.338.457.338.931 0 .673-.008 1.214-.008 1.38 0 .133.091.291.338.241a5.02 5.02 0 0 0 3.409-4.764C9.97 2.245 7.733 0 4.985 0" fill="#24292f"/></svg></span><a href="${githubUrl}" style="color: #000; text-decoration: none;">${escapeHtml(data.github)}</a></div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="display:flex; justify-items: center; 
+    align-items: center; width: 12px; height: 12px;"><svg width="10" height="9.796" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 9.796"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.985 0C2.228 0 0 2.245 0 5.022a5.02 5.02 0 0 0 3.409 4.764c.248.05.338-.108.338-.241 0-.116-.008-.516-.008-.931-1.387.299-1.676-.599-1.676-.599-.223-.582-.553-.732-.553-.732-.454-.308.033-.308.033-.308.503.033.768.516.768.516.446.765 1.164.549 1.453.416.041-.324.173-.549.314-.673-1.106-.116-2.27-.549-2.27-2.478 0-.549.198-.998.512-1.347-.049-.125-.223-.64.05-1.33 0 0 .421-.133 1.37.516a4.8 4.8 0 0 1 1.246-.166c.421 0 .85.058 1.246.166.949-.649 1.37-.516 1.37-.516.272.69.099 1.206.049 1.33.322.349.512.798.512 1.347 0 1.929-1.164 2.353-2.278 2.478.182.158.338.457.338.931 0 .673-.008 1.214-.008 1.38 0 .133.091.291.338.241a5.02 5.02 0 0 0 3.409-4.764C9.97 2.245 7.733 0 4.985 0" fill="#24292f"/></svg></span><a href="${githubUrl}" style="color: #000; text-decoration: none;">${escapeHtml(data.github)}</a></div>`;
     }
     if (data.dribbble) {
         const dribbbleUrl = data.dribbble.startsWith('http') ? data.dribbble : `https://${data.dribbble}`;
-        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="width: 16px; height: 16px; border-radius: 50%; background-color: #EA4C89; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><span style="font-size: 8px; color: white;">D</span></span><a href="${dribbbleUrl}" style="color: #000; text-decoration: none;">${escapeHtml(data.dribbble)}</a></div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="display:flex; justify-items: center; 
+    align-items: center; width: 12px; height: 12px;"><svg width="10" height="10" viewBox="0 0 0.3 0.3" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"><path d="M.15.025a.13.13 0 0 0-.105.057.125.125 0 0 0 .183.165A.125.125 0 0 0 .15.025m.025.028a.1.1 0 0 1 .072.072.1.1 0 0 0-.059.017.2.2 0 0 0-.03-.028.13.13 0 0 0 .017-.061M.15.05a.1.1 0 0 1-.014.051L.13.098A.2.2 0 0 0 .079.08.1.1 0 0 1 .15.05M.063.102A.2.2 0 0 1 .119.12l.002.001A.1.1 0 0 1 .05.15.1.1 0 0 1 .063.102m.063.145A.1.1 0 0 1 .053.175a.12.12 0 0 0 .089-.04l.025.023a.13.13 0 0 0-.042.089M.15.25A.1.1 0 0 1 .182.177L.184.18a.2.2 0 0 1 .023.052A.1.1 0 0 1 .15.25M.228.212A.2.2 0 0 0 .205.165L.203.163A.1.1 0 0 1 .251.15a.1.1 0 0 1-.022.063"/></svg></span><a href="${dribbbleUrl}" style="color: #000; text-decoration: none;">${escapeHtml(data.dribbble)}</a></div>`;
     }
     if (data.instagram) {
         const instagramUrl = data.instagram.startsWith('http') ? data.instagram : `https://${data.instagram}`;
@@ -1806,15 +1814,15 @@ function generateMinimalCV(data) {
     if (data.education && data.education.length > 0) {
         leftColumn += '<div style="margin-bottom: 24px;">';
         leftColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">EDUCATION</div>`;
-        leftColumn += '<div style="font-family: \'Montserrat\', Arial, sans-serif; font-size: 11px; line-height: 1.6;">';
+        leftColumn += '<div style="font-family: \'Montserrat\', Arial, sans-serif; font-size: 11px; line-height: 1.7;">';
         
-        data.education.forEach(entry => {
+        data.education.forEach((entry, index) => {
             // Format date range
             let dateStr = '';
             if (entry.dateStart && entry.dateEnd) {
                 const startYear = entry.dateStart.split('-')[0];
                 const endYear = entry.dateEnd.split('-')[0];
-                dateStr = `${startYear}-${endYear}`;
+                dateStr = `${startYear} - ${endYear}`;
             } else if (entry.dateStart) {
                 const startYear = entry.dateStart.split('-')[0];
                 dateStr = startYear;
@@ -1823,19 +1831,32 @@ function generateMinimalCV(data) {
                 dateStr = endYear;
             }
             
-            if (dateStr) {
-                leftColumn += `<div style="margin-bottom: 8px; font-weight: bold; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px;">${escapeHtml(dateStr)}</div>`;
-            }
-            leftColumn += `<div style="margin-bottom: 4px; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px;">${escapeHtml(entry.university)}${entry.city ? `, ${escapeHtml(entry.city)}` : ''}</div>`;
+            leftColumn += `<div style="margin-bottom: ${index < data.education.length - 1 ? '16px' : '0'};">`;
+            
+            // University name - prominent
+            leftColumn += `<div style="margin-bottom: 6px; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px; font-weight: 500; color: #000; line-height: 1.5;">${escapeHtml(entry.university)}${entry.city ? `, ${escapeHtml(entry.city)}` : ''}</div>`;
+            
+            // Degree - slightly emphasized
             if (entry.degree) {
-                leftColumn += `<div style="margin-bottom: 4px; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px;">${escapeHtml(entry.degree)}</div>`;
+                leftColumn += `<div style="margin-bottom: ${entry.gpa || entry.thesis ? '4px' : '0'}; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px; color: #333; line-height: 1.5;">${escapeHtml(entry.degree)}</div>`;
             }
+            
+            // Date - subtle, if present
+            if (dateStr) {
+                leftColumn += `<div style="margin-bottom: ${entry.gpa || entry.thesis ? '4px' : '0'}; font-family: 'Montserrat', Arial, sans-serif; font-size: 10px; color: #666; font-weight: 500; line-height: 1.5;">${escapeHtml(dateStr)}</div>`;
+            }
+            
+            // GPA - subtle
             if (entry.gpa) {
-                leftColumn += `<div style="margin-bottom: 4px; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px;">GPA: ${escapeHtml(entry.gpa)}</div>`;
+                leftColumn += `<div style="margin-bottom: ${entry.thesis ? '4px' : '0'}; font-family: 'Montserrat', Arial, sans-serif; font-size: 10px; color: #666; line-height: 1.5;">GPA: ${escapeHtml(entry.gpa)}</div>`;
             }
+            
+            // Thesis - italic, subtle
             if (entry.thesis) {
-                leftColumn += `<div style="margin-bottom: 8px; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px; font-style: italic;">${escapeHtml(entry.thesis)}</div>`;
+                leftColumn += `<div style="margin-bottom: 0; font-family: 'Montserrat', Arial, sans-serif; font-size: 10px; color: #666; font-style: italic; line-height: 1.5;">${escapeHtml(entry.thesis)}</div>`;
             }
+            
+            leftColumn += '</div>';
         });
         
         leftColumn += '</div></div>';
