@@ -1298,7 +1298,7 @@ function generateProductDesignerCV(data) {
             rightColumn += '<div style="margin-bottom: 6px;">';
             rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 600; color: #2C2F37; margin-bottom: 4px;">${escapeHtml(entry.position)} | ${escapeHtml(entry.company)}</div>`;
             const dateStr = formatDateForATS(entry.dateStart, entry.dateEnd);
-            rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4; margin-bottom: 6px;">${escapeHtml(dateStr)}${entry.city ? `, ${escapeHtml(entry.city)}` : ''}</div>`;
+            rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4; margin-bottom: 6px;">${escapeHtml(dateStr)}${entry.city ? ` ${escapeHtml(entry.city)}` : ''}</div>`;
             rightColumn += '</div>';
             
             // Description
@@ -1324,7 +1324,7 @@ function generateProductDesignerCV(data) {
             rightColumn += '<div style="margin-bottom: 6px;">';
             rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 600; color: #2C2F37; margin-bottom: 4px;">${escapeHtml(entry.degree)}</div>`;
             const dateStr = formatDateForATSEducation(entry.dateStart, entry.dateEnd);
-            rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4; margin-bottom: 6px;">${escapeHtml(dateStr)}${entry.city ? `, ${escapeHtml(entry.city)}` : ''}</div>`;
+            rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4; margin-bottom: 6px;">${escapeHtml(dateStr)}${entry.city ? ` ${escapeHtml(entry.city)}` : ''}</div>`;
             rightColumn += '</div>';
             
             // Description/Thesis
