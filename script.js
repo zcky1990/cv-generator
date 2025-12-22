@@ -1417,7 +1417,7 @@ function generateUXUIDesignerCV(data) {
             // Company / Position with improved formatting
             leftColumn += '<div class="yodi-entry" style="margin-bottom: 6px; page-break-inside: avoid; break-inside: avoid;">';
             leftColumn += `<span class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; color: ${colors.black};">${escapeHtml(entry.company)}</span>`;
-            leftColumn += `<span class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; color: ${colors.black};"> - ${escapeHtml(entry.position)}</span>`;
+            leftColumn += `<span class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; color: ${colors.black};"> <br> ${escapeHtml(entry.position)}</span>`;
             leftColumn += '</div>';
             
             // Date and Location with improved styling
@@ -1433,11 +1433,11 @@ function generateUXUIDesignerCV(data) {
                     
                     // Bullet points (remaining lines) with improved styling
                     if (descLines.length > 1) {
-                        leftColumn += '<ul style="margin: 6px 0 0 0; padding-left: 18px; list-style: disc; list-style-position: outside;">';
+                        leftColumn += '<div style="margin: 6px 0 0 0; list-style: disc; list-style-position: outside;">';
                         for (let i = 1; i < descLines.length; i++) {
-                            leftColumn += `<li class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.6; margin-bottom: 4px; color: ${colors.bodyText};">${escapeHtml(descLines[i])}</li>`;
+                            leftColumn += `<span class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.6; margin-bottom: 4px; color: ${colors.bodyText};">${escapeHtml(descLines[i])}</span>`;
                         }
-                        leftColumn += '</ul>';
+                        leftColumn += '</div>';
                     }
                 }
             }
@@ -1460,7 +1460,7 @@ function generateUXUIDesignerCV(data) {
             if (project.tech) {
                 const techParts = project.tech.split(',');
                 if (techParts.length > 0 && techParts[0].trim()) {
-                    leftColumn += `<span class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; color: ${colors.black};"> / ${escapeHtml(techParts[0].trim())}</span>`;
+                    leftColumn += `<span class="text-[${colors.black}] dark:text-white" style="font-size: ${sectionHeaderSize}; color: ${colors.black};"> <br> ${escapeHtml(techParts[0].trim())}</span>`;
                 }
             }
             leftColumn += '</div>';
@@ -1660,15 +1660,6 @@ function generateUXUIDesignerCV(data) {
             rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.5; margin-bottom: 16px; color: ${colors.bodyText};">${escapeHtml(skillsList)}</div>`;
         }
         
-        // Display Software with improved styling
-        if (softwareList) {
-            rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${bodySize}; font-weight: 700; margin-bottom: 6px; color: ${colors.black};">Software</div>`;
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.5; color: ${colors.bodyText};">${escapeHtml(softwareList)}</div>`;
-        } else if (skillsList) {
-            // If no software found but skills exist, show skills as software too
-            rightColumn += `<div class="text-[${colors.black}] dark:text-white" style="font-size: ${bodySize}; font-weight: 700; margin-bottom: 6px; color: ${colors.black};">Software</div>`;
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.5; color: ${colors.bodyText};">${escapeHtml(skillsList)}</div>`;
-        }
     }
     
     // Languages Section with improved styling
