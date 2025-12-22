@@ -1192,7 +1192,7 @@ function generateProductDesignerCV(data) {
     if (data.email) {
         leftColumn += '<div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">';
         leftColumn += `<div style="width: 16px; height: 16px; border-radius: 50%; background-color: ${colors.lightest}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">`;
-        leftColumn += `<span style="font-size: 8px; color: ${colors.medium};">✉</span>`;
+        leftColumn += `<span style="font-size: 8px; color: ${colors.medium};"><svg width="10" height="10" viewBox="0 0 0.3 0.3" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.025 0.075A0.025 0.025 0 0 1 0.05 0.05h0.2a0.025 0.025 0 0 1 0.025 0.025v0.15A0.025 0.025 0 0 1 0.25 0.25H0.05A0.025 0.025 0 0 1 0.025 0.225zm0.044 0L0.15 0.146 0.231 0.075zM0.25 0.092 0.158 0.172a0.014 0.014 0 0 1 -0.016 0L0.05 0.092v0.133h0.2z" fill="#0d0d0d"/></svg></span>`;
         leftColumn += '</div>';
         leftColumn += '<div style="flex: 1;">';
         leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${captionSize}; color: ${colors.light}; line-height: 1.4; margin-bottom: 2px;">Email</div>`;
@@ -1204,7 +1204,7 @@ function generateProductDesignerCV(data) {
     if (data.phone) {
         leftColumn += '<div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">';
         leftColumn += `<div style="width: 16px; height: 16px; border-radius: 50%; background-color: ${colors.lightest}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">`;
-        leftColumn += `<span style="font-size: 8px; color: ${colors.medium};">📞</span>`;
+        leftColumn += `<span style="font-size: 8px; color: ${colors.medium};"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10" enable-background="new 0 0 32 32" xml:space="preserve" width="10" height="10"><path fill="none" stroke="#000000" stroke-width="0.625" stroke-miterlimit="10" d="M4.25 2.656 2.969 1.344c-0.156 -0.125 -0.375 -0.125 -0.531 0L1.469 2.344c-0.219 0.188 -0.281 0.5 -0.188 0.75 0.25 0.719 0.906 2.156 2.188 3.438s2.719 1.906 3.438 2.188c0.281 0.094 0.563 0.031 0.781 -0.156l0.969 -0.969c0.156 -0.156 0.156 -0.375 0 -0.531l-1.281 -1.281c-0.156 -0.156 -0.375 -0.156 -0.531 0L6.063 6.563s-0.875 -0.375 -1.563 -1.031 -1.031 -1.563 -1.031 -1.563l0.781 -0.781c0.156 -0.156 0.156 -0.406 0 -0.531z"/></svg></span>`;
         leftColumn += '</div>';
         leftColumn += '<div style="flex: 1;">';
         leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${captionSize}; color: ${colors.light}; line-height: 1.4; margin-bottom: 2px;">Phone</div>`;
@@ -1216,7 +1216,7 @@ function generateProductDesignerCV(data) {
         const githubUrl = data.github.startsWith('http') ? data.github : `https://${data.github}`;
         leftColumn += '<div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">';
         leftColumn += `<div style="width: 16px; height: 16px; border-radius: 50%; background-color: ${colors.lightest}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">`;
-        leftColumn += `<span style="font-size: 8px; color: ${colors.medium};"><svg width="16.333" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16.333 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.142 0C3.64 0 0 3.667 0 8.203c0 3.626 2.332 6.695 5.567 7.782 0.404 0.082 0.553 -0.176 0.553 -0.394 0 -0.19 -0.013 -0.842 -0.013 -1.521 -2.265 0.489 -2.737 -0.978 -2.737 -0.978 -0.364 -0.951 -0.903 -1.195 -0.903 -1.195 -0.741 -0.502 0.054 -0.502 0.054 -0.502 0.822 0.054 1.254 0.842 1.254 0.842 0.728 1.249 1.901 0.896 2.372 0.679 0.067 -0.53 0.283 -0.896 0.512 -1.1 -1.806 -0.19 -3.707 -0.896 -3.707 -4.047 0 -0.896 0.323 -1.63 0.836 -2.2 -0.081 -0.204 -0.364 -1.046 0.081 -2.173 0 0 0.687 -0.217 2.238 0.842a7.833 7.833 0 0 1 2.036 -0.272c0.687 0 1.388 0.095 2.035 0.272 1.55 -1.059 2.238 -0.842 2.238 -0.842 0.445 1.127 0.162 1.969 0.081 2.173 0.526 0.57 0.836 1.304 0.836 2.2 0 3.151 -1.901 3.843 -3.721 4.047 0.297 0.258 0.553 0.747 0.553 1.521 0 1.1 -0.013 1.983 -0.013 2.254 0 0.217 0.148 0.475 0.553 0.394 3.235 -1.087 5.567 -4.156 5.567 -7.782C16.284 3.667 12.631 0 8.142 0" fill="#24292f"/></svg></span>`;
+        leftColumn += `<span style="font-size: 8px; color: ${colors.medium};"><svg width="10" height="9.796" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 9.796"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.985 0C2.228 0 0 2.245 0 5.022a5.02 5.02 0 0 0 3.409 4.764c.248.05.338-.108.338-.241 0-.116-.008-.516-.008-.931-1.387.299-1.676-.599-1.676-.599-.223-.582-.553-.732-.553-.732-.454-.308.033-.308.033-.308.503.033.768.516.768.516.446.765 1.164.549 1.453.416.041-.324.173-.549.314-.673-1.106-.116-2.27-.549-2.27-2.478 0-.549.198-.998.512-1.347-.049-.125-.223-.64.05-1.33 0 0 .421-.133 1.37.516a4.8 4.8 0 0 1 1.246-.166c.421 0 .85.058 1.246.166.949-.649 1.37-.516 1.37-.516.272.69.099 1.206.049 1.33.322.349.512.798.512 1.347 0 1.929-1.164 2.353-2.278 2.478.182.158.338.457.338.931 0 .673-.008 1.214-.008 1.38 0 .133.091.291.338.241a5.02 5.02 0 0 0 3.409-4.764C9.97 2.245 7.733 0 4.985 0" fill="#24292f"/></svg></span>`;
         leftColumn += '</div>';
         leftColumn += '<div style="flex: 1;">';
         leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${captionSize}; color: ${colors.light}; line-height: 1.4; margin-bottom: 2px;">Github</div>`;
@@ -1391,6 +1391,19 @@ function generateProductDesignerCV(data) {
         const awards = data.awards.split('\n').filter(line => line.trim());
         awards.forEach(award => {
             rightColumn += `<p class="nabhel-entry" style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 8px 0;">${escapeHtml(award.trim())}</p>`;
+        });
+        
+        rightColumn += '</div>';
+    }
+    
+    // Publications Section
+    if (data.publications && data.publications.trim()) {
+        rightColumn += '<div class="nabhel-section" style="margin-bottom: 16px;">';
+        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Publications</div>`;
+        
+        const publications = data.publications.split('\n').filter(line => line.trim());
+        publications.forEach(publication => {
+            rightColumn += `<p class="nabhel-entry" style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 8px 0;">${escapeHtml(publication.trim())}</p>`;
         });
         
         rightColumn += '</div>';
