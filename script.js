@@ -1143,12 +1143,11 @@ function generateProductDesignerCV(data) {
     const smallSize = '11px';
     const captionSize = '10px';
     
-    // Start two-column layout
-    let html = '<div style="display: table; width: 100%; border-collapse: collapse; font-family: ' + fontFamily + ';">';
-    html += '<div style="display: table-row;">';
+    // Start two-column layout using flexbox
+    let html = '<div style="display: flex; width: 100%; font-family: ' + fontFamily + ';">';
     
     // LEFT COLUMN (~25% width) - Sidebar
-    let leftColumn = '<div id="nabhel-left-column" style="display: table-cell; width: 25%; vertical-align: top; padding: 24px; box-sizing: border-box;">';
+    let leftColumn = '<div id="nabhel-left-column" style="flex: 0 0 25%; padding: 24px; box-sizing: border-box;">';
     
     // Profile Picture (show if available, hide completely if not)
     if (data.photo && data.photo.trim()) {
@@ -1288,132 +1287,61 @@ function generateProductDesignerCV(data) {
     leftColumn += '</div>';
     
     // RIGHT COLUMN (~75% width) - Main Content
-    let rightColumn = '<div style="display: table-cell; width: 75%; vertical-align: top; padding: 40px 24px 24px 39px; background-color: white; box-sizing: border-box;">';
+    let rightColumn = '<div style="flex: 0 0 72%; padding: 24px 45px 0 0; background-color: white; box-sizing: border-box;">';
     
     // About Me Section
     if (data.about && data.about.trim()) {
-        rightColumn += '<div class="nabhel-section" style="margin-bottom: 16px;">';
-        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 12px;">About Me</div>`;
-        rightColumn += `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0;">${escapeHtml(data.about).replace(/\n/g, '<br>')}</p>`;
-        rightColumn += '</div>';
+        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 12px;">About Me</div><p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0;">${escapeHtml(data.about).replace(/\n/g, '<br>')}</p>`;
     }
     
     // Experience Section
     if (data.experience && data.experience.length > 0) {
-        rightColumn += '<div class="nabhel-section" style="margin-bottom: 16px;">';
-        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Experience</div>`;
-        
+        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-top: 16px; margin-bottom: 12px;">Experience</div>`;
         data.experience.forEach(entry => {
-            rightColumn += '<div class="nabhel-entry" style="margin-bottom: 16px;">';
-            
-            // Position & Company
-            rightColumn += '<div style="margin-bottom: 6px;">';
-            rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 600; color: #2C2F37; margin-bottom: 4px;">${escapeHtml(entry.position)} | ${escapeHtml(entry.company)}</div>`;
             const dateStr = formatDateForATS(entry.dateStart, entry.dateEnd);
-            rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4; margin-bottom: 6px;">${escapeHtml(dateStr)}${entry.city ? ` ${escapeHtml(entry.city)}` : ''}</div>`;
-            rightColumn += '</div>';
-            
-            // Description
-            if (entry.description) {
-                rightColumn += `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 16px 0;">${escapeHtml(entry.description).replace(/\n/g, '<br>')}</p>`;
-            }
-            
-            rightColumn += '</div>';
+            rightColumn += `<div style="margin-bottom: 12px;"><div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 600; color: #2C2F37; margin-bottom: 2px;">${escapeHtml(entry.position)} | ${escapeHtml(entry.company)}</div><div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4; margin-bottom: 4px;">${escapeHtml(dateStr)}${entry.city ? ` ${escapeHtml(entry.city)}` : ''}</div>${entry.description ? `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0;">${escapeHtml(entry.description).replace(/\n/g, '<br>')}</p>` : ''}</div>`;
         });
-        
-        rightColumn += '</div>';
     }
     
     // Education Section
     if (data.education && data.education.length > 0) {
-        rightColumn += '<div class="nabhel-section" style="margin-bottom: 16px;">';
-        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Education</div>`;
-        
+        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-top: 16px; margin-bottom: 12px;">Education</div>`;
         data.education.forEach(entry => {
-            rightColumn += '<div class="nabhel-entry" style="margin-bottom: 16px;">';
-            
-            // Degree
-            rightColumn += '<div style="margin-bottom: 6px;">';
-            rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 600; color: #2C2F37; margin-bottom: 4px;">${escapeHtml(entry.degree)}</div>`;
             const dateStr = formatDateForATSEducation(entry.dateStart, entry.dateEnd);
-            rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4; margin-bottom: 6px;">${escapeHtml(dateStr)}${entry.city ? ` ${escapeHtml(entry.city)}` : ''}</div>`;
-            rightColumn += '</div>';
-            
-            // Description/Thesis
-            if (entry.university) {
-                rightColumn += `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 16px 0;">${escapeHtml(entry.university).replace(/\n/g, '<br>')}</p>`;
-            }
-
-            // Description/Thesis
-            if (entry.thesis) {
-                rightColumn += `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 16px 0;">${escapeHtml(entry.thesis).replace(/\n/g, '<br>')}</p>`;
-            }
-            
-            rightColumn += '</div>';
+            rightColumn += `<div style="margin-bottom: 12px;"><div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 600; color: #2C2F37; margin-bottom: 2px;">${escapeHtml(entry.degree)}</div><div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4; margin-bottom: 4px;">${escapeHtml(dateStr)}${entry.city ? ` ${escapeHtml(entry.city)}` : ''}</div>${entry.university ? `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 4px 0;">${escapeHtml(entry.university).replace(/\n/g, '<br>')}</p>` : ''}${entry.thesis ? `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0;">${escapeHtml(entry.thesis).replace(/\n/g, '<br>')}</p>` : ''}</div>`;
         });
-        
-        rightColumn += '</div>';
     }
     
     // Projects Section
     if (data.projects && data.projects.length > 0) {
-        rightColumn += '<div class="nabhel-section" style="margin-bottom: 16px;">';
-        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Projects</div>`;
-        
+        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-top: 16px; margin-bottom: 12px;">Projects</div>`;
         data.projects.forEach(project => {
-            rightColumn += '<div class="nabhel-entry" style="margin-bottom: 16px;">';
-            
-            // Project Title & Tech
-            rightColumn += '<div style="margin-bottom: 6px;">';
             const projectTitle = project.url ? `<a href="${project.url.startsWith('http') ? project.url : 'https://' + project.url}" style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 600; color: ${colors.dark}; text-decoration: none;">${escapeHtml(project.title)}</a>` : `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 600; color: #2C2F37;">${escapeHtml(project.title)}</div>`;
-            rightColumn += projectTitle;
-            if (project.tech) {
-                rightColumn += `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4; margin-top: 2px;">${escapeHtml(project.tech)}</div>`;
-            }
-            rightColumn += '</div>';
-            
-            // Project Description
-            if (project.description) {
-                rightColumn += `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 16px 0;">${escapeHtml(project.description).replace(/\n/g, '<br>')}</p>`;
-            }
-            
-            rightColumn += '</div>';
+            rightColumn += `<div style="margin-bottom: 12px;">${projectTitle}${project.tech ? `<div style="font-family: ${interFont}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4; margin-top: 2px;">${escapeHtml(project.tech)}</div>` : ''}${project.description ? `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0;">${escapeHtml(project.description).replace(/\n/g, '<br>')}</p>` : ''}</div>`;
         });
-        
-        rightColumn += '</div>';
     }
     
     // Certifications Section (using Awards data only)
     if (data.awards && data.awards.trim()) {
-        rightColumn += '<div class="nabhel-section" style="margin-bottom: 16px;">';
-        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Certifications</div>`;
-        
-        const awards = data.awards.split('\n').filter(line => line.trim());
-        awards.forEach(award => {
-            rightColumn += `<p class="nabhel-entry" style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 8px 0;">${escapeHtml(award.trim())}</p>`;
+        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-top: 16px; margin-bottom: 12px;">Certifications</div>`;
+        data.awards.split('\n').filter(line => line.trim()).forEach(award => {
+            rightColumn += `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 6px 0;">${escapeHtml(award.trim())}</p>`;
         });
-        
-        rightColumn += '</div>';
     }
     
     // Publications Section
     if (data.publications && data.publications.trim()) {
-        rightColumn += '<div class="nabhel-section" style="margin-bottom: 16px;">';
-        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-bottom: 16px;">Publications</div>`;
-        
-        const publications = data.publications.split('\n').filter(line => line.trim());
-        publications.forEach(publication => {
-            rightColumn += `<p class="nabhel-entry" style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 8px 0;">${escapeHtml(publication.trim())}</p>`;
+        rightColumn += `<div class="nabhel-section-header" style="font-family: ${interFont}; font-weight: 700; font-size: ${sectionHeaderSize}; color: ${colors.dark}; margin-top: 16px; margin-bottom: 12px;">Publications</div>`;
+        data.publications.split('\n').filter(line => line.trim()).forEach(publication => {
+            rightColumn += `<p style="font-family: ${fontFamily}; font-size: ${bodySize}; font-weight: 400; color: #2C2F37; line-height: 1.6; margin: 0 0 6px 0;">${escapeHtml(publication.trim())}</p>`;
         });
-        
-        rightColumn += '</div>';
     }
     
     rightColumn += '</div>';
     
-    // Close table structure
+    // Close flexbox structure
     html += leftColumn + rightColumn;
-    html += '</div></div>';
+    html += '</div>';
     
     return html;
 }
