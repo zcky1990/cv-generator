@@ -1211,6 +1211,18 @@ function generateProductDesignerCV(data) {
         leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4;">${escapeHtml(data.phone)}</div>`;
         leftColumn += '</div></div>';
     }
+
+    if (data.github) {
+        const githubUrl = data.github.startsWith('http') ? data.github : `https://${data.github}`;
+        leftColumn += '<div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">';
+        leftColumn += `<div style="width: 16px; height: 16px; border-radius: 50%; background-color: ${colors.lightest}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">`;
+        leftColumn += `<span style="font-size: 8px; color: ${colors.medium};"><svg width="16.333" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16.333 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.142 0C3.64 0 0 3.667 0 8.203c0 3.626 2.332 6.695 5.567 7.782 0.404 0.082 0.553 -0.176 0.553 -0.394 0 -0.19 -0.013 -0.842 -0.013 -1.521 -2.265 0.489 -2.737 -0.978 -2.737 -0.978 -0.364 -0.951 -0.903 -1.195 -0.903 -1.195 -0.741 -0.502 0.054 -0.502 0.054 -0.502 0.822 0.054 1.254 0.842 1.254 0.842 0.728 1.249 1.901 0.896 2.372 0.679 0.067 -0.53 0.283 -0.896 0.512 -1.1 -1.806 -0.19 -3.707 -0.896 -3.707 -4.047 0 -0.896 0.323 -1.63 0.836 -2.2 -0.081 -0.204 -0.364 -1.046 0.081 -2.173 0 0 0.687 -0.217 2.238 0.842a7.833 7.833 0 0 1 2.036 -0.272c0.687 0 1.388 0.095 2.035 0.272 1.55 -1.059 2.238 -0.842 2.238 -0.842 0.445 1.127 0.162 1.969 0.081 2.173 0.526 0.57 0.836 1.304 0.836 2.2 0 3.151 -1.901 3.843 -3.721 4.047 0.297 0.258 0.553 0.747 0.553 1.521 0 1.1 -0.013 1.983 -0.013 2.254 0 0.217 0.148 0.475 0.553 0.394 3.235 -1.087 5.567 -4.156 5.567 -7.782C16.284 3.667 12.631 0 8.142 0" fill="#24292f"/></svg></span>`;
+        leftColumn += '</div>';
+        leftColumn += '<div style="flex: 1;">';
+        leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${captionSize}; color: ${colors.light}; line-height: 1.4; margin-bottom: 2px;">Github</div>`;
+        leftColumn += `<div style="font-family: ${fontFamily}; font-size: ${smallSize}; font-weight: 500; color: ${colors.medium}; line-height: 1.4;">${escapeHtml(data.github)}</div>`;
+        leftColumn += '</div></div>';
+    }
     
     leftColumn += '</div>';
     
