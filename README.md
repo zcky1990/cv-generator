@@ -1,6 +1,6 @@
 # CV Builder - Professional Resume Builder
 
-A modern, web-based CV builder that generates professional PDF resumes with multiple beautiful templates. No LaTeX knowledge required - just fill in the form and download Your CV Preview as a PDF!
+A modern, web-based CV builder that generates professional PDF resumes with multiple beautiful templates. Just fill in the form and download Your CV Preview as a PDF!
 
 ## Features
 
@@ -84,7 +84,6 @@ cv-builder/
 
 - A modern web browser (Chrome, Firefox, Safari, Edge)
 - No server or backend required - works entirely in the browser
-- No LaTeX installation needed - PDFs are generated client-side
 
 ## Browser Compatibility
 
