@@ -187,8 +187,17 @@
             
             /* Improved print styles */
             @media print {
-                body {
+                html, body {
                     background: white !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                }
+                
+                #mainContent,
+                #mainContent > div,
+                .flex.justify-center {
+                    margin: 0 !important;
+                    padding: 0 !important;
                 }
                 
                 #cvContainer {
@@ -197,6 +206,11 @@
                     min-width: var(--print-width, 215.9mm) !important;
                     max-width: var(--print-width, 215.9mm) !important;
                     min-height: var(--print-height, 279.4mm) !important;
+                    padding: 0 !important;
+                    margin-top: 0 !important;
+                    margin-right: 0 !important;
+                    margin-bottom: 0 !important;
+                    margin-left: 0 !important;
                 }
                 
                 /* Better text rendering for print */
@@ -479,9 +493,28 @@
                     
                     // Wait a moment for scroll to complete
                     await new Promise(resolve => setTimeout(resolve, 100));
+                    
+                    // Remove inline margins from cvContainer before PDF generation
+                    // html2pdf will handle margins via its margin option
+                    const originalMargins = {
+                        marginTop: cvContainer.style.marginTop,
+                        marginRight: cvContainer.style.marginRight,
+                        marginBottom: cvContainer.style.marginBottom,
+                        marginLeft: cvContainer.style.marginLeft
+                    };
+                    cvContainer.style.marginTop = '0';
+                    cvContainer.style.marginRight = '0';
+                    cvContainer.style.marginBottom = '0';
+                    cvContainer.style.marginLeft = '0';
 
                     // Generate and download PDF - pass container as is
                     await html2pdf().set(options).from(cvContainer).save();
+                    
+                    // Restore original margins after PDF generation
+                    cvContainer.style.marginTop = originalMargins.marginTop;
+                    cvContainer.style.marginRight = originalMargins.marginRight;
+                    cvContainer.style.marginBottom = originalMargins.marginBottom;
+                    cvContainer.style.marginLeft = originalMargins.marginLeft;
 
                     // Restore button
                     if (button) {
