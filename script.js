@@ -1715,12 +1715,11 @@ function generateMinimalCV(data) {
     const sectionHeaderStyle = 'font-size: 12px; font-weight: bold; margin-bottom: 12px; text-transform: uppercase;';
     const separatorStyle = 'border-top: 1px solid currentColor; margin: 16px 0; opacity: 0.3;';
     
-    // Start two-column layout
-    let html = '<div style="display: table; width: 100%; border-collapse: collapse; font-family: \'Montserrat\', Arial, sans-serif;">';
-    html += '<div style="display: table-row;">';
+    // Start two-column layout using flexbox
+    let html = '<div style="display: flex; width: 100%; font-family: \'Montserrat\', Arial, sans-serif;">';
     
     // LEFT COLUMN (~33%)
-    let leftColumn = '<div style="display: table-cell; width: 33%; vertical-align: top; padding-right: 15px; padding-top: 0;">';
+    let leftColumn = '<div style="flex: 0 0 33%; padding-right: 15px; padding-top: 0;">';
     
     // Name
     leftColumn += `<div style="margin-bottom: 4px;"><h1 class="minimal-name" style="${nameStyle}">${escapeHtml(data.name)}</h1></div>`;
@@ -1760,35 +1759,35 @@ function generateMinimalCV(data) {
         if (data.cityOfBirth) {
             birthInfo = birthInfo ? `${escapeHtml(data.cityOfBirth)}, ${birthInfo}` : escapeHtml(data.cityOfBirth);
         }
-        leftColumn += `<div style="margin-bottom: 4px;">${birthInfo}</div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="font-size: 12px;"><svg width="10" height="10" viewBox="-0.025 -0.038 0.3 0.3" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" class="jam jam-calendar"><path d="M.225.088V.063A.013.013 0 0 0 .212.05H.199v.013a.013.013 0 0 1-.025 0V.05H.075v.013a.013.013 0 1 1-.025 0V.05H.038a.013.013 0 0 0-.013.013v.025zm0 .025h-.2v.075a.013.013 0 0 0 .013.013h.175A.013.013 0 0 0 .226.188zM.2.025h.013a.04.04 0 0 1 .038.038v.125a.04.04 0 0 1-.038.038H.038A.04.04 0 0 1 0 .188V.063A.04.04 0 0 1 .038.025h.013V.013a.013.013 0 1 1 .025 0v.013h.1V.013a.013.013 0 0 1 .025 0z"/></svg></span><span>${birthInfo}</span></div>`;
     }
     if (data.phone) {
-        leftColumn += `<div style="margin-bottom: 4px;">${escapeHtml(data.phone)}</div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="font-size: 10px;"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10" enable-background="new 0 0 32 32" xml:space="preserve" width="10" height="10"><path fill="none" stroke="#000000" stroke-width="0.625" stroke-miterlimit="10" d="M4.25 2.656 2.969 1.344c-0.156 -0.125 -0.375 -0.125 -0.531 0L1.469 2.344c-0.219 0.188 -0.281 0.5 -0.188 0.75 0.25 0.719 0.906 2.156 2.188 3.438s2.719 1.906 3.438 2.188c0.281 0.094 0.563 0.031 0.781 -0.156l0.969 -0.969c0.156 -0.156 0.156 -0.375 0 -0.531l-1.281 -1.281c-0.156 -0.156 -0.375 -0.156 -0.531 0L6.063 6.563s-0.875 -0.375 -1.563 -1.031 -1.031 -1.563 -1.031 -1.563l0.781 -0.781c0.156 -0.156 0.156 -0.406 0 -0.531z"/></svg></span><span>${escapeHtml(data.phone)}</span></div>`;
     }
     if (data.email) {
-        leftColumn += `<div style="margin-bottom: 4px;"><a href="mailto:${escapeHtml(data.email)}" style="color: #000; text-decoration: none;">${escapeHtml(data.email)}</a></div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="font-size: 10px;"><svg width="10" height="10" viewBox="0 0 0.3 0.3" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.025 0.075A0.025 0.025 0 0 1 0.05 0.05h0.2a0.025 0.025 0 0 1 0.025 0.025v0.15A0.025 0.025 0 0 1 0.25 0.25H0.05A0.025 0.025 0 0 1 0.025 0.225zm0.044 0L0.15 0.146 0.231 0.075zM0.25 0.092 0.158 0.172a0.014 0.014 0 0 1 -0.016 0L0.05 0.092v0.133h0.2z" fill="#0d0d0d"/></svg></span><a href="mailto:${escapeHtml(data.email)}" style="color: #000; text-decoration: none;">${escapeHtml(data.email)}</a></div>`;
     }
     if (data.location) {
-        leftColumn += `<div style="margin-bottom: 4px;">${escapeHtml(data.location)}</div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="font-size: 12px;"><svg width="10" height="10" viewBox="0 0 0.3 0.3" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M.15.025c.062 0 .113.05.113.111q0 .061-.101.131L.15.275.143.27Q.038.199.038.136c0-.061.05-.111.112-.111m0 .025a.09.09 0 0 0-.088.087q0 .046.088.108Q.238.182.238.137A.087.087 0 0 0 .15.05m0 .025a.05.05 0 1 1 0 .1.05.05 0 0 1 0-.1M.15.1a.025.025 0 1 0 0 .05.025.025 0 0 0 0-.05"/></svg></span><span>${escapeHtml(data.location)}</span></div>`;
     }
     if (data.linkedin) {
-        leftColumn += `<div style="margin-bottom: 4px;"><a href="https://linkedin.com/in/${escapeHtml(data.linkedin)}" style="color: #000; text-decoration: none;">in: ${escapeHtml(data.linkedin)}</a></div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="width: 16px; height: 16px; border-radius: 50%; background-color: black; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0px 2px 8px rgba(0,0,0,0.06);"><span style="font-size: 8px; color: white;">in</span></span><a href="https://linkedin.com/in/${escapeHtml(data.linkedin)}" style="color: #000; text-decoration: none;">${escapeHtml(data.linkedin)}</a></div>`;
     }
     if (data.website) {
         const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
-        leftColumn += `<div style="margin-bottom: 4px;"><a href="${url}" style="color: #000; text-decoration: none;">${escapeHtml(data.website)}</a></div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="font-size: 12px;">🔗</span><a href="${url}" style="color: #000; text-decoration: none;">${escapeHtml(data.website)}</a></div>`;
     }
     if (data.github) {
         const githubUrl = data.github.startsWith('http') ? data.github : `https://${data.github}`;
-        leftColumn += `<div style="margin-bottom: 4px;"><a href="${githubUrl}" style="color: #000; text-decoration: none;">${escapeHtml(data.github)}</a></div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="font-size: 10px;"><svg width="10" height="9.796" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 9.796"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.985 0C2.228 0 0 2.245 0 5.022a5.02 5.02 0 0 0 3.409 4.764c.248.05.338-.108.338-.241 0-.116-.008-.516-.008-.931-1.387.299-1.676-.599-1.676-.599-.223-.582-.553-.732-.553-.732-.454-.308.033-.308.033-.308.503.033.768.516.768.516.446.765 1.164.549 1.453.416.041-.324.173-.549.314-.673-1.106-.116-2.27-.549-2.27-2.478 0-.549.198-.998.512-1.347-.049-.125-.223-.64.05-1.33 0 0 .421-.133 1.37.516a4.8 4.8 0 0 1 1.246-.166c.421 0 .85.058 1.246.166.949-.649 1.37-.516 1.37-.516.272.69.099 1.206.049 1.33.322.349.512.798.512 1.347 0 1.929-1.164 2.353-2.278 2.478.182.158.338.457.338.931 0 .673-.008 1.214-.008 1.38 0 .133.091.291.338.241a5.02 5.02 0 0 0 3.409-4.764C9.97 2.245 7.733 0 4.985 0" fill="#24292f"/></svg></span><a href="${githubUrl}" style="color: #000; text-decoration: none;">${escapeHtml(data.github)}</a></div>`;
     }
     if (data.dribbble) {
         const dribbbleUrl = data.dribbble.startsWith('http') ? data.dribbble : `https://${data.dribbble}`;
-        leftColumn += `<div style="margin-bottom: 4px;"><a href="${dribbbleUrl}" style="color: #000; text-decoration: none;">${escapeHtml(data.dribbble)}</a></div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="width: 16px; height: 16px; border-radius: 50%; background-color: #EA4C89; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><span style="font-size: 8px; color: white;">D</span></span><a href="${dribbbleUrl}" style="color: #000; text-decoration: none;">${escapeHtml(data.dribbble)}</a></div>`;
     }
     if (data.instagram) {
         const instagramUrl = data.instagram.startsWith('http') ? data.instagram : `https://${data.instagram}`;
-        leftColumn += `<div style="margin-bottom: 4px;"><a href="${instagramUrl}" style="color: #000; text-decoration: none;">${escapeHtml(data.instagram)}</a></div>`;
+        leftColumn += `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><span style="font-size: 12px;">📷</span><a href="${instagramUrl}" style="color: #000; text-decoration: none;">${escapeHtml(data.instagram)}</a></div>`;
     }
     
     leftColumn += '</div></div>';
@@ -1889,111 +1888,49 @@ function generateMinimalCV(data) {
     leftColumn += '</div>';
     
     // RIGHT COLUMN (~67%)
-    let rightColumn = '<div style="display: table-cell; width: 67%; vertical-align: top; padding-left: 24px; padding-top: 0;">';
+    let rightColumn = '<div style="flex: 0 0 67%; padding-left: 24px; padding-top: 0;">';
     
     // Experience Section
     if (data.experience && data.experience.length > 0) {
-        rightColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle} margin-top: 0;">EXPERIENCE</div>`;
-        rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
-        
+        rightColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle} margin-top: 0;">EXPERIENCE</div><div class="minimal-separator" style="${separatorStyle}"></div>`;
         data.experience.forEach((entry, index) => {
-            // Format date range
             let dateStr = '';
             if (entry.dateStart && entry.dateEnd) {
-                const startYear = entry.dateStart.split('-')[0];
-                const endYear = entry.dateEnd.split('-')[0];
-                dateStr = `${startYear}-${endYear}`;
+                dateStr = `${entry.dateStart.split('-')[0]}-${entry.dateEnd.split('-')[0]}`;
             } else if (entry.dateStart) {
-                const startYear = entry.dateStart.split('-')[0];
-                dateStr = `${startYear}-Present`;
+                dateStr = `${entry.dateStart.split('-')[0]}-Present`;
             } else if (entry.dateEnd) {
-                const endYear = entry.dateEnd.split('-')[0];
-                dateStr = `-${endYear}`;
+                dateStr = `-${entry.dateEnd.split('-')[0]}`;
             }
-            
-            rightColumn += '<div style="margin-bottom: 24px;">';
-            rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 4px;">${escapeHtml(entry.company)}${entry.city ? `, ${escapeHtml(entry.city)}` : ''}</div>`;
-            rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 8px;">${escapeHtml(entry.position)}${dateStr ? ` | ${dateStr}` : ''}</div>`;
-            
-            if (entry.description) {
-                const items = entry.description.split('\n').filter(line => line.trim());
-                rightColumn += '<div style="font-size: 11px; line-height: 1.6;">';
-                items.forEach(item => {
-                    rightColumn += `<div style="margin-bottom: 4px;">${escapeHtml(item.trim())}</div>`;
-                });
-                rightColumn += '</div>';
-            }
-            
-            rightColumn += '</div>';
+            const items = entry.description ? entry.description.split('\n').filter(line => line.trim()).map(item => `<div style="margin-bottom: 4px;">${escapeHtml(item.trim())}</div>`).join('') : '';
+            rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 4px;">${escapeHtml(entry.company)}${entry.city ? `, ${escapeHtml(entry.city)}` : ''}</div><div style="font-size: 11px; font-weight: 600; margin-bottom: 8px; color: #79819A;">${escapeHtml(entry.position)}${dateStr ? ` | ${dateStr}` : ''}</div>${items ? `<div style="font-size: 11px; line-height: 1.6; margin-bottom: 24px;">${items}</div>` : '<div style="margin-bottom: 24px;"></div>'}`;
         });
     }
     
     // Projects Section (if no experience or as additional section)
     if (data.projects && data.projects.length > 0) {
-        rightColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">PROJECTS</div>`;
-        if (data.experience && data.experience.length > 0) {
-            rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
-        }
-        
+        rightColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">PROJECTS</div>${data.experience && data.experience.length > 0 ? `<div class="minimal-separator" style="${separatorStyle}"></div>` : ''}`;
         data.projects.forEach((entry, index) => {
-            rightColumn += '<div style="margin-bottom: 16px;">';
-            rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 4px;">${escapeHtml(entry.title)}${entry.tech ? ` (${escapeHtml(entry.tech)})` : ''}</div>`;
-            
-            if (entry.description) {
-                const items = entry.description.split('\n').filter(line => line.trim());
-                rightColumn += '<div style="font-size: 11px; line-height: 1.6;">';
-                items.forEach(item => {
-                    rightColumn += `<div style="margin-bottom: 4px;">${escapeHtml(item.trim())}</div>`;
-                });
-                rightColumn += '</div>';
-            }
-            
-            rightColumn += '</div>';
+            const items = entry.description ? entry.description.split('\n').filter(line => line.trim()).map(item => `<div style="margin-bottom: 4px;">${escapeHtml(item.trim())}</div>`).join('') : '';
+            rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 4px;">${escapeHtml(entry.title)}${entry.tech ? ` (${escapeHtml(entry.tech)})` : ''}</div>${items ? `<div style="font-size: 11px; line-height: 1.6; margin-bottom: 16px;">${items}</div>` : '<div style="margin-bottom: 16px;"></div>'}`;
         });
     }
     
     // Volunteer Section
     if (data.volunteer && data.volunteer.length > 0) {
-        if (data.experience && data.experience.length > 0 || data.projects && data.projects.length > 0) {
-            rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
-        }
-        rightColumn += `<div class="minimal-section-header" style="${sectionHeaderStyle}">VOLUNTEER</div>`;
-        if (data.experience && data.experience.length > 0 || data.projects && data.projects.length > 0) {
-            rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
-        }
-        
+        const hasPrevSection = data.experience && data.experience.length > 0 || data.projects && data.projects.length > 0;
+        rightColumn += `${hasPrevSection ? `<div class="minimal-separator" style="${separatorStyle}"></div>` : ''}<div class="minimal-section-header" style="${sectionHeaderStyle}">VOLUNTEER</div>${hasPrevSection ? `<div class="minimal-separator" style="${separatorStyle}"></div>` : ''}`;
         data.volunteer.forEach((entry, index) => {
             let dateStr = '';
             if (entry.dateStart && entry.dateEnd) {
-                const startYear = entry.dateStart.split('-')[0];
-                const endYear = entry.dateEnd.split('-')[0];
-                dateStr = `${startYear}-${endYear}`;
+                dateStr = `${entry.dateStart.split('-')[0]}-${entry.dateEnd.split('-')[0]}`;
             } else if (entry.dateStart) {
-                const startYear = entry.dateStart.split('-')[0];
-                dateStr = `${startYear}-Present`;
+                dateStr = `${entry.dateStart.split('-')[0]}-Present`;
             } else if (entry.dateEnd) {
-                const endYear = entry.dateEnd.split('-')[0];
-                dateStr = `-${endYear}`;
+                dateStr = `-${entry.dateEnd.split('-')[0]}`;
             }
-            
-            rightColumn += '<div style="margin-bottom: 24px;">';
-            rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 4px;">${escapeHtml(entry.organization)}</div>`;
-            rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 8px;">${escapeHtml(entry.position)}${dateStr ? ` | ${dateStr}` : ''}</div>`;
-            
-            if (entry.description) {
-                const items = entry.description.split('\n').filter(line => line.trim());
-                rightColumn += '<div style="font-size: 11px; line-height: 1.6;">';
-                items.forEach(item => {
-                    rightColumn += `<div style="margin-bottom: 4px;">${escapeHtml(item.trim())}</div>`;
-                });
-                rightColumn += '</div>';
-            }
-            
-            rightColumn += '</div>';
-            
-            if (index < data.volunteer.length - 1) {
-                rightColumn += `<div class="minimal-separator" style="${separatorStyle}"></div>`;
-            }
+            const items = entry.description ? entry.description.split('\n').filter(line => line.trim()).map(item => `<div style="margin-bottom: 4px;">${escapeHtml(item.trim())}</div>`).join('') : '';
+            rightColumn += `<div style="font-size: 12px; font-weight: bold; margin-bottom: 4px;">${escapeHtml(entry.organization)}</div><div style="font-size: 12px; font-weight: bold; margin-bottom: 8px;">${escapeHtml(entry.position)}${dateStr ? ` | ${dateStr}` : ''}</div>${items ? `<div style="font-size: 11px; line-height: 1.6; margin-bottom: 24px;">${items}</div>` : '<div style="margin-bottom: 24px;"></div>'}${index < data.volunteer.length - 1 ? `<div class="minimal-separator" style="${separatorStyle}"></div>` : ''}`;
         });
     }
     
@@ -2028,9 +1965,9 @@ function generateMinimalCV(data) {
     
     rightColumn += '</div>';
     
-    // Close table structure
+    // Close flexbox structure
     html += leftColumn + rightColumn;
-    html += '</div></div>';
+    html += '</div>';
     
     return html;
 }
