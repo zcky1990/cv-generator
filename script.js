@@ -594,6 +594,11 @@ function generateCVFromData(data) {
         return generateUXUIDesignerCV(data);
     }
     
+    // Special handling for modern template (single column clean layout)
+    if (template === 'modern') {
+        return generateModernCV(data);
+    }
+    
     let html = generateHeader(template, data);
     
     html += generateEducation(data.education, template);
@@ -874,151 +879,114 @@ function formatDateForLuxSleek(startDate, endDate) {
     return `${start} - ${end}`;
 }
 
-// Generate Classic CV following Northeastern University COS Faculty CV Template
-// Reference: https://www.overleaf.com/latex/templates/northeastern-university-cos-faculty-cv-template/zfgnyhdpmpqg
+// Generate Classic CV - ATS-Friendly Version
+// Optimized for Applicant Tracking Systems with standard formatting and section names
 function generateClassicNUCV(data) {
     let html = '';
-    const baseStyle = 'font-family: Calibri, Arial, sans-serif; font-size: 12px;';
+    const baseStyle = 'font-family: Calibri, Arial, sans-serif; font-size: 12px; line-height: 1.5;';
     const headerStyle = 'font-family: Calibri, Arial, sans-serif; font-size: 20px; font-weight: bold;';
-    const sectionStyle = 'font-family: Calibri, Arial, sans-serif; font-size: 14px; font-weight: bold;';
-    const subsectionStyle = 'font-family: Calibri, Arial, sans-serif; font-size: 13px; font-weight: bold;';
+    const sectionStyle = 'font-family: Calibri, Arial, sans-serif; font-size: 14px; font-weight: bold; letter-spacing: 0.5px;';
+    const sectionHeaderStyle = 'font-family: Calibri, Arial, sans-serif; font-size: 14px; font-weight: bold; letter-spacing: 0.5px; border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; margin-top: 0; text-transform: uppercase;';
+    const entryTitleStyle = 'font-family: Calibri, Arial, sans-serif; font-size: 13px; font-weight: bold;';
     
-    // Header - Centered with "Curriculum Vitae"
-    html += '<div class="text-center mb-6 print:mb-4 pb-4 print:pb-2" style="' + baseStyle + '">';
+    // Header - Name and Title only (ATS-friendly, no "Curriculum Vitae" text)
+    html += '<div class="text-center mb-4 print:mb-3" style="' + baseStyle + '">';
     html += `<h1 style="${headerStyle} margin-bottom: 4px;">${escapeHtml(data.name)}</h1>`;
     if (data.title && data.title.trim()) {
-        html += `<div style="${baseStyle} font-size: 13px; margin-bottom: 15px;">${escapeHtml(data.title)}</div>`;
+        html += `<div style="${baseStyle} font-size: 13px; margin-bottom: 8px;">${escapeHtml(data.title)}</div>`;
     }
-    html += `<div style="${baseStyle} font-weight: bold; margin-bottom: 2px;">Curriculum Vitae</div>`;
     
-    // Contact info
+    // Contact info - single line, standard format
     const contactParts = [];
-    if (data.location) contactParts.push(escapeHtml(data.location));
+    if (data.email) contactParts.push(escapeHtml(data.email));
     if (data.phone) contactParts.push(escapeHtml(data.phone));
-    if (data.email) contactParts.push(`<a href="mailto:${escapeHtml(data.email)}" style="color: inherit; text-decoration: none;">${escapeHtml(data.email)}</a>`);
+    if (data.location) contactParts.push(escapeHtml(data.location));
     if (data.website) {
         const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
-        contactParts.push(`<a href="${url}" style="color: inherit; text-decoration: none;">${escapeHtml(data.website)}</a>`);
+        contactParts.push(escapeHtml(data.website.replace(/^https?:\/\//, '')));
     }
     if (data.linkedin) {
-        contactParts.push(`<a href="https://linkedin.com/in/${escapeHtml(data.linkedin)}" style="color: inherit; text-decoration: none;">${escapeHtml(data.linkedin)}</a>`);
-    }
-    if (data.github) {
-        const githubUrl = data.github.startsWith('http') ? data.github : `https://${data.github}`;
-        contactParts.push(`<a href="${githubUrl}" style="color: inherit; text-decoration: none;">${escapeHtml(data.github)}</a>`);
-    }
-    if (data.dribbble) {
-        const dribbbleUrl = data.dribbble.startsWith('http') ? data.dribbble : `https://${data.dribbble}`;
-        contactParts.push(`<a href="${dribbbleUrl}" style="color: inherit; text-decoration: none;">${escapeHtml(data.dribbble)}</a>`);
-    }
-    if (data.instagram) {
-        const instagramUrl = data.instagram.startsWith('http') ? data.instagram : `https://${data.instagram}`;
-        contactParts.push(`<a href="${instagramUrl}" style="color: inherit; text-decoration: none;">${escapeHtml(data.instagram)}</a>`);
+        contactParts.push(`LinkedIn: ${escapeHtml(data.linkedin)}`);
     }
     
     if (contactParts.length > 0) {
-        html += `<div style="${baseStyle} font-size: 11px;">${contactParts.join(' | ')}</div>`;
+        html += `<div style="${baseStyle} font-size: 11px; margin-top: 4px;">${contactParts.join(' | ')}</div>`;
     }
     html += '</div>';
     
-    // About/Bio section
+    // Professional Summary / About section (ATS keyword-rich)
     if (data.about && data.about.trim()) {
-        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
-        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">ABOUT</h2>`;
+        html += `<div class="mb-4 print:mb-3 print:break-inside-avoid" style="margin-bottom: 20px;">`;
+        html += `<h2 style="${sectionHeaderStyle}">PROFESSIONAL SUMMARY</h2>`;
         html += `<div style="${baseStyle}">${escapeHtml(data.about).replace(/\n/g, '<br>')}</div>`;
         html += '</div>';
     }
     
-    // EDUCATION & EMPLOYMENT HISTORY (combined section)
-    const hasEducation = data.education && data.education.length > 0;
-    const hasExperience = data.experience && data.experience.length > 0;
-    
-    if (hasEducation || hasExperience) {
-        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
-        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">EDUCATION & EMPLOYMENT HISTORY</h2>`;
+    // PROFESSIONAL EXPERIENCE - Separate section (ATS standard)
+    if (data.experience && data.experience.length > 0) {
+        html += `<div class="mb-4 print:mb-3 print:break-inside-avoid" style="margin-bottom: 20px;">`;
+        html += `<h2 style="${sectionHeaderStyle}">PROFESSIONAL EXPERIENCE</h2>`;
         
-        // Education entries
-        if (hasEducation) {
-            data.education.forEach(entry => {
-                html += '<div class="mb-4 print:mb-3" style="margin-bottom: 16px;">';
-                html += `<div style="${baseStyle} font-weight: bold; font-size: 14px;">${escapeHtml(entry.degree)}</div>`;
-                
-                // Year of completion
-                if (entry.dateEnd) {
-                    const year = entry.dateEnd.split('-')[0];
-                    html += `<div style="${baseStyle}">Year of completion: ${year}</div>`;
-                } else if (entry.dateStart) {
-                    const year = entry.dateStart.split('-')[0];
-                    html += `<div style="${baseStyle}">Year of completion: ${year}</div>`;
+        data.experience.forEach(entry => {
+            html += '<div class="mb-3 print:mb-2" style="margin-bottom: 14px;">';
+            
+            // Position and Company on same line
+            html += `<div style="${entryTitleStyle} margin-bottom: 2px;">${escapeHtml(entry.position)}</div>`;
+            html += `<div style="${baseStyle} margin-bottom: 2px;">${escapeHtml(entry.company)}${entry.city ? `, ${escapeHtml(entry.city)}` : ''}</div>`;
+            
+            // Date range - standard format
+            const dateRange = formatDateForATS(entry.dateStart, entry.dateEnd);
+            html += `<div style="${baseStyle} font-style: italic; margin-bottom: 4px;">${escapeHtml(dateRange)}</div>`;
+            
+            // Description with bullet points
+            if (entry.description) {
+                const items = entry.description.split('\n').filter(line => line.trim());
+                if (items.length > 0) {
+                    html += '<ul style="margin: 4px 0 0 0; padding-left: 20px; list-style-type: disc;">';
+                    items.forEach(item => {
+                        html += `<li style="${baseStyle} margin-bottom: 2px;">${escapeHtml(item.trim())}</li>`;
+                    });
+                    html += '</ul>';
                 }
-                
-                html += `<div style="${baseStyle}">${escapeHtml(entry.university)}</div>`;
-                if (entry.city) {
-                    html += `<div style="${baseStyle}">${escapeHtml(entry.city)}</div>`;
-                }
-                if (entry.gpa) {
-                    html += `<div style="${baseStyle}">GPA: ${escapeHtml(entry.gpa)}</div>`;
-                }
-                if (entry.thesis) {
-                    html += `<div style="${baseStyle} margin-top: 4px;">${escapeHtml(entry.thesis)}</div>`;
-                }
-                html += '</div>';
-            });
-        }
-        
-        // Experience/Employment entries
-        if (hasExperience) {
-            data.experience.forEach(entry => {
-                html += '<div class="mb-4 print:mb-3" style="margin-bottom: 16px;">';
-                html += `<div style="${baseStyle} font-weight: bold; font-size: 14px;">${escapeHtml(entry.position)}</div>`;
-                
-                // Time Period
-                const timePeriod = formatDateRange(entry.dateStart, entry.dateEnd);
-                html += `<div style="${baseStyle}">Time Period: ${escapeHtml(timePeriod)}</div>`;
-                
-                html += `<div style="${baseStyle}">${escapeHtml(entry.company)}</div>`;
-                if (entry.city) {
-                    html += `<div style="${baseStyle}">${escapeHtml(entry.city)}</div>`;
-                }
-                if (entry.description) {
-                    const items = entry.description.split('\n').filter(line => line.trim());
-                    if (items.length > 0) {
-                        html += '<div style="margin-top: 4px;">';
-                        items.forEach(item => {
-                            html += `<div style="${baseStyle}">${escapeHtml(item.trim())}</div>`;
-                        });
-                        html += '</div>';
-                    }
-                }
-                html += '</div>';
-            });
-        }
+            }
+            html += '</div>';
+        });
         
         html += '</div>';
     }
     
-    // PUBLICATIONS Section
-    if (data.publications && data.publications.trim()) {
-        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
-        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">PUBLICATIONS</h2>`;
+    // EDUCATION - Separate section (ATS standard)
+    if (data.education && data.education.length > 0) {
+        html += `<div class="mb-4 print:mb-3 print:break-inside-avoid" style="margin-bottom: 20px;">`;
+        html += `<h2 style="${sectionHeaderStyle}">EDUCATION</h2>`;
         
-        // For now, treat all publications as "Reviewed Articles" since we don't have categorization
-        // In a full implementation, you'd want to parse and categorize publications
-        html += `<div style="margin-left: 0;">`;
-        html += `<h3 style="${subsectionStyle} margin-bottom: 8px; margin-top: 8px;">Reviewed Articles</h3>`;
-        
-        const publications = data.publications.split('\n').filter(line => line.trim());
-        publications.forEach(pub => {
-            html += `<div style="${baseStyle} margin-bottom: 4px;">${escapeHtml(pub.trim())}</div>`;
+        data.education.forEach(entry => {
+            html += '<div class="mb-3 print:mb-2" style="margin-bottom: 14px;">';
+            html += `<div style="${entryTitleStyle} margin-bottom: 2px;">${escapeHtml(entry.degree)}</div>`;
+            html += `<div style="${baseStyle} margin-bottom: 2px;">${escapeHtml(entry.university)}${entry.city ? `, ${escapeHtml(entry.city)}` : ''}</div>`;
+            
+            // Date range - standard format
+            const dateRange = formatDateForATSEducation(entry.dateStart, entry.dateEnd);
+            if (dateRange) {
+                html += `<div style="${baseStyle} font-style: italic; margin-bottom: 2px;">${escapeHtml(dateRange)}</div>`;
+            }
+            
+            if (entry.gpa) {
+                html += `<div style="${baseStyle}">GPA: ${escapeHtml(entry.gpa)}</div>`;
+            }
+            if (entry.thesis) {
+                html += `<div style="${baseStyle} margin-top: 2px;">Thesis: ${escapeHtml(entry.thesis)}</div>`;
+            }
+            html += '</div>';
         });
         
-        html += '</div></div>';
+        html += '</div>';
     }
     
-    // SKILLS (if provided, as a simple list)
+    // SKILLS - Standard ATS section name
     if (data.skills && data.skills.trim()) {
-        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
-        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">TECHNICAL SKILLS</h2>`;
+        html += `<div class="mb-4 print:mb-3 print:break-inside-avoid" style="margin-bottom: 20px;">`;
+        html += `<h2 style="${sectionHeaderStyle}">SKILLS</h2>`;
         
         const skills = data.skills.split('\n').filter(line => line.trim());
         html += '<div style="margin-left: 0;">';
@@ -1028,66 +996,83 @@ function generateClassicNUCV(data) {
         html += '</div></div>';
     }
     
-    // LANGUAGES (if provided)
-    if (data.languages && data.languages.length > 0) {
-        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
-        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">LANGUAGES</h2>`;
-        
-        html += '<div style="margin-left: 0;">';
-        data.languages.forEach(entry => {
-            let langText = `<strong>${escapeHtml(entry.name)}</strong>`;
-            if (entry.level) {
-                langText += `: ${escapeHtml(entry.level)}`;
-            }
-            html += `<div style="${baseStyle} margin-bottom: 2px;">${langText}</div>`;
-        });
-        html += '</div></div>';
-    }
-    
-    // PROJECTS (if provided, could be part of Creative Activity)
+    // PROJECTS - Standard section
     if (data.projects && data.projects.length > 0) {
-        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
-        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">PROJECTS</h2>`;
+        html += `<div class="mb-4 print:mb-3 print:break-inside-avoid" style="margin-bottom: 20px;">`;
+        html += `<h2 style="${sectionHeaderStyle}">PROJECTS</h2>`;
         
         data.projects.forEach(entry => {
-            html += '<div class="mb-4 print:mb-3" style="margin-bottom: 12px;">';
-            html += `<div style="${baseStyle} font-weight: bold; font-size: 14px;">${escapeHtml(entry.title)}</div>`;
+            html += '<div class="mb-3 print:mb-2" style="margin-bottom: 12px;">';
+            html += `<div style="${entryTitleStyle} margin-bottom: 2px;">${escapeHtml(entry.title)}</div>`;
             if (entry.tech) {
-                html += `<div style="${baseStyle} font-size: 11px; color: #666;">${escapeHtml(entry.tech)}</div>`;
+                html += `<div style="${baseStyle} margin-bottom: 2px;">Technologies: ${escapeHtml(entry.tech)}</div>`;
             }
             if (entry.description) {
                 const items = entry.description.split('\n').filter(line => line.trim());
-                items.forEach(item => {
-                    html += `<div style="${baseStyle} margin-top: 2px;">${escapeHtml(item.trim())}</div>`;
-                });
+                if (items.length > 0) {
+                    html += '<ul style="margin: 4px 0 0 0; padding-left: 20px; list-style-type: disc;">';
+                    items.forEach(item => {
+                        html += `<li style="${baseStyle} margin-bottom: 2px;">${escapeHtml(item.trim())}</li>`;
+                    });
+                    html += '</ul>';
+                }
             }
             html += '</div>';
         });
         html += '</div>';
     }
     
-    // VOLUNTEER (if provided)
+    // CERTIFICATIONS - Standard ATS section name
+    if (data.awards && data.awards.trim()) {
+        html += `<div class="mb-4 print:mb-3 print:break-inside-avoid" style="margin-bottom: 20px;">`;
+        html += `<h2 style="${sectionHeaderStyle}">CERTIFICATIONS</h2>`;
+        
+        const awards = data.awards.split('\n').filter(line => line.trim());
+        html += '<div style="margin-left: 0;">';
+        awards.forEach(award => {
+            html += `<div style="${baseStyle} margin-bottom: 2px;">${escapeHtml(award.trim())}</div>`;
+        });
+        html += '</div></div>';
+    }
+    
+    // LANGUAGES - Standard section
+    if (data.languages && data.languages.length > 0) {
+        html += `<div class="mb-4 print:mb-3 print:break-inside-avoid" style="margin-bottom: 20px;">`;
+        html += `<h2 style="${sectionHeaderStyle}">LANGUAGES</h2>`;
+        
+        html += '<div style="margin-left: 0;">';
+        data.languages.forEach(entry => {
+            let langText = escapeHtml(entry.name);
+            if (entry.level) {
+                langText += ` - ${escapeHtml(entry.level)}`;
+            }
+            html += `<div style="${baseStyle} margin-bottom: 2px;">${langText}</div>`;
+        });
+        html += '</div></div>';
+    }
+    
+    // VOLUNTEER EXPERIENCE - Standard section
     if (data.volunteer && data.volunteer.length > 0) {
-        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
-        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">VOLUNTEER EXPERIENCE</h2>`;
+        html += `<div class="mb-4 print:mb-3 print:break-inside-avoid" style="margin-bottom: 20px;">`;
+        html += `<h2 style="${sectionHeaderStyle}">VOLUNTEER EXPERIENCE</h2>`;
         
         data.volunteer.forEach(entry => {
-            html += '<div class="mb-4 print:mb-3" style="margin-bottom: 16px;">';
-            html += `<div style="${baseStyle} font-weight: bold; font-size: 14px;">${escapeHtml(entry.position)}</div>`;
+            html += '<div class="mb-3 print:mb-2" style="margin-bottom: 14px;">';
+            html += `<div style="${entryTitleStyle} margin-bottom: 2px;">${escapeHtml(entry.position)}</div>`;
+            html += `<div style="${baseStyle} margin-bottom: 2px;">${escapeHtml(entry.organization)}${entry.city ? `, ${escapeHtml(entry.city)}` : ''}</div>`;
             
-            // Time Period
-            const timePeriod = formatDateRange(entry.dateStart, entry.dateEnd);
-            html += `<div style="${baseStyle}">Time Period: ${escapeHtml(timePeriod)}</div>`;
+            // Date range
+            const dateRange = formatDateForATS(entry.dateStart, entry.dateEnd);
+            html += `<div style="${baseStyle} font-style: italic; margin-bottom: 4px;">${escapeHtml(dateRange)}</div>`;
             
-            html += `<div style="${baseStyle}">${escapeHtml(entry.organization)}</div>`;
             if (entry.description) {
                 const items = entry.description.split('\n').filter(line => line.trim());
                 if (items.length > 0) {
-                    html += '<div style="margin-top: 4px;">';
+                    html += '<ul style="margin: 4px 0 0 0; padding-left: 20px; list-style-type: disc;">';
                     items.forEach(item => {
-                        html += `<div style="${baseStyle}">${escapeHtml(item.trim())}</div>`;
+                        html += `<li style="${baseStyle} margin-bottom: 2px;">${escapeHtml(item.trim())}</li>`;
                     });
-                    html += '</div>';
+                    html += '</ul>';
                 }
             }
             html += '</div>';
@@ -1096,38 +1081,177 @@ function generateClassicNUCV(data) {
         html += '</div>';
     }
     
-    // HOBBIES & INTERESTS (if provided)
-    if (data.hobbies && data.hobbies.trim()) {
-        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
-        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">HOBBIES & INTERESTS</h2>`;
+    // PUBLICATIONS - Optional section
+    if (data.publications && data.publications.trim()) {
+        html += `<div class="mb-4 print:mb-3 print:break-inside-avoid" style="margin-bottom: 20px;">`;
+        html += `<h2 style="${sectionHeaderStyle}">PUBLICATIONS</h2>`;
         
-        const hobbies = data.hobbies.split('\n').filter(line => line.trim());
+        const publications = data.publications.split('\n').filter(line => line.trim());
         html += '<div style="margin-left: 0;">';
-        hobbies.forEach(hobby => {
-            html += `<div style="${baseStyle} margin-bottom: 2px;">${escapeHtml(hobby.trim())}</div>`;
+        publications.forEach(pub => {
+            html += `<div style="${baseStyle} margin-bottom: 4px;">${escapeHtml(pub.trim())}</div>`;
         });
         html += '</div></div>';
     }
     
-    // AWARDS/SCHOLARSHIPS (if provided)
-    if (data.awards && data.awards.trim()) {
-        html += `<div class="mb-6 print:mb-4 print:break-inside-avoid">`;
-        html += `<h2 style="${sectionStyle} border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px; text-transform: uppercase;">SCHOLARSHIPS AND AWARDS</h2>`;
+    return html;
+}
+
+// Generate Modern CV - Single column clean layout
+// Based on Figma design: https://www.figma.com/design/qCi2244ZLEUvwuUnPbHuCk/6-Free-Resume-Templates--Community-?node-id=135-14
+function generateModernCV(data) {
+    const fontFamily = "'Poppins', 'Arial', sans-serif";
+    const baseStyle = `font-family: ${fontFamily}; font-size: 8px; line-height: 12px; color: #222;`;
+    const nameStyle = `font-family: ${fontFamily}; font-size: 16px; font-weight: 600; line-height: 24px; color: #222;`;
+    const titleStyle = `font-family: ${fontFamily}; font-size: 10px; font-weight: 500; line-height: 16px; color: #222;`;
+    const sectionHeaderStyle = `font-family: ${fontFamily}; font-size: 10px; font-weight: 600; line-height: 16px; color: #222;`;
+    const jobTitleStyle = `font-family: ${fontFamily}; font-size: 10px; font-weight: 400; line-height: 16px; color: #222;`;
+    const companyStyle = `font-family: ${fontFamily}; font-size: 10px; font-weight: 600; line-height: 16px; color: #222;`;
+    const dateStyle = `font-family: ${fontFamily}; font-size: 9px; font-weight: 500; line-height: 12px; color: #797979;`;
+    const contactStyle = `font-family: ${fontFamily}; font-size: 8px; font-weight: 500; line-height: 12px; color: #222; text-decoration: underline;`;
+    
+    let html = `<div style="font-family: ${fontFamily}; width: 100%; box-sizing: border-box; background: white; position: relative; max-width: 600px; margin: 0 auto;">`;
+    
+    // Header Section - Name and Title on left, Contact on right
+    html += '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; position: relative;">';
+    html += '<div style="flex: 0 0 136px;">';
+    html += `<div style="${nameStyle} margin-bottom: 2px;">${escapeHtml(data.name)}</div>`;
+    if (data.title && data.title.trim()) {
+        html += `<div style="${titleStyle} margin-top: 2px;">${escapeHtml(data.title)}</div>`;
+    }
+    html += '</div>';
+    
+    // Contact information - positioned to the right side
+    html += '<div style="text-align: right; flex-shrink: 0;">';
+    if (data.email) {
+        html += `<a href="mailto:${escapeHtml(data.email)}" style="${contactStyle} display: block; margin-bottom: 4px; color: #222; text-decoration: underline;">${escapeHtml(data.email)}</a>`;
+    }
+    if (data.linkedin) {
+        const linkedinUrl = data.linkedin.startsWith('http') ? data.linkedin : `https://linkedin.com/in/${data.linkedin}`;
+        const linkedinText = data.linkedin.startsWith('http') ? data.linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//, '') : data.linkedin;
+        html += `<a href="${linkedinUrl}" style="${contactStyle} display: block; margin-bottom: 4px; color: #222; text-decoration: underline;">linkedin.com/in/${escapeHtml(linkedinText)}</a>`;
+    }
+    if (data.phone) {
+        html += `<a href="tel:${escapeHtml(data.phone)}" style="${contactStyle} display: block; color: #222; text-decoration: underline;">${escapeHtml(data.phone)}</a>`;
+    }
+    html += '</div>';
+    html += '</div>';
+    
+    // Professional Summary
+    if (data.about && data.about.trim()) {
+        html += `<div style="margin-bottom: 20px;">`;
+        html += `<div style="${baseStyle} line-height: 12px; white-space: pre-wrap;">${escapeHtml(data.about)}</div>`;
+        html += '</div>';
+    }
+    
+    // Experience Section
+    if (data.experience && data.experience.length > 0) {
+        html += '<div style="margin-bottom: 20px;">';
+        html += `<div style="${sectionHeaderStyle} margin-bottom: 12px;">Experience</div>`;
         
-        const awards = data.awards.split('\n').filter(line => line.trim());
-        html += '<div style="margin-left: 0;">';
-        awards.forEach(award => {
-            // Handle the dots pattern for date separation
-            const parts = award.trim().split(/\.\.\.\.\./);
-            if (parts.length === 2) {
-                html += `<div style="${baseStyle} margin-bottom: 2px; display: flex; justify-content: space-between;"><span>${escapeHtml(parts[0].trim())}</span><span>${escapeHtml(parts[1].trim())}</span></div>`;
-            } else {
-                html += `<div style="${baseStyle} margin-bottom: 2px;">${escapeHtml(award.trim())}</div>`;
+        data.experience.forEach(entry => {
+            html += '<div style="display: flex; margin-bottom: 20px; position: relative;">';
+            
+            // Left column - Job title, company, dates
+            html += '<div style="flex: 0 0 136px; margin-right: 32px;">';
+            html += `<div style="${jobTitleStyle} margin-bottom: 2px;">${escapeHtml(entry.position)}</div>`;
+            html += `<div style="${companyStyle} margin-bottom: 2px;">${escapeHtml(entry.company)}</div>`;
+            
+            const dateRange = formatDateForATS(entry.dateStart, entry.dateEnd);
+            html += `<div style="${dateStyle} margin-bottom: 8px;">${escapeHtml(dateRange)}</div>`;
+            html += '</div>';
+            
+            // Right column - Description
+            if (entry.description) {
+                const items = entry.description.split('\n').filter(line => line.trim());
+                if (items.length > 0) {
+                    html += '<div style="flex: 1;">';
+                    items.forEach((item, itemIndex) => {
+                        html += `<p style="${baseStyle} margin: 0; margin-bottom: ${itemIndex < items.length - 1 ? '4px' : '0'}; white-space: pre-wrap;">${escapeHtml(item.trim())}</p>`;
+                    });
+                    html += '</div>';
+                }
             }
+            
+            html += '</div>';
         });
-        html += '</div></div>';
+        
+        html += '</div>';
     }
     
+    // Education Section
+    if (data.education && data.education.length > 0) {
+        html += '<div style="margin-bottom: 20px;">';
+        html += `<div style="${sectionHeaderStyle} margin-bottom: 12px;">Education</div>`;
+        
+        data.education.forEach(entry => {
+            html += '<div style="display: flex; margin-bottom: 16px;">';
+            
+            // Left column - Section label (empty for education)
+            html += '<div style="flex: 0 0 136px; margin-right: 32px;"></div>';
+            
+            // Right column - University, degree, dates
+            html += '<div style="flex: 1;">';
+            html += `<div style="${companyStyle} margin-bottom: 2px;">${escapeHtml(entry.university)}</div>`;
+            html += `<div style="${jobTitleStyle} margin-bottom: 2px;">${escapeHtml(entry.degree)}</div>`;
+            
+            const dateRange = formatDateForATSEducation(entry.dateStart, entry.dateEnd);
+            if (dateRange) {
+                html += `<div style="${dateStyle}">${escapeHtml(dateRange)}</div>`;
+            }
+            html += '</div>';
+            html += '</div>';
+        });
+        
+        html += '</div>';
+    }
+    
+    // Skills Section - 3 columns, aligned like Education
+    if (data.skills && data.skills.trim()) {
+        html += '<div style="margin-bottom: 20px;">';
+        html += `<div style="${sectionHeaderStyle} margin-bottom: 12px;">Skills</div>`;
+        
+        html += '<div style="display: flex; margin-bottom: 16px;">';
+        
+        // Left column - Section label (empty for skills, matching Education)
+        html += '<div style="flex: 0 0 136px; margin-right: 32px;"></div>';
+        
+        // Right column - Skills content in 3 columns
+        html += '<div style="flex: 1; display: flex; gap: 16px;">';
+        
+        const skills = data.skills.split('\n').filter(line => line.trim());
+        const skillsPerColumn = Math.ceil(skills.length / 3);
+        const column1 = skills.slice(0, skillsPerColumn);
+        const column2 = skills.slice(skillsPerColumn, skillsPerColumn * 2);
+        const column3 = skills.slice(skillsPerColumn * 2);
+        
+        // Column 1
+        html += '<div style="width: 120px;">';
+        column1.forEach(skill => {
+            html += `<p style="${baseStyle} margin: 0; margin-bottom: 4px; white-space: pre-wrap;">${escapeHtml(skill.trim())}</p>`;
+        });
+        html += '</div>';
+        
+        // Column 2
+        html += '<div style="width: 120px;">';
+        column2.forEach(skill => {
+            html += `<p style="${baseStyle} margin: 0; margin-bottom: 4px; white-space: pre-wrap;">${escapeHtml(skill.trim())}</p>`;
+        });
+        html += '</div>';
+        
+        // Column 3
+        html += '<div style="width: 120px;">';
+        column3.forEach(skill => {
+            html += `<p style="${baseStyle} margin: 0; margin-bottom: 4px; white-space: pre-wrap;">${escapeHtml(skill.trim())}</p>`;
+        });
+        html += '</div>';
+        
+        html += '</div>'; // End right column
+        html += '</div>'; // End flex container
+        html += '</div>'; // End section
+    }
+    
+    html += '</div>';
     return html;
 }
 
@@ -1695,10 +1819,10 @@ function formatDateForATS(startDate, endDate) {
     };
     
     const start = formatMonthYear(startDate);
-    const end = endDate ? formatMonthYear(endDate) : 'Now';
+    const end = endDate ? formatMonthYear(endDate) : 'Present';
     
     if (!start) return end;
-    return `${start} – ${end}`;
+    return `${start} - ${end}`;
 }
 
 // Format date for ATS template - Education (e.g., "2018 - 2023")
