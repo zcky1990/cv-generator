@@ -6,6 +6,15 @@
         <title>CV - Minimal Template</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
+            // Suppress Tailwind CDN production warning - CDN is appropriate for this standalone application
+            const originalWarn = console.warn;
+            console.warn = function(...args) {
+                if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com should not be used in production')) {
+                    return; // Suppress this specific warning
+                }
+                originalWarn.apply(console, args);
+            };
+            
             tailwind.config = {
                 darkMode: 'class',
                 theme: {
@@ -183,6 +192,27 @@
             #drawerToggleText {
                 transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
             }
+            
+            /* Improved print styles */
+            @media print {
+                body {
+                    background: white !important;
+                }
+                
+                #cvContainer {
+                    box-shadow: none !important;
+                    width: var(--print-width, 215.9mm) !important;
+                    min-width: var(--print-width, 215.9mm) !important;
+                    max-width: var(--print-width, 215.9mm) !important;
+                    min-height: var(--print-height, 279.4mm) !important;
+                }
+                
+                /* Better text rendering for print */
+                #cvContainer * {
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                }
+            }
         </style>
 </head>
 <body class="bg-background text-foreground min-h-screen print:bg-white print:p-0 print:m-0">
@@ -256,25 +286,25 @@
                             <tr>
                                 <td class="pr-2 py-1 whitespace-nowrap">Top (mm):</td>
                                 <td class="py-1">
-                                    <input type="number" id="topMargin" min="0" max="20" step="1" value="12" class="w-full h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('top', this.value)">
+                                    <input type="number" id="topMargin" min="0" max="20" step="1" value="12" class="w-full h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('top', this.value)" oninput="updateMargin('top', this.value)">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="pr-2 py-1 whitespace-nowrap">Bottom (mm):</td>
                                 <td class="py-1">
-                                    <input type="number" id="bottomMargin" min="0" max="20" step="1" value="12" class="w-full h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('bottom', this.value)">
+                                    <input type="number" id="bottomMargin" min="0" max="20" step="1" value="12" class="w-full h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('bottom', this.value)" oninput="updateMargin('bottom', this.value)">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="pr-2 py-1 whitespace-nowrap">Right (mm):</td>
                                 <td class="py-1">
-                                    <input type="number" id="rightMargin" min="0" max="20" step="1" value="5" class="w-full h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('right', this.value)">
+                                    <input type="number" id="rightMargin" min="0" max="20" step="1" value="5" class="w-full h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('right', this.value)" oninput="updateMargin('right', this.value)">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="pr-2 py-1 whitespace-nowrap">Left (mm):</td>
                                 <td class="py-1">
-                                    <input type="number" id="leftMargin" min="0" max="20" step="1" value="5" class="w-full h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('left', this.value)">
+                                    <input type="number" id="leftMargin" min="0" max="20" step="1" value="5" class="w-full h-9 rounded-md border border-input bg-background px-2 py-1 text-sm text-center" onchange="updateMargin('left', this.value)" oninput="updateMargin('left', this.value)">
                                 </td>
                             </tr>
                         </table>
@@ -354,6 +384,11 @@
 
                 // Load and apply page settings
                 loadPageSettings();
+                
+                // Ensure page settings are applied after content is rendered
+                setTimeout(() => {
+                    applyPageSettings();
+                }, 50);
 
             } catch (error) {
                 console.error('Error loading CV:', error);
@@ -615,49 +650,129 @@
                 if (paperSizeSelect) paperSizeSelect.value = paperSize;
                 if (orientationSelect) orientationSelect.value = orientation;
                 
-                // Apply margins to preview
-                applyMargins(margin);
+                // Apply all settings to preview
+                applyPageSettings();
             } catch (e) {
                 console.warn('Could not load page settings:', e);
             }
         }
 
-        // Update margin
-        function updateMargin(side, value) {
-            const numValue = parseFloat(value) || 0;
-            const input = document.getElementById(side + 'Margin');
-            if (input) {
-                // Ensure value is between 0 and 20
-                if (numValue < 0) {
-                    input.value = 0;
-                } else if (numValue > 20) {
-                    input.value = 20;
+    // Paper size dimensions in mm (width x height for portrait)
+    const paperDimensions = {
+        'letter': { width: 215.9, height: 279.4 },
+        'a4': { width: 210, height: 297 },
+        'legal': { width: 215.9, height: 355.6 }
+    };
+
+    // Apply paper size and orientation to CV container (for preview)
+    function applyPaperSizeAndOrientation(paperSize, orientation) {
+        const cvContainer = document.getElementById('cvContainer');
+        if (!cvContainer) return;
+
+        const dimensions = paperDimensions[paperSize] || paperDimensions['letter'];
+        let width, height;
+
+        if (orientation === 'landscape') {
+            width = dimensions.height;
+            height = dimensions.width;
+        } else {
+            width = dimensions.width;
+            height = dimensions.height;
+        }
+
+        // Convert mm to pixels (1mm ≈ 3.779527559 pixels at 96 DPI)
+        const mmToPx = 3.779527559;
+        const widthPx = width * mmToPx;
+        const heightPx = height * mmToPx;
+
+        // Apply dimensions to preview
+        cvContainer.style.width = widthPx + 'px';
+        cvContainer.style.minWidth = widthPx + 'px';
+        cvContainer.style.maxWidth = widthPx + 'px';
+        cvContainer.style.minHeight = heightPx + 'px';
+        
+        // For print, use mm units
+        cvContainer.style.setProperty('--print-width', width + 'mm');
+        cvContainer.style.setProperty('--print-height', height + 'mm');
+    }
+
+    // Apply margins to CV container (for preview)
+    function applyMargins(margin) {
+        const cvContainer = document.getElementById('cvContainer');
+        if (cvContainer && margin && margin.length === 4) {
+            cvContainer.style.marginTop = margin[0] + 'mm';
+            cvContainer.style.marginRight = margin[1] + 'mm';
+            cvContainer.style.marginBottom = margin[2] + 'mm';
+            cvContainer.style.marginLeft = margin[3] + 'mm';
+        }
+    }
+
+    // Apply all page settings to preview
+    function applyPageSettings() {
+        try {
+            const cvDataJson = localStorage.getItem('cvData');
+            let margin = [12, 5, 12, 5];
+            let paperSize = 'letter';
+            let orientation = 'portrait';
+            
+            if (cvDataJson) {
+                const data = JSON.parse(cvDataJson);
+                if (data.margin && Array.isArray(data.margin) && data.margin.length === 4) {
+                    margin = [
+                        Math.max(0, Math.min(20, parseFloat(data.margin[0]) || 12)),
+                        Math.max(0, Math.min(20, parseFloat(data.margin[1]) || 5)),
+                        Math.max(0, Math.min(20, parseFloat(data.margin[2]) || 12)),
+                        Math.max(0, Math.min(20, parseFloat(data.margin[3]) || 5))
+                    ];
+                }
+                if (data.paperSize) {
+                    paperSize = data.paperSize;
+                }
+                if (data.orientation) {
+                    orientation = data.orientation;
                 }
             }
-            savePageSettings();
-            loadPageSettings();
+            
+            // Apply paper size and orientation
+            applyPaperSizeAndOrientation(paperSize, orientation);
+            
+            // Apply margins
+            applyMargins(margin);
+        } catch (e) {
+            console.warn('Could not apply page settings:', e);
         }
+    }
 
-        // Update paper size
-        function updatePaperSize(value) {
-            savePageSettings();
-        }
-
-        // Update orientation
-        function updateOrientation(value) {
-            savePageSettings();
-        }
-
-        // Apply margins to CV container (for preview)
-        function applyMargins(margin) {
-            const cvContainer = document.getElementById('cvContainer');
-            if (cvContainer && margin && margin.length === 4) {
-                cvContainer.style.marginTop = margin[0] + 'mm';
-                cvContainer.style.marginRight = margin[1] + 'mm';
-                cvContainer.style.marginBottom = margin[2] + 'mm';
-                cvContainer.style.marginLeft = margin[3] + 'mm';
+    // Update margin
+    function updateMargin(side, value) {
+        const numValue = parseFloat(value) || 0;
+        const input = document.getElementById(side + 'Margin');
+        if (input) {
+            // Ensure value is between 0 and 20
+            if (numValue < 0) {
+                input.value = 0;
+            } else if (numValue > 20) {
+                input.value = 20;
             }
         }
+        savePageSettings();
+        // Immediately apply to preview
+        applyPageSettings();
+    }
+
+    // Update paper size
+    function updatePaperSize(value) {
+        savePageSettings();
+        // Immediately apply to preview
+        applyPageSettings();
+    }
+
+    // Update orientation
+    function updateOrientation(value) {
+        savePageSettings();
+        // Immediately apply to preview
+        applyPageSettings();
+    }
 
         // Save page settings to localStorage
         function savePageSettings() {
@@ -683,9 +798,6 @@
                     data.orientation = document.getElementById('orientation').value || 'portrait';
                     
                     localStorage.setItem('cvData', JSON.stringify(data));
-                    
-                    // Apply margins to preview
-                    applyMargins(data.margin);
                 }
             } catch (e) {
                 console.warn('Could not save page settings:', e);
@@ -695,6 +807,10 @@
         document.addEventListener('DOMContentLoaded', function () {
             initTheme();
             loadAndGenerateCV();
+            // Apply page settings after CV is loaded
+            setTimeout(() => {
+                applyPageSettings();
+            }, 100);
         });
         
         // Drawer functionality

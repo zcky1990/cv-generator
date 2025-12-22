@@ -19,6 +19,15 @@
         <meta name="twitter:description" content="Create professional CVs and resumes with our free CV builder. Choose from 5 beautiful templates and download as PDF instantly.">
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
+            // Suppress Tailwind CDN production warning - CDN is appropriate for this standalone application
+            const originalWarn = console.warn;
+            console.warn = function(...args) {
+                if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com should not be used in production')) {
+                    return; // Suppress this specific warning
+                }
+                originalWarn.apply(console, args);
+            };
+            
             tailwind.config = {
                 darkMode: 'class',
                 theme: {
