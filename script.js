@@ -1264,20 +1264,15 @@ function generateModernCV(data) {
 // Based on Figma design: https://www.figma.com/design/D2DJgSCMrzsWLSy2BrNil3/Harvard-Academic-Resume---CV-Template--Community-
 function generateHarvardCV(data) {
     const fontFamily = "'Times New Roman', Times, serif";
-    const baseStyle = `font-family: ${fontFamily} !important; font-size: 12px; line-height: 1.5; color: #000000;`;
-    const nameStyle = `font-family: ${fontFamily} !important; font-size: 24px; font-weight: normal; line-height: 1.2; color: #000000; text-align: center;`;
-    const contactStyle = `font-family: ${fontFamily} !important; font-size: 12px; font-weight: normal; line-height: 1.5; color: #000000; text-align: center;`;
-    const sectionHeaderStyle = `font-family: ${fontFamily} !important; font-size: 12px; font-weight: bold; line-height: 1.2; color: #000000; text-transform: uppercase; border-bottom: 1px solid #000000; padding-bottom: 2px; margin-bottom: 12px;`;
-    const orgStyle = `font-family: ${fontFamily} !important; font-size: 12px; font-weight: bold; line-height: 1.4; color: #000000; text-transform: uppercase;`;
-    const regularStyle = `font-family: ${fontFamily} !important; font-size: 12px; font-weight: normal; line-height: 1.5; color: #000000;`;
-    const italicStyle = `font-family: ${fontFamily} !important; font-size: 12px; font-weight: normal; font-style: italic; line-height: 1.5; color: #000000;`;
+    const baseStyle = `font-family: ${fontFamily}; font-size: 12px; line-height: 1.5; color: #000000;`;
+    const nameStyle = `font-family: ${fontFamily}; font-size: 24px; font-weight: normal; line-height: 1.2; color: #000000; text-align: center;`;
+    const contactStyle = `font-family: ${fontFamily}; font-size: 12px; font-weight: normal; line-height: 1.5; color: #000000; text-align: center;`;
+    const sectionHeaderStyle = `font-family: ${fontFamily}; font-size: 12px; font-weight: bold; line-height: 1.2; color: #000000; text-transform: uppercase; border-bottom: 1px solid #000000; padding-bottom: 2px; margin-bottom: 12px;`;
+    const orgStyle = `font-family: ${fontFamily}; font-size: 12px; font-weight: bold; line-height: 1.4; color: #000000; text-transform: uppercase;`;
+    const regularStyle = `font-family: ${fontFamily}; font-size: 12px; font-weight: normal; line-height: 1.5; color: #000000;`;
+    const italicStyle = `font-family: ${fontFamily}; font-size: 12px; font-weight: normal; font-style: italic; line-height: 1.5; color: #000000;`;
     
-    let html = `<div style="font-family: ${fontFamily} !important; width: 100%; box-sizing: border-box; background: white; position: relative; max-width: 537px; margin: 0 auto; padding: 0;">
-        <style>
-            * {
-                font-family: ${fontFamily} !important;
-            }
-        </style>`;
+    let html = `<div style="font-family: ${fontFamily}; width: 100%; box-sizing: border-box; background: white; position: relative; max-width: 537px; margin: 0 auto; padding: 0;">`;
     
     // Header Section - Centered name and contact info
     html += '<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; margin-bottom: 20px;">';
@@ -1300,7 +1295,7 @@ function generateHarvardCV(data) {
         contactParts.forEach((part, index) => {
             html += `<span style="${contactStyle}">${part}</span>`;
             if (index < contactParts.length - 1) {
-                html += `<span style="font-family: ${fontFamily} !important; font-size: 12px; color: #000000; margin: 0 2px;">|</span>`;
+                html += `<span style="font-family: ${fontFamily}; font-size: 12px; color: #000000; margin: 0 2px;">|</span>`;
             }
         });
         html += '</div>';
