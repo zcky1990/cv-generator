@@ -1521,10 +1521,50 @@ function generateUXUIDesignerCV(data) {
     html += `<div style="width: 100%; height: 1.5px; background-color: ${colors.sectionHeader}; margin: 24px 0; opacity: 0.4; page-break-inside: avoid;"></div>`;
     
     // MAIN CONTENT - Two columns
-    // LEFT COLUMN (wider) - About, Professional Experience
+    // LEFT COLUMN (wider) - Contact, About, Professional Experience
     let leftColumn = '<div style="padding-right: 8px;">';
     
-    // About/Summary section at the top of left column with improved styling
+    // Contact section at the top of left column in 2 columns
+    if (data.website || data.email || data.phone || data.location || data.linkedin || data.github || data.dribbble) {
+        leftColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Contact</div>`;
+        leftColumn += '<div style="display: flex; gap: 20px; margin-bottom: 24px; page-break-inside: avoid; break-inside: avoid;">';
+        
+        // Left column of contact info
+        leftColumn += '<div style="flex: 1;">';
+        if (data.email) {
+            leftColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px; word-break: break-all;"><a href="mailto:${escapeHtml(data.email)}" style="color: ${colors.linkColor}; text-decoration: none;">${escapeHtml(data.email)}</a></div>`;
+        }
+        if (data.phone) {
+            leftColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px;">${escapeHtml(data.phone)}</div>`;
+        }
+        if (data.location) {
+            leftColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px;">${escapeHtml(data.location)}</div>`;
+        }
+        leftColumn += '</div>';
+        
+        // Right column of contact info
+        leftColumn += '<div style="flex: 1;">';
+        if (data.linkedin) {
+            leftColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px;"><a href="https://linkedin.com/in/${escapeHtml(data.linkedin)}" style="color: ${colors.linkColor}; text-decoration: none;">LinkedIn</a></div>`;
+        }
+        if (data.github) {
+            const githubUrl = data.github.startsWith('http') ? data.github : `https://${data.github}`;
+            leftColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px;"><a href="${githubUrl}" style="color: ${colors.linkColor}; text-decoration: none;">GitHub</a></div>`;
+        }
+        if (data.website) {
+            const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
+            leftColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px; word-break: break-word;"><a href="${url}" style="color: ${colors.linkColor}; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s;">${escapeHtml(data.website.replace(/^https?:\/\//, ''))}</a></div>`;
+        }
+        if (data.dribbble) {
+            const dribbbleUrl = data.dribbble.startsWith('http') ? data.dribbble : `https://${data.dribbble}`;
+            leftColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px;"><a href="${dribbbleUrl}" style="color: ${colors.linkColor}; text-decoration: none;">Dribbble</a></div>`;
+        }
+        leftColumn += '</div>';
+        
+        leftColumn += '</div>';
+    }
+    
+    // About/Summary section after Contact with improved styling
     if (data.about && data.about.trim()) {
         leftColumn += `<p class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${bodySize}; line-height: 1.6; margin: 0; margin-bottom: 20px; color: ${colors.bodyText};">${escapeHtml(data.about).replace(/\n/g, '<br>')}</p>`;
     }
@@ -1611,39 +1651,8 @@ function generateUXUIDesignerCV(data) {
     
     leftColumn += '</div>';
     
-    // RIGHT COLUMN (narrower) - Contact, Education, Certificate, Skills, Languages
+    // RIGHT COLUMN (narrower) - Education, Certificate, Skills, Languages
     let rightColumn = '<div style="width: 200px; padding-left: 8px;">';
-    
-    // Contact info at the top of right column with improved styling
-    if (data.website || data.email || data.phone || data.location || data.linkedin || data.github || data.dribbble) {
-        rightColumn += `<div class="yodi-section text-[${colors.sectionHeader}] dark:text-white" style="font-size: ${sectionHeaderSize}; font-weight: 700; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">Contact</div>`;
-        rightColumn += '<div class="yodi-entry" style="margin-bottom: 24px; page-break-inside: avoid; break-inside: avoid;">';
-        if (data.website) {
-            const url = data.website.startsWith('http') ? data.website : `https://${data.website}`;
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px; word-break: break-word;"><a href="${url}" style="color: ${colors.linkColor}; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s;">${escapeHtml(data.website.replace(/^https?:\/\//, ''))}</a></div>`;
-        }
-        if (data.email) {
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px; word-break: break-all;"><a href="mailto:${escapeHtml(data.email)}" style="color: ${colors.linkColor}; text-decoration: none;">${escapeHtml(data.email)}</a></div>`;
-        }
-        if (data.phone) {
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px;">${escapeHtml(data.phone)}</div>`;
-        }
-        if (data.location) {
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px;">${escapeHtml(data.location)}</div>`;
-        }
-        if (data.linkedin) {
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px;"><a href="https://linkedin.com/in/${escapeHtml(data.linkedin)}" style="color: ${colors.linkColor}; text-decoration: none;">LinkedIn</a></div>`;
-        }
-        if (data.github) {
-            const githubUrl = data.github.startsWith('http') ? data.github : `https://${data.github}`;
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px;"><a href="${githubUrl}" style="color: ${colors.linkColor}; text-decoration: none;">GitHub</a></div>`;
-        }
-        if (data.dribbble) {
-            const dribbbleUrl = data.dribbble.startsWith('http') ? data.dribbble : `https://${data.dribbble}`;
-            rightColumn += `<div class="text-[${colors.bodyText}] dark:text-white" style="font-size: ${smallSize}; line-height: 1.5; margin-bottom: 6px;"><a href="${dribbbleUrl}" style="color: ${colors.linkColor}; text-decoration: none;">Dribbble</a></div>`;
-        }
-        rightColumn += '</div>';
-    }
     
     // Education Section with improved styling
     if (data.education && data.education.length > 0) {

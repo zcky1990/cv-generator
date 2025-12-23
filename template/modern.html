@@ -482,13 +482,40 @@
                     return;
                 }
 
-                event.target.disabled = true;
-                event.target.textContent = 'Generating PDF...';
+                // Get the name from localStorage data for filename
+                let filename = 'cv.pdf';
+                try {
+                    const cvDataJson = localStorage.getItem('cvData');
+                    if (cvDataJson) {
+                        const data = JSON.parse(cvDataJson);
+                        if (data.name) {
+                            filename = data.name.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '_cv.pdf';
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Could not get name from localStorage:', e);
+                }
+
+                // Get button reference
+                const button = event ? event.target.closest('button') : document.querySelector('button[onclick*="downloadPDF"]');
+                const originalText = button ? button.innerHTML : '';
 
                 try {
+                    // Scroll to top before generating PDF
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                    
+                    // Show loading state
+                    if (button) {
+                        button.disabled = true;
+                        button.innerHTML = '<span>⏳</span> Generating PDF...';
+                    }
+                    
+                    // Wait a moment for scroll to complete
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
                     const opt = {
                         margin: [0, 0, 0, 0],
-                        filename: 'cv.pdf',
+                        filename: filename,
                         image: { type: 'jpeg', quality: 0.98 },
                         html2canvas: { scale: 2, useCORS: true, letterRendering: true },
                         jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
@@ -519,8 +546,10 @@
                     console.error('Error generating PDF:', error);
                     alert('Error generating PDF. Please try again.');
                 } finally {
-                    event.target.disabled = false;
-                    event.target.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>Download PDF';
+                    if (button) {
+                        button.disabled = false;
+                        button.innerHTML = originalText || '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>Download PDF';
+                    }
                 }
             }
 
