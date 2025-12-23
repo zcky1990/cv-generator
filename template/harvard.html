@@ -729,6 +729,7 @@
                 const drawerToggle = document.getElementById('drawerToggle');
                 const drawerToggleText = document.getElementById('drawerToggleText');
                 const toggleIcon = document.getElementById('drawerToggleIcon');
+                const mainContent = document.getElementById('mainContent');
                 const drawerItems = document.querySelectorAll('.drawer-item-content');
 
                 drawerOpen = !drawerOpen;
@@ -744,9 +745,14 @@
                     drawerToggle.style.width = '80px';
                     drawerToggle.style.height = '80px';
                     drawerToggle.style.right = '-48px';
+                    toggleIcon.style.width = '48px';
+                    toggleIcon.style.height = '48px';
+                    if (mainContent) {
+                        mainContent.style.marginLeft = '280px';
+                    }
                     setTimeout(() => {
                         drawerItems.forEach(item => {
-                            item.style.opacity = '1';
+                            item.classList.remove('hidden');
                         });
                     }, 150);
                 } else {
@@ -756,13 +762,18 @@
                     setTimeout(() => {
                         drawerToggleText.style.opacity = '1';
                         drawerToggleText.style.transform = 'scale(1)';
-                    }, 150);
+                    }, 10);
                     drawerToggle.style.width = '120px';
                     drawerToggle.style.height = '120px';
                     drawerToggle.style.right = '-145px';
+                    toggleIcon.style.width = '50px';
+                    toggleIcon.style.height = '50px';
+                    if (mainContent) {
+                        mainContent.style.marginLeft = '0';
+                    }
                     setTimeout(() => {
                         drawerItems.forEach(item => {
-                            item.style.opacity = '0';
+                            item.classList.add('hidden');
                         });
                     }, 150);
                 }
@@ -773,7 +784,9 @@
                 const modal = document.getElementById('imageModal');
                 if (modal) {
                     modal.classList.remove('hidden');
+                    modal.style.zIndex = '9999';
                     modal.classList.add('flex');
+                    document.body.style.overflow = 'hidden';
                 }
             }
 
@@ -784,9 +797,21 @@
                 const modal = document.getElementById('imageModal');
                 if (modal) {
                     modal.classList.add('hidden');
+                    modal.style.zIndex = '0';
                     modal.classList.remove('flex');
+                    document.body.style.overflow = '';
                 }
             }
+
+            // Close modal on Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    const modal = document.getElementById('imageModal');
+                    if (modal && !modal.classList.contains('hidden')) {
+                        closeImageModal();
+                    }
+                }
+            });
 
             // Initialize drawer state
             function initDrawer() {
@@ -796,13 +821,13 @@
 
                 if (drawer && mainContent) {
                     drawer.classList.add('drawer-closed');
-                    setTimeout(() => {
-                        if (drawerItems.length > 0) {
-                            drawerItems.forEach(item => {
-                                item.style.opacity = '0';
-                            });
-                        }
-                    }, 100);
+                    mainContent.style.marginLeft = '0px';
+                    mainContent.style.transition = 'margin-left 0.3s ease-in-out';
+                    if (drawerItems.length > 0) {
+                        drawerItems.forEach(item => {
+                            item.classList.add('hidden');
+                        });
+                    }
                 }
             }
 
