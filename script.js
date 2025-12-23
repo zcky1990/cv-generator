@@ -599,6 +599,11 @@ function generateCVFromData(data) {
         return generateModernCV(data);
     }
     
+    // Special handling for harvard template (academic resume layout)
+    if (template === 'harvard') {
+        return generateHarvardCV(data);
+    }
+    
     let html = generateHeader(template, data);
     
     html += generateEducation(data.education, template);
@@ -1249,6 +1254,264 @@ function generateModernCV(data) {
         html += '</div>'; // End right column
         html += '</div>'; // End flex container
         html += '</div>'; // End section
+    }
+    
+    html += '</div>';
+    return html;
+}
+
+// Generate Harvard Academic CV - Based on Harvard Academic Resume Template
+// Based on Figma design: https://www.figma.com/design/D2DJgSCMrzsWLSy2BrNil3/Harvard-Academic-Resume---CV-Template--Community-
+function generateHarvardCV(data) {
+    const fontFamily = "'Times New Roman', Times, serif";
+    const baseStyle = `font-family: ${fontFamily} !important; font-size: 12px; line-height: 1.5; color: #000000;`;
+    const nameStyle = `font-family: ${fontFamily} !important; font-size: 24px; font-weight: normal; line-height: 1.2; color: #000000; text-align: center;`;
+    const contactStyle = `font-family: ${fontFamily} !important; font-size: 12px; font-weight: normal; line-height: 1.5; color: #000000; text-align: center;`;
+    const sectionHeaderStyle = `font-family: ${fontFamily} !important; font-size: 12px; font-weight: bold; line-height: 1.2; color: #000000; text-transform: uppercase; border-bottom: 1px solid #000000; padding-bottom: 2px; margin-bottom: 12px;`;
+    const orgStyle = `font-family: ${fontFamily} !important; font-size: 12px; font-weight: bold; line-height: 1.4; color: #000000; text-transform: uppercase;`;
+    const regularStyle = `font-family: ${fontFamily} !important; font-size: 12px; font-weight: normal; line-height: 1.5; color: #000000;`;
+    const italicStyle = `font-family: ${fontFamily} !important; font-size: 12px; font-weight: normal; font-style: italic; line-height: 1.5; color: #000000;`;
+    
+    let html = `<div style="font-family: ${fontFamily} !important; width: 100%; box-sizing: border-box; background: white; position: relative; max-width: 537px; margin: 0 auto; padding: 0;">
+        <style>
+            * {
+                font-family: ${fontFamily} !important;
+            }
+        </style>`;
+    
+    // Header Section - Centered name and contact info
+    html += '<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; margin-bottom: 20px;">';
+    html += `<div style="${nameStyle} margin-bottom: 4px;">${escapeHtml(data.name)}</div>`;
+    
+    // Contact information with vertical separators
+    const contactParts = [];
+    if (data.location && data.location.trim()) {
+        contactParts.push(escapeHtml(data.location));
+    }
+    if (data.email && data.email.trim()) {
+        contactParts.push(`<a href="mailto:${escapeHtml(data.email)}" style="color: #000000; text-decoration: none;">${escapeHtml(data.email)}</a>`);
+    }
+    if (data.phone && data.phone.trim()) {
+        contactParts.push(escapeHtml(data.phone));
+    }
+    
+    if (contactParts.length > 0) {
+        html += '<div style="display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;">';
+        contactParts.forEach((part, index) => {
+            html += `<span style="${contactStyle}">${part}</span>`;
+            if (index < contactParts.length - 1) {
+                html += `<span style="font-family: ${fontFamily} !important; font-size: 12px; color: #000000; margin: 0 2px;">|</span>`;
+            }
+        });
+        html += '</div>';
+    }
+    html += '</div>';
+    
+    // Education Section
+    if (data.education && data.education.length > 0) {
+        html += `<div style="${sectionHeaderStyle}">EDUCATION</div>`;
+        
+        data.education.forEach((entry, index) => {
+            if (index > 0) {
+                html += '<div style="margin-top: 12px;"></div>';
+            }
+            
+            // University name and location on same line
+            html += '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">';
+            html += `<div style="${orgStyle}">${escapeHtml(entry.university || '')}</div>`;
+            if (entry.city) {
+                html += `<div style="${regularStyle} text-align: right;">${escapeHtml(entry.city)}</div>`;
+            }
+            html += '</div>';
+            
+            // Degree and date on same line
+            html += '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">';
+            let degreeText = entry.degree || '';
+            if (entry.gpa && entry.gpa.trim()) {
+                degreeText += `. GPA: ${entry.gpa}`;
+            }
+            html += `<div style="${regularStyle}">${escapeHtml(degreeText)}</div>`;
+            
+            // Format date
+            let dateText = '';
+            if (entry.dateEnd) {
+                const date = new Date(entry.dateEnd);
+                if (!isNaN(date.getTime())) {
+                    const month = date.toLocaleDateString('en-US', { month: 'short' });
+                    const year = date.getFullYear();
+                    dateText = `${month} ${year}`;
+                } else {
+                    dateText = entry.dateEnd;
+                }
+            }
+            if (dateText) {
+                html += `<div style="${italicStyle} text-align: right;">${escapeHtml(dateText)}</div>`;
+            }
+            html += '</div>';
+            
+            // Thesis and coursework
+            if (entry.thesis) {
+                html += '<div style="text-align: justify; margin-top: 4px; margin-bottom: 12px;">';
+                html += `<p style="${regularStyle} margin: 0; line-height: 1.5;">Thesis: ${escapeHtml(entry.thesis)}</p>`;
+                html += '</div>';
+            } else {
+                html += '<div style="margin-bottom: 12px;"></div>';
+            }
+        });
+    }
+    
+    // Experience Section
+    if (data.experience && data.experience.length > 0) {
+        html += `<div style="${sectionHeaderStyle}">EXPERIENCE</div>`;
+        
+        data.experience.forEach((entry, index) => {
+            if (index > 0) {
+                html += '<div style="margin-top: 12px;"></div>';
+            }
+            
+            // Organization and location on same line
+            html += '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">';
+            html += `<div style="${orgStyle}">${escapeHtml(entry.company || '')}</div>`;
+            let locationText = entry.city || '';
+            
+            html += `<div style="${regularStyle} text-align: right;">${escapeHtml(locationText)}</div>`;
+            html += '</div>';
+            
+            // Position title and date range on same line
+            html += '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">';
+            html += `<div style="${orgStyle} font-weight: bold; letter-spacing: 0.36px;">${escapeHtml(entry.position || '')}</div>`;
+            
+            // Format date range
+            let dateRange = '';
+            if (entry.dateStart && entry.dateEnd) {
+                const startDate = new Date(entry.dateStart);
+                const endDate = new Date(entry.dateEnd);
+                if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
+                    const startMonth = startDate.toLocaleDateString('en-US', { month: 'short' });
+                    const startYear = startDate.getFullYear();
+                    const endMonth = endDate.toLocaleDateString('en-US', { month: 'short' });
+                    const endYear = endDate.getFullYear();
+                    dateRange = `${startMonth} ${startYear} – ${endMonth} ${endYear}`;
+                } else {
+                    dateRange = `${entry.dateStart} – ${entry.dateEnd}`;
+                }
+            } else if (entry.dateEnd) {
+                const date = new Date(entry.dateEnd);
+                if (!isNaN(date.getTime())) {
+                    const month = date.toLocaleDateString('en-US', { month: 'short' });
+                    const year = date.getFullYear();
+                    dateRange = `${month} ${year}`;
+                } else {
+                    dateRange = entry.dateEnd;
+                }
+            }
+            if (dateRange) {
+                html += `<div style="${italicStyle} text-align: right;">${escapeHtml(dateRange)}</div>`;
+            }
+            html += '</div>';
+            
+            // Description
+            if (entry.description) {
+                html += `<div style="${regularStyle} text-align: justify; white-space: pre-wrap; line-height: 1.5; margin-bottom: 12px;">${escapeHtml(entry.description)}</div>`;
+            } else {
+                html += '<div style="margin-bottom: 12px;"></div>';
+            }
+        });
+    }
+    
+    // Leadership & Activities Section (using volunteer data)
+    if (data.volunteer && data.volunteer.length > 0) {
+        html += `<div style="${sectionHeaderStyle}">LEADERSHIP & ACTIVITIES</div>`;
+        
+        data.volunteer.forEach((entry, index) => {
+            if (index > 0) {
+                html += '<div style="margin-top: 12px;"></div>';
+            }
+            
+            // Organization and location on same line
+            html += '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">';
+            html += `<div style="${orgStyle}">${escapeHtml(entry.organization || '')}</div>`;
+            let locationText = entry.city || '';
+            
+            html += `<div style="${regularStyle} text-align: right;">${escapeHtml(locationText)}</div>`;
+            html += '</div>';
+            
+            // Role and date range on same line
+            html += '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">';
+            html += `<div style="${orgStyle} font-weight: bold; letter-spacing: 0.36px;">${escapeHtml(entry.position || '')}</div>`;
+            
+            // Format date range
+            let dateRange = '';
+            if (entry.dateStart && entry.dateEnd) {
+                const startDate = new Date(entry.dateStart);
+                const endDate = new Date(entry.dateEnd);
+                if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
+                    const startMonth = startDate.toLocaleDateString('en-US', { month: 'short' });
+                    const startYear = startDate.getFullYear();
+                    const endMonth = endDate.toLocaleDateString('en-US', { month: 'short' });
+                    const endYear = endDate.getFullYear();
+                    dateRange = `${startMonth} ${startYear} – ${endMonth} ${endYear}`;
+                } else {
+                    dateRange = `${entry.dateStart} – ${entry.dateEnd}`;
+                }
+            } else if (entry.dateEnd) {
+                const date = new Date(entry.dateEnd);
+                if (!isNaN(date.getTime())) {
+                    const month = date.toLocaleDateString('en-US', { month: 'short' });
+                    const year = date.getFullYear();
+                    dateRange = `${month} ${year}`;
+                } else {
+                    dateRange = entry.dateEnd;
+                }
+            }
+            if (dateRange) {
+                html += `<div style="${italicStyle} text-align: right;">${escapeHtml(dateRange)}</div>`;
+            }
+            html += '</div>';
+            
+            // Description
+            if (entry.description) {
+                html += `<div style="${regularStyle} text-align: justify; white-space: pre-wrap; line-height: 1.5; margin-bottom: 12px;">${escapeHtml(entry.description)}</div>`;
+            } else {
+                html += '<div style="margin-bottom: 12px;"></div>';
+            }
+        });
+    }
+    
+    // Skills & Interests Section
+    html += `<div style="${sectionHeaderStyle}">SKILLS & INTERESTS</div>`;
+    
+    // Technical Skills
+    if (data.skills && data.skills.trim()) {
+        const skills = data.skills.split('\n').filter(line => line.trim());
+        if (skills.length > 0) {
+            html += `<p style="${regularStyle} margin: 0; margin-bottom: 4px; line-height: 1.5;"><span style="font-weight: bold;">Technical:</span> `;
+            const techSkills = skills.map(s => s.trim()).join(', ');
+            html += `${escapeHtml(techSkills)}</p>`;
+        }
+    }
+    
+    // Languages
+    if (data.languages && data.languages.length > 0) {
+        html += `<p style="${regularStyle} margin: 0; margin-bottom: 4px; line-height: 1.5;"><span style="font-weight: bold;">Language:</span> `;
+        const langList = data.languages.map(l => {
+            let langText = escapeHtml(l.name);
+            if (l.level) {
+                langText += ` (${escapeHtml(l.level)})`;
+            }
+            return langText;
+        }).join(', ');
+        html += `${langList}</p>`;
+    }
+    
+    // Interests (from hobbies)
+    if (data.hobbies && data.hobbies.trim()) {
+        const hobbies = data.hobbies.split('\n').filter(line => line.trim());
+        if (hobbies.length > 0) {
+            html += `<p style="${regularStyle} margin: 0; line-height: 1.5;"><span style="font-weight: bold;">Interests:</span> `;
+            const interestsList = hobbies.map(h => h.trim()).join(', ');
+            html += `${escapeHtml(interestsList)}</p>`;
+        }
     }
     
     html += '</div>';
