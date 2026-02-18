@@ -1263,7 +1263,7 @@ function generateHarvardCV(data) {
     const baseStyle = `font-family: ${fontFamily}; font-size: 12px; line-height: 1.5; color: #000000;`;
     const nameStyle = `font-family: ${fontFamily}; font-size: 24px; font-weight: normal; line-height: 1.2; color: #000000; text-align: center;`;
     const contactStyle = `font-family: ${fontFamily}; font-size: 12px; font-weight: normal; line-height: 1.5; color: #000000; text-align: center;`;
-    const sectionHeaderStyle = `font-family: ${fontFamily}; font-size: 12px; font-weight: bold; line-height: 1.2; color: #000000; text-transform: uppercase; border-bottom: 1px solid #000000; padding-bottom: 2px; margin-bottom: 12px;`;
+    const sectionHeaderStyle = `font-family: ${fontFamily}; font-size: 14px; font-weight: bold; line-height: 1.2; color: #000000; text-transform: uppercase; border-bottom: 1px solid #000000; padding-bottom: 2px; margin-bottom: 12px; margin-top: 18px;`;
     const orgStyle = `font-family: ${fontFamily}; font-size: 12px; font-weight: bold; line-height: 1.4; color: #000000; text-transform: uppercase;`;
     const regularStyle = `font-family: ${fontFamily}; font-size: 12px; font-weight: normal; line-height: 1.5; color: #000000;`;
     const italicStyle = `font-family: ${fontFamily}; font-size: 12px; font-weight: normal; font-style: italic; line-height: 1.5; color: #000000;`;
@@ -1304,12 +1304,12 @@ function generateHarvardCV(data) {
         
         data.education.forEach((entry, index) => {
             if (index > 0) {
-                html += '<div style="margin-top: 12px;"></div>';
+                html += '<div style="margin-top: 18px;"></div>';
             }
             
             // University name and location on same line
             html += '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">';
-            html += `<div style="${orgStyle}">${escapeHtml(entry.university || '')}</div>`;
+            html += `<div style="${orgStyle} font-size: 12px;">${escapeHtml(entry.university || '')}</div>`;
             if (entry.city) {
                 html += `<div style="${regularStyle} text-align: right;">${escapeHtml(entry.city)}</div>`;
             }
@@ -1346,7 +1346,7 @@ function generateHarvardCV(data) {
                 html += `<p style="${regularStyle} margin: 0; line-height: 1.5;">Thesis: ${escapeHtml(entry.thesis)}</p>`;
                 html += '</div>';
             } else {
-                html += '<div style="margin-bottom: 12px;"></div>';
+                html += '<div style="margin-bottom: 18px;"></div>';
             }
         });
     }
@@ -1357,7 +1357,7 @@ function generateHarvardCV(data) {
         
         data.experience.forEach((entry, index) => {
             if (index > 0) {
-                html += '<div style="margin-top: 12px;"></div>';
+                html += '<div style="margin-top: 20px;"></div>';
             }
             
             // Organization and location on same line
@@ -1370,7 +1370,7 @@ function generateHarvardCV(data) {
             
             // Position title and date range on same line
             html += '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">';
-            html += `<div style="${orgStyle} font-weight: bold; letter-spacing: 0.36px;">${escapeHtml(entry.position || '')}</div>`;
+            html += `<div style="${orgStyle} font-size: 12px; font-weight: bold; letter-spacing: 0.36px;">${escapeHtml(entry.position || '')}</div>`;
             
             // Format date range
             let dateRange = '';
@@ -1906,7 +1906,7 @@ function generateUXUIDesignerCV(data) {
     leftColumn += '</div>';
     
     // RIGHT COLUMN (narrower) - Education, Certificate, Skills, Languages
-    let rightColumn = '<div style="width: 200px; padding-left: 8px;">';
+    let rightColumn = '<div style="width: 200px; margin-top: 28px;">';
     
     // Education Section with improved styling
     if (data.education && data.education.length > 0) {
