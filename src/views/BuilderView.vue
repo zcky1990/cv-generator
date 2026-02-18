@@ -12,7 +12,6 @@ import {
   Sun,
   Moon,
   FileJson,
-  Search,
   LayoutTemplate,
   User,
   GraduationCap,
@@ -34,7 +33,6 @@ const data = computed(() => store.data)
 
 const jsonInput = ref<HTMLInputElement | null>(null)
 const isDark = ref(false)
-const searchQuery = ref('')
 
 const categories = [
   { id: 'section-templates', title: 'Template', description: 'Choose a CV template style', icon: LayoutTemplate },
@@ -48,14 +46,6 @@ const categories = [
   { id: 'section-projects', title: 'Projects', description: 'Portfolio projects', icon: FolderGit2 },
   { id: 'section-awards', title: 'Awards', description: 'Scholarships and awards', icon: Award },
 ]
-
-const filteredCategories = computed(() => {
-  const q = searchQuery.value.trim().toLowerCase()
-  if (!q) return categories
-  return categories.filter(
-    (c) => c.title.toLowerCase().includes(q) || c.description.toLowerCase().includes(q)
-  )
-})
 
 function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -149,7 +139,7 @@ initTheme()
     </header>
 
     <main class="container mx-auto px-4 py-8 md:py-12 max-w-5xl">
-      <!-- Hero + Search (Help 1 style) -->
+      <!-- Hero -->
       <section class="text-center mb-10">
         <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-2">Create Your Professional CV</h2>
         <p class="text-muted-foreground text-lg mb-6 max-w-2xl mx-auto">
@@ -162,7 +152,7 @@ initTheme()
         <h3 class="text-lg font-semibold mb-4">CV Sections</h3>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <button
-            v-for="cat in filteredCategories"
+            v-for="cat in categories"
             :key="cat.id"
             type="button"
             class="flex items-start gap-4 rounded-lg border border-border bg-card p-4 text-left transition-colors hover:bg-accent hover:border-ring focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
@@ -178,9 +168,6 @@ initTheme()
             <ChevronRight class="h-4 w-4 shrink-0 text-muted-foreground" />
           </button>
         </div>
-        <p v-if="filteredCategories.length === 0" class="text-sm text-muted-foreground py-4">
-          No sections match your search.
-        </p>
       </section>
 
       <!-- Quick actions (Help 1 – popular topics style) -->
