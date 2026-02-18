@@ -1263,7 +1263,7 @@ function generateHarvardCV(data) {
     const baseStyle = `font-family: ${fontFamily}; font-size: 12px; line-height: 1.5; color: #000000;`;
     const nameStyle = `font-family: ${fontFamily}; font-size: 24px; font-weight: normal; line-height: 1.2; color: #000000; text-align: center;`;
     const contactStyle = `font-family: ${fontFamily}; font-size: 12px; font-weight: normal; line-height: 1.5; color: #000000; text-align: center;`;
-    const sectionHeaderStyle = `font-family: ${fontFamily}; font-size: 14px; font-weight: bold; line-height: 1.2; color: #000000; text-transform: uppercase; border-bottom: 1px solid #000000; padding-bottom: 2px; margin-bottom: 12px; margin-top: 18px;`;
+    const sectionHeaderStyle = `font-family: ${fontFamily}; font-size: 12px; font-weight: bold; line-height: 1.2; color: #000000; text-transform: uppercase; border-bottom: 1px solid #000000; padding-bottom: 2px; margin-bottom: 12px; margin-top: 18px;`;
     const orgStyle = `font-family: ${fontFamily}; font-size: 12px; font-weight: bold; line-height: 1.4; color: #000000; text-transform: uppercase;`;
     const regularStyle = `font-family: ${fontFamily}; font-size: 12px; font-weight: normal; line-height: 1.5; color: #000000;`;
     const italicStyle = `font-family: ${fontFamily}; font-size: 12px; font-weight: normal; font-style: italic; line-height: 1.5; color: #000000;`;
@@ -1370,7 +1370,7 @@ function generateHarvardCV(data) {
             
             // Position title and date range on same line
             html += '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">';
-            html += `<div style="${orgStyle} font-size: 12px; font-weight: bold; letter-spacing: 0.36px;">${escapeHtml(entry.position || '')}</div>`;
+            html += `<div style="${orgStyle} font-size: 12px; text-transform: capitalize; font-weight: bold; letter-spacing: 0.36px;">${escapeHtml(entry.position || '')}</div>`;
             
             // Format date range
             let dateRange = '';
