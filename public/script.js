@@ -565,56 +565,52 @@ function generateCV() {
     return generateCVFromData(data);
 }
 
+// Paper dimensions in mm (for prepareCVContainer)
+var PAPER_DIMENSIONS = {
+    'letter': { width: 215.9, height: 279.4 },
+    'a4': { width: 210, height: 297 },
+    'legal': { width: 215.9, height: 355.6 }
+};
+
+// Apply page size and margins to #cvContainer before content is injected (reduces layout jump)
+function prepareCVContainer(data) {
+    var el = document.getElementById('cvContainer');
+    if (!el) return;
+    var margin = (data.margin && data.margin.length === 4) ? data.margin : [12, 5, 12, 5];
+    var paperSize = data.paperSize || 'letter';
+    var orientation = data.orientation || 'portrait';
+    var dimensions = PAPER_DIMENSIONS[paperSize] || PAPER_DIMENSIONS['letter'];
+    var width = orientation === 'landscape' ? dimensions.height : dimensions.width;
+    var height = orientation === 'landscape' ? dimensions.width : dimensions.height;
+    var mmToPx = 3.779527559;
+    var widthPx = width * mmToPx;
+    var heightPx = height * mmToPx;
+    el.style.width = widthPx + 'px';
+    el.style.minWidth = widthPx + 'px';
+    el.style.maxWidth = widthPx + 'px';
+    el.style.minHeight = heightPx + 'px';
+    el.style.marginTop = (margin[0] || 0) + 'mm';
+    el.style.marginRight = (margin[1] || 0) + 'mm';
+    el.style.marginBottom = (margin[2] || 0) + 'mm';
+    el.style.marginLeft = (margin[3] || 0) + 'mm';
+    el.style.setProperty('--print-width', width + 'mm');
+    el.style.setProperty('--print-height', height + 'mm');
+}
+
 // Generate CV from data object (for use with localStorage)
 function generateCVFromData(data) {
-    const template = data.template || 'classic';
+    var template = (data && data.template) ? data.template : 'classic';
     
-    // Special handling for luxsleek template (two-column layout)
-    if (template === 'luxsleek') {
-        return generateLuxSleekCV(data);
-    }
+    if (template === 'luxsleek') return generateLuxSleekCV(data);
+    if (template === 'classic') return generateClassicNUCV(data);
+    if (template === 'minimal') return generateMinimalCV(data);
+    if (template === 'nabhel') return generateProductDesignerCV(data);
+    if (template === 'yodi') return generateUXUIDesignerCV(data);
+    if (template === 'modern') return generateModernCV(data);
+    if (template === 'harvard') return generateHarvardCV(data);
     
-    // Special handling for classic template (Northeastern University COS format)
-    if (template === 'classic') {
-        return generateClassicNUCV(data);
-    }
-    
-    // Special handling for minimal template (two-column minimalist layout)
-    if (template === 'minimal') {
-        return generateMinimalCV(data);
-    }
-    
-    // Special handling for nabhel template (two-column product designer layout)
-    if (template === 'nabhel') {
-        return generateProductDesignerCV(data);
-    }
-    
-    // Special handling for yodi template (UX/UI Designer layout)
-    if (template === 'yodi') {
-        return generateUXUIDesignerCV(data);
-    }
-    
-    // Special handling for modern template (single column clean layout)
-    if (template === 'modern') {
-        return generateModernCV(data);
-    }
-    
-    // Special handling for harvard template (academic resume layout)
-    if (template === 'harvard') {
-        return generateHarvardCV(data);
-    }
-    
-    let html = generateHeader(template, data);
-    
-    html += generateEducation(data.education, template);
-    html += generateExperience(data.experience, template);
-    html += generatePublications(data.publications, template);
-    html += generateSkills(data.skills, template);
-    html += generateLanguages(data.languages, template);
-    html += generateProjects(data.projects, template);
-    html += generateAwards(data.awards, template);
-    
-    return html;
+    // Fallback for unknown template: use classic
+    return generateClassicNUCV(data);
 }
 
 // Generate LuxSleek CV with two-column layout

@@ -24,3 +24,8 @@ Thumbs.db
 cv.tex
 cv.pdf
 
+# Node / Vite
+node_modules
+dist
+*.local
+

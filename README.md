@@ -1,18 +1,28 @@
 # CV Builder - Professional Resume Builder
 
-A modern, web-based CV builder that generates professional PDF resumes with multiple beautiful templates. Just fill in the form and download Your CV Preview as a PDF!
+A modern, web-based CV builder built with **Vue 3**, **Vite**, and **shadcn-vue**. It generates professional PDF resumes with multiple templates. Fill in the form and download your CV as a PDF.
+
+## Tech Stack
+
+- **Vue 3** (Composition API, `<script setup>`)
+- **Vite** – build tool and dev server
+- **Pinia** – state management for CV data
+- **Vue Router** – routing
+- **shadcn-vue** – UI components (Button, Input, Label, Card, Textarea)
+- **Tailwind CSS v4** – styling with CSS variables (light/dark)
+- **TypeScript** – type-safe code
 
 ## Features
 
-- 🎨 **5 Professional Templates**: Choose from Yodi, Classic, LuxSleek, Minimal, and Nabhel templates
-- 📝 **Easy-to-Use Form**: Intuitive interface for all CV sections
-- 🔄 **Dynamic Sections**: Add or remove entries dynamically (experience, projects, education, etc.)
-- 📄 **Direct PDF Generation**: Download Your CV Preview as a PDF instantly using html2pdf.js
-- 💾 **Auto-Save**: Your data is automatically saved to browser localStorage
-- 🎯 **Page Customization**: Adjust paper size, orientation, and margins (top, bottom, left, right)
-- 🌓 **Dark Mode**: Toggle between light and dark themes
-- 📱 **Responsive Design**: Works on desktop, tablet, and mobile devices
-- 🖨️ **Print-Optimized**: Templates are optimized for PDF generation and printing
+- 🎨 **Multiple Templates**: Minimal, Modern, Nabhel, Yodi, Harvard (rendered at `/preview`)
+- 📝 **Easy-to-Use Form**: Intuitive form built with shadcn-vue components
+- 🔄 **Dynamic Sections**: Add or remove education, experience, volunteer, languages, projects
+- 📄 **PDF Generation**: Download your CV as PDF from the preview page (jsPDF + html2canvas)
+- 💾 **Auto-Save**: Data is synced to `localStorage` and persists across sessions
+- 🎯 **Page Customization**: Paper size, orientation, and margins on the template page
+- 🌓 **Dark Mode**: Toggle light/dark theme
+- 📱 **Responsive**: Works on desktop, tablet, and mobile
+- 🖨️ **Print-Optimized**: Templates are optimized for PDF and printing
 
 ## Templates
 
@@ -36,17 +46,44 @@ A modern, web-based CV builder that generates professional PDF resumes with mult
 
 ## Usage
 
+### Development
+
+```bash
+npm install
+npm run dev
+```
+
+Open http://localhost:5173 and use the CV builder form.
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+Then serve the `dist/` folder (e.g. with `npx serve dist` or your host). The app will be at `/` and template previews at `/preview`.
+
+### Deploy to GitHub Pages
+
+The repo includes a GitHub Action that builds and deploys to GitHub Pages on every push to `main`.
+
+1. In your GitHub repo go to **Settings → Pages**.
+2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
+3. Push to `main` (or run the workflow manually from the **Actions** tab).
+
+The site will be available at `https://<username>.github.io/<repo>/` (e.g. `https://username.github.io/cv-builder/`).
+
 ### Getting Started
 
-1. Open `index.html` in your web browser
-2. Fill in all the relevant sections of Your CV Preview
-3. Select a template from the template selector
-4. Click "Preview CV" to see Your CV Preview with the selected template
-5. In the preview:
-   - Adjust page options (paper size, orientation, margins) using the fixed menu on the right
-   - Click "Download PDF" to save Your CV Preview as a PDF file
-   - Click "Back to Edit" to return to the form
-   - Toggle dark/light theme as needed
+1. Run the app and open the builder.
+2. Fill in personal info, education, experience, and other sections.
+3. Select a template (Minimal, Modern, Nabhel, Yodi, Harvard).
+4. Click **Generate CV Preview** – you’ll be taken to the template page with your data.
+5. On the template page:
+   - Adjust page options (paper size, orientation, margins) if available.
+   - Click **Download PDF** to save the CV as PDF.
+   - Click **Back to Edit** to return to the Vue builder.
+   - Toggle dark/light theme as needed.
 
 ### Page Options
 
@@ -69,15 +106,23 @@ Your CV Preview data is automatically saved to your browser's localStorage. This
 
 ```
 cv-builder/
-├── index.html              # Main form interface
-├── script.js               # Core logic for form handling and CV generation
-├── template/
-│   ├── yodi.html          # Yodi template
-│   ├── classic.html       # Classic template
-│   ├── luxsleek.html      # LuxSleek template
-│   ├── minimal.html       # Minimal template
-│   └── nabhel.html        # Nabhel template
-└── README.md              # This file
+├── index.html              # Vite entry (mounts Vue app)
+├── src/
+│   ├── main.ts             # Vue app entry
+│   ├── App.vue
+│   ├── style.css            # Tailwind + theme variables
+│   ├── router/              # Vue Router (/, /preview)
+│   ├── stores/              # Pinia store (CV data)
+│   ├── types/              # TypeScript types for CV
+│   ├── views/               # BuilderView, PreviewView
+│   ├── components/ui/       # shadcn-vue components
+│   └── lib/utils.ts
+├── public/
+│   ├── script.js           # CV HTML generators (generateCVFromData, etc.)
+│   └── images/
+├── package.json
+├── vite.config.ts
+└── README.md
 ```
 
 ## Requirements
@@ -99,36 +144,14 @@ cv-builder/
 - **Page Margins**: Adjust margins based on your content and printer requirements
 - **Template Selection**: Try different templates to see which one best showcases your experience
 
-## Customization
-
-### Modifying Templates
-
-Each template is a standalone HTML file in the `template/` directory. You can:
-- Edit the HTML structure
-- Modify CSS styles (inline or in style tags)
-- Adjust the layout and design
-
-### Adding New Templates
-
-1. Create a new HTML file in the `template/` directory
-2. Follow the structure of existing templates
-3. Include the required JavaScript functions:
-   - `loadPageSettings()` - Load saved page settings
-   - `updateMargin()` - Update margin values
-   - `updatePaperSize()` - Update paper size
-   - `updateOrientation()` - Update orientation
-   - `applyMargins()` - Apply margin styles
-   - `savePageSettings()` - Save page settings
-   - `downloadPDF()` - Generate and download PDF
-   - `goBack()` - Return to form
-4. Update `script.js` to include your template in the generation logic
-
 ## Technical Details
 
-- **PDF Generation**: Uses [html2pdf.js](https://github.com/eKoopmans/html2pdf.js) library
-- **Styling**: Tailwind CSS for responsive design
-- **Storage**: Browser localStorage for data persistence
-- **No Dependencies**: All libraries are loaded via CDN
+- **Vue 3**: Composition API, `<script setup>`, reactive state with Pinia.
+- **shadcn-vue**: Copy-paste components (Button, Input, Label, Card, Textarea) with Tailwind and Radix Vue.
+- **Templates**: CV HTML is generated by `public/script.js` (`generateCVFromData`); the Vue app renders it at `/preview`.
+- **PDF Generation**: [jsPDF](https://github.com/parallax/jsPDF) + [html2canvas](https://github.com/niklasvh/html2canvas) in PreviewView.
+- **Styling**: Tailwind CSS v4 with CSS variables for light/dark theme.
+- **Storage**: CV data in Pinia store and synced to `localStorage` (key `cvData`).
 
 ## License
 
@@ -144,4 +167,4 @@ If you encounter any issues:
 
 ---
 
-**Note**: This is a static web application - no server or backend required. Just open `index.html` in your browser and start building Your CV Preview!
+**Note**: Run `npm run dev` to start the development server, or `npm run build` and serve `dist/` for production.
