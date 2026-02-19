@@ -13,7 +13,7 @@ const router = useRouter()
 const store = useCVStore()
 const containerRef = ref<HTMLElement | null>(null)
 const isGeneratingPdf = ref(false)
-const isDark = ref(false)
+// const isDark = ref(false)
 const isRendered = ref(false)
 
 const data = computed(() => store.data)
