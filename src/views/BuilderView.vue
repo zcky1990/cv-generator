@@ -124,7 +124,7 @@ initTheme()
 <template>
   <div class="min-h-screen print:bg-white">
     <!-- Sticky header (Help 1 style) -->
-    <header class="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur print:hidden">
+    <!-- <header class="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur print:hidden">
       <div class="container mx-auto px-4 py-4">
         <div class="flex flex-wrap items-center justify-between gap-4">
           <h1 class="text-xl font-bold tracking-tight">CV Builder</h1>
@@ -136,7 +136,7 @@ initTheme()
           </div>
         </div>
       </div>
-    </header>
+    </header> -->
 
     <main class="container mx-auto px-4 py-8 md:py-12 max-w-5xl">
       <!-- Hero -->
