@@ -20,4 +20,16 @@
     <script src="./script.js"></script>
     <script type="module" src="/src/main.ts"></script>
   </body>
+  <script>
+    window.addEventListener('message', (event) => {
+    const { type, payload } = event.data || {};
+    if (type === 'THEME') {
+      console.log('Theme changed to', payload); // 'light' | 'dark'
+      document.documentElement.setAttribute('data-theme', payload);
+    }
+    if (type === 'AUTH') {
+      console.log('Auth updated', payload); // user object or null
+    }
+  });
+  </script>
 </html>
