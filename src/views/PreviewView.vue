@@ -5,7 +5,7 @@ import { useCVStore } from '@/stores/cv'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ArrowLeft, Download, Sun, Moon } from 'lucide-vue-next'
+import { ArrowLeft, Download } from 'lucide-vue-next'
 import html2canvas from 'html2canvas'
 import { jsPDF } from 'jspdf'
 
@@ -190,24 +190,24 @@ async function downloadPDF() {
   }
 }
 
-function toggleTheme() {
-  isDark.value = !isDark.value
-  document.documentElement.classList.toggle('dark', isDark.value)
-  try {
-    localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
-  } catch {
-    //
-  }
-}
+// function toggleTheme() {
+//   isDark.value = !isDark.value
+//   document.documentElement.classList.toggle('dark', isDark.value)
+//   try {
+//     localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+//   } catch {
+//     //
+//   }
+// }
 
-function initTheme() {
-  const saved = localStorage.getItem('theme')
-  isDark.value = saved === 'dark'
-  document.documentElement.classList.toggle('dark', isDark.value)
-}
+// function initTheme() {
+//   const saved = localStorage.getItem('theme')
+//   isDark.value = saved === 'dark'
+//   document.documentElement.classList.toggle('dark', isDark.value)
+// }
 
 onMounted(() => {
-  initTheme()
+  // initTheme()
   renderCV()
 })
 
@@ -319,10 +319,10 @@ watch(
                 <ArrowLeft class="h-4 w-4 mr-2" />
                 Back to Edit
               </Button>
-              <Button variant="secondary" size="icon" aria-label="Toggle theme" @click="toggleTheme">
+              <!-- <Button variant="secondary" size="icon" aria-label="Toggle theme" @click="toggleTheme">
                 <Sun v-if="isDark" class="h-5 w-5" />
                 <Moon v-else class="h-5 w-5" />
-              </Button>
+              </Button> -->
             </div>
           </div>
         </div>

@@ -9,8 +9,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ref, computed } from 'vue'
 import {
-  Sun,
-  Moon,
   FileJson,
   LayoutTemplate,
   User,
@@ -51,15 +49,15 @@ function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-function toggleTheme() {
-  isDark.value = !isDark.value
-  document.documentElement.classList.toggle('dark', isDark.value)
-  try {
-    localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
-  } catch {
-    //
-  }
-}
+// function toggleTheme() {
+//   isDark.value = !isDark.value
+//   document.documentElement.classList.toggle('dark', isDark.value)
+//   try {
+//     localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+//   } catch {
+//     //
+//   }
+// }
 
 function initTheme() {
   const saved = localStorage.getItem('theme')
