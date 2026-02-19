@@ -26,6 +26,7 @@
     if (type === 'THEME') {
       console.log('Theme changed to', payload); // 'light' | 'dark'
       document.documentElement.setAttribute('data-theme', payload);
+      document.documentElement.classList.remove('dark', 'light');
       document.documentElement.classList.toggle(payload)
     }
     if (type === 'AUTH') {
